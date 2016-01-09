@@ -28,7 +28,7 @@ public class GameManager extends Game<PlayerBomberman> {
     private Server server;
     private Logger logger;
     private TimerBomberman timer;
-    private Location spawn;
+    private Location spawn, mapCorner;
     private List<Location> playerSpawnList;
 
     public GameManager(JavaPlugin plugin) {
@@ -51,16 +51,17 @@ public class GameManager extends Game<PlayerBomberman> {
 
         // Generate default json array  of spawnLocations
         JsonArray defaultObject = new JsonArray();
-        defaultObject.add(new JsonPrimitive("world, 0, 90, 0, 0, 0"));
-        defaultObject.add(new JsonPrimitive("world, 0, 90, 0, 0, 0"));
-        defaultObject.add(new JsonPrimitive("world, 0, 90, 0, 0, 0"));
-        defaultObject.add(new JsonPrimitive("world, 0, 90, 0, 0, 0"));
+        defaultObject.add(new JsonPrimitive("world, -23, 70, -23, 0, 0"));
+        defaultObject.add(new JsonPrimitive("world, -23, 70, 25, 0, 0"));
+        defaultObject.add(new JsonPrimitive("world, 25, 70, -23, 0, 0"));
+        defaultObject.add(new JsonPrimitive("world, 25, 70, 25, 0, 0"));
 
         this.spawn = LocationUtils.str2loc(gameProperties.getOption("wating-lobby", new JsonPrimitive("world, 0, 90, 0, 0, 0")).getAsString());
+        this.mapCorner = LocationUtils.str2loc(gameProperties.getOption("map-corner", new JsonPrimitive("world, 26, 70, 26, 0, 0")).getAsString());
         this.playerSpawnList = new ArrayList<>();
 
         // Add spawn locations in list
-        gameProperties.getOption("spawnLocations", defaultObject).getAsJsonObject().getAsJsonArray().forEach(location -> playerSpawnList.add(LocationUtils.str2loc(location.getAsString())));
+        gameProperties.getOption("spawn-locations", defaultObject).getAsJsonObject().getAsJsonArray().forEach(location -> playerSpawnList.add(LocationUtils.str2loc(location.getAsString())));
     }
 
     public Server getServer() {
