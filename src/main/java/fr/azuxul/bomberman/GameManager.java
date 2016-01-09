@@ -10,6 +10,7 @@ import net.samagames.api.games.IGameProperties;
 import net.samagames.tools.LocationUtils;
 import org.bukkit.Location;
 import org.bukkit.Server;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class GameManager extends Game<PlayerBomberman> {
         this.playerSpawnList = new ArrayList<>();
 
         // Add spawn locations in list
-        gameProperties.getOption("spawnLocations", defaultObject).getAsJsonObject().getAsJsonArray().forEach((location) -> playerSpawnList.add(LocationUtils.str2loc(location.getAsString())));
+        gameProperties.getOption("spawnLocations", defaultObject).getAsJsonObject().getAsJsonArray().forEach(location -> playerSpawnList.add(LocationUtils.str2loc(location.getAsString())));
     }
 
     public Server getServer() {
@@ -70,6 +71,10 @@ public class GameManager extends Game<PlayerBomberman> {
         return logger;
     }
 
+    public TimerBomberman getTimer() {
+        return timer;
+    }
+
     public Location getSpawn() {
         return spawn;
     }
@@ -78,8 +83,31 @@ public class GameManager extends Game<PlayerBomberman> {
         return playerSpawnList;
     }
 
+    public List<PlayerBomberman> getPlayerBombermanList() {
+
+        return new ArrayList<>(this.getInGamePlayers().values());
+    }
+
     @Override
     public void startGame() {
+
+        List<PlayerBomberman> playerBombermanList = getPlayerBombermanList();
+        int spawnIndex = 0;
+
+        for (PlayerBomberman playerBomberman : playerBombermanList) {
+
+            Player player = playerBomberman.getPlayerIfOnline();
+
+            if (player != null) {
+
+                player.teleport(getPlayerSpawnList().get(spawnIndex));
+                spawnIndex++;
+
+                if (spawnIndex >= getPlayerSpawnList().size()) {
+                    spawnIndex = 0;
+                }
+            }
+        }
 
         super.startGame();
     }

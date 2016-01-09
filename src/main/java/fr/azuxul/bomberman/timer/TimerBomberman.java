@@ -44,5 +44,23 @@ public class TimerBomberman implements Runnable {
                     gameManager.endGame();
             }
         }
+
+        // Update scoreboard to all player and update player
+        server.getOnlinePlayers().forEach(player -> {
+            /*gameManager.getScoreboard().sendScoreboardToPlayer(player, gameStatus);
+
+            PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
+
+            if (playerBomberman != null)
+                gameManager.getPlayer(player.getUniqueId()).update();*/
+        });
+    }
+
+    public short getSeconds() {
+        return seconds;
+    }
+
+    public short getMinutes() {
+        return minutes;
     }
 }
