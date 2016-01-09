@@ -1,0 +1,5 @@
+name: Bomberman
+main: fr.azuxul.bomberman.Bomberman
+version: 1.0-SNAPSHOT
+author: Azuxul
+depend: [SamaGamesAPI]
