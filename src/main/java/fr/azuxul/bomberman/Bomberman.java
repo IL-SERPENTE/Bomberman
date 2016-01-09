@@ -10,8 +10,17 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class Bomberman extends JavaPlugin {
 
+    private static GameManager gameManager;
+
+    public static GameManager getGameManager() {
+        return gameManager;
+    }
+
     @Override
     public void onEnable() {
 
+        synchronized (this) {
+            gameManager = new GameManager(this);
+        }
     }
 }
