@@ -1,5 +1,6 @@
 package fr.azuxul.bomberman.player;
 
+import fr.azuxul.bomberman.powerup.Powerups;
 import net.samagames.api.games.GamePlayer;
 import org.bukkit.entity.Player;
 
@@ -11,7 +12,17 @@ import org.bukkit.entity.Player;
  */
 public class PlayerBomberman extends GamePlayer {
 
+    Powerups powerups;
+
     public PlayerBomberman(Player player) {
         super(player);
+    }
+
+    public Powerups getPowerups() {
+        return powerups;
+    }
+
+    public void setPowerup(Powerups powerups) {
+        this.powerups = powerups;
     }
 }
