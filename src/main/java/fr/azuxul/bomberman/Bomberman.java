@@ -60,6 +60,12 @@ public class Bomberman extends JavaPlugin {
 
     }
 
+    @Override
+    public void onDisable() {
+
+        gameManager.getPowerupManager().getPowerups().forEach(activePowerup -> activePowerup.remove(false));
+    }
+
     /**
      * Register entity
      *

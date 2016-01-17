@@ -3,11 +3,13 @@ package fr.azuxul.bomberman;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonPrimitive;
 import fr.azuxul.bomberman.player.PlayerBomberman;
+import fr.azuxul.bomberman.powerup.PowerupManager;
 import fr.azuxul.bomberman.timer.TimerBomberman;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Game;
 import net.samagames.api.games.IGameProperties;
 import net.samagames.tools.LocationUtils;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
@@ -28,6 +30,7 @@ public class GameManager extends Game<PlayerBomberman> {
     private Server server;
     private Logger logger;
     private TimerBomberman timer;
+    private PowerupManager powerupManager;
     private Location spawn;
     private List<Location> playerSpawnList;
 
@@ -38,6 +41,7 @@ public class GameManager extends Game<PlayerBomberman> {
         this.server = plugin.getServer();
         this.logger = plugin.getLogger();
         this.timer = new TimerBomberman(this);
+        this.powerupManager = new PowerupManager(this);
 
         initLocations();
     }
@@ -75,6 +79,10 @@ public class GameManager extends Game<PlayerBomberman> {
         return timer;
     }
 
+    public PowerupManager getPowerupManager() {
+        return powerupManager;
+    }
+
     public Location getSpawn() {
         return spawn;
     }
@@ -100,8 +108,12 @@ public class GameManager extends Game<PlayerBomberman> {
 
             if (player != null) {
 
+                player.getInventory().clear();
+                player.setGameMode(GameMode.SURVIVAL);
                 player.teleport(getPlayerSpawnList().get(spawnIndex));
                 spawnIndex++;
+
+                playerBomberman.setBombNumber(3);
 
                 if (spawnIndex >= getPlayerSpawnList().size()) {
                     spawnIndex = 0;

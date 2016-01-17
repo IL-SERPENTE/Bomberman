@@ -1,18 +1,20 @@
 package fr.azuxul.bomberman.powerup;
 
 /**
- * Class description
+ * Enum of powerups types
  *
  * @author Azuxul
+ * @version 1.0
  */
-public enum Powerups {
+public enum PowerupTypes {
 
-    HYPER_BOMB(""),
-    P1("Un booster");
+    SPEED("Speed"),
+    HYPER_BOMB("Hyper bomb"),
+    SUPER_BOMB("Super bomb");
 
     private String name;
 
-    Powerups(String name) {
+    PowerupTypes(String name) {
 
         this.name = name;
     }

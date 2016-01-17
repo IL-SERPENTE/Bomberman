@@ -3,11 +3,12 @@ package fr.azuxul.bomberman.entity;
 import fr.azuxul.bomberman.Bomberman;
 import fr.azuxul.bomberman.GameManager;
 import fr.azuxul.bomberman.player.PlayerBomberman;
-import fr.azuxul.bomberman.powerup.Powerups;
+import fr.azuxul.bomberman.powerup.PowerupTypes;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.EntityTNTPrimed;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import net.minecraft.server.v1_8_R3.World;
+import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -26,18 +27,19 @@ import java.util.Objects;
  */
 public class Bomb extends EntityTNTPrimed {
 
+    private static GameManager gameManager;
     private int radius;
     private PlayerBomberman owner;
-    private GameManager gameManager;
 
     public Bomb(World world, double x, double y, double z, EntityLiving source) {
         super(world, x, y, z, source);
+        gameManager = Bomberman.getGameManager();
     }
 
     public Bomb(World world, double x, double y, double z, int fuseTicks, int radius, Player owner) {
         super(world, x, y, z, ((CraftPlayer) owner).getHandle());
 
-        this.gameManager = Bomberman.getGameManager();
+        gameManager = Bomberman.getGameManager();
         this.fuseTicks = fuseTicks;
         this.radius = radius;
         this.owner = gameManager.getPlayer(owner.getUniqueId());
@@ -47,6 +49,7 @@ public class Bomb extends EntityTNTPrimed {
 
         org.bukkit.World world = location.getWorld();
         boolean blockBreak = false;
+        boolean placePowerup = false;
 
         for (int i = 0; i <= 2; i++) {
 
@@ -56,17 +59,36 @@ public class Bomb extends EntityTNTPrimed {
 
                 block.setType(Material.AIR);
                 blockBreak = true;
+                placePowerup = true;
             } else {
                 blockBreak = block.getType().equals(Material.COBBLESTONE);
                 break;
             }
         }
-        world.createExplosion(location.add(0, -1, 0), 0);
+
+        if (placePowerup) {
+
+            int random = RandomUtils.nextInt(1000);
+
+            if (random <= 220) {
+
+                gameManager.getPowerupManager().spawnBoosterPowerup(location.add(0, -2.3, 0));
+            } else if (random <= 600) {
+
+                gameManager.getPowerupManager().spawnBombPowerup(location.add(0, -2.3, 0)); // TODO: Change with radius powerup
+
+            } else {
+
+                gameManager.getPowerupManager().spawnBombPowerup(location.add(0, -2.3, 0));
+            }
+        }
+
+        world.createExplosion(location.add(0, 1, 0), 0);
 
         return blockBreak;
     }
 
-    private static void explodeBlocks(Map<BlockFace, Boolean> faces, Location location, int radius) {
+    private static void explodeBlocks(Map<BlockFace, Boolean> faces, Location location, int radius, boolean breakCoobestone) {
 
         faces.entrySet().stream().filter(Map.Entry::getValue).forEach(entry -> {
 
@@ -74,7 +96,7 @@ public class Bomb extends EntityTNTPrimed {
             double x = (double) radius * blockFace.getModX();
             double z = (double) radius * blockFace.getModZ();
 
-            entry.setValue(!explodeBlock(location.clone().add(x, -1, z), false));
+            entry.setValue(!explodeBlock(location.clone().add(x, -1, z), breakCoobestone));
         });
 
     }
@@ -109,19 +131,23 @@ public class Bomb extends EntityTNTPrimed {
 
         for (int i = 1; i <= radius; i++) {
 
-            if (owner.getPowerups() == null) {
+            if (owner.getPowerupTypes() == null) {
+                explodeBlocks(faces, location.clone(), i, false);
+            } else if (owner.getPowerupTypes().equals(PowerupTypes.HYPER_BOMB)) {
 
-                explodeBlocks(faces, location.clone(), i);
+                explodeBlocks(faces, location.clone(), i, true);
 
-            } else if (owner.getPowerups().equals(Powerups.HYPER_BOMB)) {
+            } else if (owner.getPowerupTypes().equals(PowerupTypes.SUPER_BOMB)) {
 
                 for (BlockFace face : faces.keySet()) {
 
                     double x = (double) i * face.getModX();
                     double z = (double) i * face.getModZ();
 
-                    explodeBlock(location.clone().add(x, -1, z), true);
+                    explodeBlock(location.clone().add(x, -1, z), false);
                 }
+            } else {
+                explodeBlocks(faces, location.clone(), i, false);
             }
         }
     }
