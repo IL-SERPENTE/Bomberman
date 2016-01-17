@@ -11,9 +11,12 @@ import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -53,12 +56,27 @@ public class Bomb extends EntityTNTPrimed {
 
                 block.setType(Material.AIR);
                 blockBreak = true;
-            } else
+            } else {
+                blockBreak = block.getType().equals(Material.COBBLESTONE);
                 break;
+            }
         }
         world.createExplosion(location.add(0, -1, 0), 0);
 
         return blockBreak;
+    }
+
+    private static void explodeBlocks(Map<BlockFace, Boolean> faces, Location location, int radius) {
+
+        faces.entrySet().stream().filter(Map.Entry::getValue).forEach(entry -> {
+
+            BlockFace blockFace = entry.getKey();
+            double x = (double) radius * blockFace.getModX();
+            double z = (double) radius * blockFace.getModZ();
+
+            entry.setValue(!explodeBlock(location.clone().add(x, -1, z), false));
+        });
+
     }
 
     @Override
@@ -82,23 +100,28 @@ public class Bomb extends EntityTNTPrimed {
     private void explode() {
 
         Location location = new Location(getWorld().getWorld(), locX, locY, locZ);
+        EnumMap<BlockFace, Boolean> faces = new EnumMap<>(BlockFace.class);
+
+        faces.put(BlockFace.NORTH, true);
+        faces.put(BlockFace.EAST, true);
+        faces.put(BlockFace.SOUTH, true);
+        faces.put(BlockFace.WEST, true);
 
         for (int i = 1; i <= radius; i++) {
 
             if (owner.getPowerups() == null) {
 
-                explodeBlock(location.clone().add(i, -1, 0), false);
-                explodeBlock(location.clone().add((double) i * -1, -1, 0), false);
-                explodeBlock(location.clone().add(0, -1, i), false);
-                explodeBlock(location.clone().add(0, -1, (double) i * -1), false);
+                explodeBlocks(faces, location.clone(), i);
 
             } else if (owner.getPowerups().equals(Powerups.HYPER_BOMB)) {
 
-                explodeBlock(location.clone().add(i, -1, 0), true);
-                explodeBlock(location.clone().add((double) i * -1, -1, 0), true);
-                explodeBlock(location.clone().add(0, -1, i), true);
-                explodeBlock(location.clone().add(0, -1, (double) i * -1), true);
+                for (BlockFace face : faces.keySet()) {
 
+                    double x = (double) i * face.getModX();
+                    double z = (double) i * face.getModZ();
+
+                    explodeBlock(location.clone().add(x, -1, z), true);
+                }
             }
         }
     }

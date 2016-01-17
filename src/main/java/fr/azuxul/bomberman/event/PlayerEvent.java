@@ -37,7 +37,7 @@ public class PlayerEvent implements Listener {
             block.setType(Material.AIR);
             Location location = block.getLocation();
 
-            Bomb bomb = new Bomb(((CraftWorld) block.getWorld()).getHandle(), location.getX(), location.getY() + 0.3, location.getZ(), 2, 2, event.getPlayer());
+            Bomb bomb = new Bomb(((CraftWorld) block.getWorld()).getHandle(), location.getX() + 0.5, location.getY() + 0.1, location.getZ() + 0.5, 2, 2, event.getPlayer());
 
             ((CraftWorld) block.getWorld()).getHandle().addEntity(bomb);
         }

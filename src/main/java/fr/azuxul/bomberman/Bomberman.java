@@ -1,10 +1,15 @@
 package fr.azuxul.bomberman;
 
+import fr.azuxul.bomberman.entity.Bomb;
 import fr.azuxul.bomberman.event.PlayerEvent;
+import net.minecraft.server.v1_8_R3.EntityTypes;
 import net.samagames.api.SamaGamesAPI;
 import org.bukkit.Difficulty;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * Main class of Bomberman plugin
@@ -35,6 +40,9 @@ public class Bomberman extends JavaPlugin {
         // Register events
         getServer().getPluginManager().registerEvents(new PlayerEvent(), this);
 
+        // Register entity
+        registerEntity("Bomb", 69, Bomb.class);
+
         // Kick players
         getServer().getOnlinePlayers().forEach(player -> player.kickPlayer(""));
 
@@ -50,5 +58,26 @@ public class Bomberman extends JavaPlugin {
         world.setThunderDuration(0); // Clear weather
         world.setWeatherDuration(0); // Clear weather
 
+    }
+
+    /**
+     * Register entity
+     *
+     * @param name  entity name
+     * @param id    entity id
+     * @param clazz entity class
+     */
+    private void registerEntity(String name, int id, Class clazz) {
+
+        // Exception when plugin are reloaded
+
+        try {
+            Method method = EntityTypes.class.getDeclaredMethod("a", Class.class, String.class, int.class); // Get method for register new entity
+            method.setAccessible(true); // Set accessible
+            method.invoke(null, clazz, name, id); // Invoke
+
+        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
+            getLogger().warning(String.valueOf(e));
+        }
     }
 }
