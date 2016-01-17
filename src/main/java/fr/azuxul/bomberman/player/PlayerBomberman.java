@@ -14,9 +14,9 @@ import org.bukkit.inventory.ItemStack;
  */
 public class PlayerBomberman extends GamePlayer {
 
-    PowerupTypes powerupTypes;
-    int bombNumber;
-    int radius;
+    private PowerupTypes powerupTypes;
+    private int bombNumber;
+    private int radius;
 
     public PlayerBomberman(Player player) {
         super(player);

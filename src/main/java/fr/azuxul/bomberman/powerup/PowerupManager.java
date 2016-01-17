@@ -1,6 +1,5 @@
 package fr.azuxul.bomberman.powerup;
 
-import fr.azuxul.bomberman.GameManager;
 import net.samagames.tools.powerups.ActivePowerup;
 import org.bukkit.Location;
 
@@ -14,12 +13,10 @@ import java.util.List;
  */
 public class PowerupManager {
 
-    GameManager gameManager;
-    List<ActivePowerup> powerups;
+    private final List<ActivePowerup> powerups;
 
-    public PowerupManager(GameManager gameManager) {
+    public PowerupManager() {
 
-        this.gameManager = gameManager;
         this.powerups = new ArrayList<>();
     }
 

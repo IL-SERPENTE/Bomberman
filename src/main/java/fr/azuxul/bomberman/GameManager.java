@@ -27,10 +27,10 @@ import java.util.logging.Logger;
  */
 public class GameManager extends Game<PlayerBomberman> {
 
-    private Server server;
-    private Logger logger;
-    private TimerBomberman timer;
-    private PowerupManager powerupManager;
+    private final Server server;
+    private final Logger logger;
+    private final TimerBomberman timer;
+    private final PowerupManager powerupManager;
     private Location spawn;
     private List<Location> playerSpawnList;
 
@@ -41,7 +41,7 @@ public class GameManager extends Game<PlayerBomberman> {
         this.server = plugin.getServer();
         this.logger = plugin.getLogger();
         this.timer = new TimerBomberman(this);
-        this.powerupManager = new PowerupManager(this);
+        this.powerupManager = new PowerupManager();
 
         initLocations();
     }
@@ -87,11 +87,11 @@ public class GameManager extends Game<PlayerBomberman> {
         return spawn;
     }
 
-    public List<Location> getPlayerSpawnList() {
+    private List<Location> getPlayerSpawnList() {
         return playerSpawnList;
     }
 
-    public List<PlayerBomberman> getPlayerBombermanList() {
+    private List<PlayerBomberman> getPlayerBombermanList() {
 
         return new ArrayList<>(this.getInGamePlayers().values());
     }

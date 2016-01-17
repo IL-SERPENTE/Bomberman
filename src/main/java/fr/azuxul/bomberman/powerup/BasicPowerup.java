@@ -16,8 +16,8 @@ import org.bukkit.inventory.ItemStack;
  */
 public class BasicPowerup implements Powerup {
 
-    PowerupTypes type;
-    GameManager gameManager;
+    private final PowerupTypes type;
+    private final GameManager gameManager;
 
     public BasicPowerup() {
 

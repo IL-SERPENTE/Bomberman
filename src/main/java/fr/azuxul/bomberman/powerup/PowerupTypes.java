@@ -12,7 +12,7 @@ public enum PowerupTypes {
     HYPER_BOMB("Hyper bomb"),
     SUPER_BOMB("Super bomb");
 
-    private String name;
+    private final String name;
 
     PowerupTypes(String name) {
 
