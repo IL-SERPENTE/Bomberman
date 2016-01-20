@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonPrimitive;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import fr.azuxul.bomberman.powerup.PowerupManager;
+import fr.azuxul.bomberman.scoreboard.ScoreboardBomberman;
 import fr.azuxul.bomberman.timer.TimerBomberman;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Game;
@@ -31,6 +32,7 @@ public class GameManager extends Game<PlayerBomberman> {
     private final Logger logger;
     private final TimerBomberman timer;
     private final PowerupManager powerupManager;
+    private final ScoreboardBomberman scoreboardBomberman;
     private Location spawn;
     private List<Location> playerSpawnList;
 
@@ -42,6 +44,7 @@ public class GameManager extends Game<PlayerBomberman> {
         this.logger = plugin.getLogger();
         this.timer = new TimerBomberman(this);
         this.powerupManager = new PowerupManager();
+        this.scoreboardBomberman = new ScoreboardBomberman(this);
 
         initLocations();
     }
@@ -65,6 +68,10 @@ public class GameManager extends Game<PlayerBomberman> {
 
         // Add spawn locations in list
         gameProperties.getOption("spawn-locations", defaultObject).getAsJsonArray().forEach(location -> playerSpawnList.add(LocationUtils.str2loc(location.getAsString()).add(0, 2, 0)));
+    }
+
+    public ScoreboardBomberman getScoreboardBomberman() {
+        return scoreboardBomberman;
     }
 
     public Server getServer() {
@@ -114,6 +121,7 @@ public class GameManager extends Game<PlayerBomberman> {
                 spawnIndex++;
 
                 playerBomberman.setBombNumber(3);
+                playerBomberman.setRadius(2);
 
                 if (spawnIndex >= getPlayerSpawnList().size()) {
                     spawnIndex = 0;
@@ -127,5 +135,7 @@ public class GameManager extends Game<PlayerBomberman> {
     public void endGame() {
 
         this.handleGameEnd();
+
+        timer.setToZero();
     }
 }

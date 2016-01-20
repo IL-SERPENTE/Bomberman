@@ -40,6 +40,9 @@ public class Bomberman extends JavaPlugin {
         // Register events
         getServer().getPluginManager().registerEvents(new PlayerEvent(), this);
 
+        // Register timer
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, gameManager.getTimer(), 0L, 20L);
+
         // Register entity
         registerEntity("Bomb", 69, Bomb.class);
 

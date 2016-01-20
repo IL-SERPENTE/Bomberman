@@ -45,7 +45,7 @@ public class Bomb extends EntityTNTPrimed {
         this.owner = gameManager.getPlayer(owner.getUniqueId());
     }
 
-    private static boolean explodeBlock(Location location, boolean breakCobblestone) {
+    private boolean explodeBlock(Location location, boolean breakCobblestone) {
 
         org.bukkit.World world = location.getWorld();
         boolean blockBreak = false;
@@ -68,19 +68,23 @@ public class Bomb extends EntityTNTPrimed {
 
         if (placePowerup) {
 
-            int random = RandomUtils.nextInt(1000);
-
-            if (random <= 220) {
-
-                gameManager.getPowerupManager().spawnBoosterPowerup(location.add(0, -2.3, 0));
-            } else if (random <= 600) {
-
-                gameManager.getPowerupManager().spawnBombPowerup(location.add(0, -2.3, 0)); // TODO: Change with radius powerup
-
-            } else {
-
+            if (owner.getBombNumber() <= 2)
                 gameManager.getPowerupManager().spawnBombPowerup(location.add(0, -2.3, 0));
+
+            else {
+
+                int random = RandomUtils.nextInt(1000);
+
+                if (random <= 220)
+                    gameManager.getPowerupManager().spawnBoosterPowerup(location.add(0, -2.3, 0));
+
+                else if (random <= 500)
+                    gameManager.getPowerupManager().spawnRadiusPowerup(location.add(0, -2.3, 0));
+
+                else if (random <= 650)
+                    gameManager.getPowerupManager().spawnBombPowerup(location.add(0, -2.3, 0));
             }
+
         }
 
         world.createExplosion(location.add(0, 1, 0), 0);
@@ -88,7 +92,7 @@ public class Bomb extends EntityTNTPrimed {
         return blockBreak;
     }
 
-    private static void explodeBlocks(Map<BlockFace, Boolean> faces, Location location, int radius, boolean breakCoobestone) {
+    private void explodeBlocks(Map<BlockFace, Boolean> faces, Location location, int radius, boolean breakCoobestone) {
 
         faces.entrySet().stream().filter(Map.Entry::getValue).forEach(entry -> {
 

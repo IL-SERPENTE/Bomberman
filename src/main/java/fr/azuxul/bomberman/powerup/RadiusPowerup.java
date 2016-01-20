@@ -4,7 +4,7 @@ import fr.azuxul.bomberman.Bomberman;
 import fr.azuxul.bomberman.GameManager;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import net.samagames.tools.powerups.Powerup;
-import org.apache.commons.lang.math.RandomUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -14,33 +14,28 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author Azuxul
  */
-public class BasicPowerup implements Powerup {
-
-    private final PowerupTypes type;
-    private final GameManager gameManager;
-
-    public BasicPowerup() {
-
-        this.type = PowerupTypes.values()[RandomUtils.nextInt(PowerupTypes.values().length)];
-        this.gameManager = Bomberman.getGameManager();
-    }
+public class RadiusPowerup implements Powerup {
 
     @Override
     public void onPickup(Player player) {
 
+        GameManager gameManager = Bomberman.getGameManager();
         PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
-        playerBomberman.setPowerup(type);
+        int radius = playerBomberman.getRadius() + 1;
+
+        playerBomberman.setRadius(radius);
+        gameManager.getScoreboardBomberman().display(player);
     }
 
     @Override
     public String getName() {
-        return "Booster";
+        return ChatColor.RED + "Puissance";
     }
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.WOOD);
+        return new ItemStack(Material.EMERALD_BLOCK);
     }
 
     @Override
@@ -52,5 +47,4 @@ public class BasicPowerup implements Powerup {
     public boolean isSpecial() {
         return false;
     }
-
 }

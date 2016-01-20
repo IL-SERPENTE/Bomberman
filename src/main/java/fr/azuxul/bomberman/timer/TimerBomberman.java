@@ -2,14 +2,16 @@ package fr.azuxul.bomberman.timer;
 
 import com.google.gson.JsonPrimitive;
 import fr.azuxul.bomberman.GameManager;
+import fr.azuxul.bomberman.player.PlayerBomberman;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Status;
 import org.bukkit.Server;
 
 /**
- * Class description
+ * Timer for Bomberman
  *
  * @author Azuxul
+ * @version 1.0
  */
 public class TimerBomberman implements Runnable {
 
@@ -17,6 +19,11 @@ public class TimerBomberman implements Runnable {
     private final Server server;
     private short seconds, minutes;
 
+    /**
+     * Class constructor
+     *
+     * @param gameManager game manager
+     */
     public TimerBomberman(GameManager gameManager) {
 
         this.gameManager = gameManager;
@@ -47,19 +54,39 @@ public class TimerBomberman implements Runnable {
 
         // Update scoreboard to all player and update player
         server.getOnlinePlayers().forEach(player -> {
-            /*gameManager.getScoreboard().sendScoreboardToPlayer(player, gameStatus);
 
             PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
             if (playerBomberman != null)
-                gameManager.getPlayer(player.getUniqueId()).update();*/
+                playerBomberman.update();
+
+            gameManager.getScoreboardBomberman().display(player);
         });
     }
 
+    /**
+     * Set timer to 0 minutes and 0 seconds
+     */
+    public void setToZero() {
+
+        minutes = 0;
+        seconds = 0;
+    }
+
+    /**
+     * Get seconds remaining before end
+     *
+     * @return seconds
+     */
     public short getSeconds() {
         return seconds;
     }
 
+    /**
+     * Get minutes remaining before end
+     *
+     * @return minutes
+     */
     public short getMinutes() {
         return minutes;
     }

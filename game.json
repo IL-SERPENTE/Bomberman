@@ -6,7 +6,7 @@
     "wating-lobby": "world, 0, 90, 0, 0, 0",
     "spawn-locations": [
       "world, -23, 70, -23, 0, 0",
-      "world, -25, 70, 25, 0, 0",
+      "world, -23, 70, 25, 0, 0",
       "world, 25, 70, -23, 0, 0",
       "world, 25, 70, 25, 0, 0"
     ],

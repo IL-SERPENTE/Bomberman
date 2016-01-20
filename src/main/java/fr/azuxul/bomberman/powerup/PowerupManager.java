@@ -27,11 +27,16 @@ public class PowerupManager {
 
     public void spawnBoosterPowerup(Location location) {
 
-        powerups.add(new BasicPowerup().spawn(location));
+        powerups.add(new BoosterPowerup().spawn(location));
     }
 
     public void spawnBombPowerup(Location location) {
 
         powerups.add(new BombPowerup().spawn(location));
+    }
+
+    public void spawnRadiusPowerup(Location location) {
+
+        powerups.add(new RadiusPowerup().spawn(location));
     }
 }
