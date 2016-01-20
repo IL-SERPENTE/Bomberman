@@ -16,9 +16,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Class description
@@ -87,6 +85,7 @@ public class Bomb extends EntityTNTPrimed {
 
         }
 
+        damagePlayersAtBlock(location.clone());
         world.createExplosion(location.add(0, 1, 0), 0);
 
         return blockBreak;
@@ -103,6 +102,24 @@ public class Bomb extends EntityTNTPrimed {
             entry.setValue(!explodeBlock(location.clone().add(x, -1, z), breakCoobestone));
         });
 
+    }
+
+    private void damagePlayersAtBlock(Location location) {
+
+        location.setY(0);
+
+        List<PlayerBomberman> playerBombermanList = new ArrayList<>(gameManager.getInGamePlayers().values());
+
+        for (PlayerBomberman playerBomberman : playerBombermanList) {
+
+            Player player = playerBomberman.getPlayerIfOnline();
+
+            Location playerLocation = player.getLocation().clone();
+            playerLocation.setY(0);
+
+            if (playerLocation.distance(location) <= 0.5)
+                player.damage(100.0D, owner.getPlayerIfOnline());
+        }
     }
 
     @Override

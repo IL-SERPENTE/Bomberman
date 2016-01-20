@@ -12,9 +12,11 @@ import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
@@ -48,7 +50,8 @@ public class PlayerEvent implements Listener {
             playerBomberman.setBombNumber(playerBomberman.getBombNumber() - 1);
 
             ((CraftWorld) block.getWorld()).getHandle().addEntity(bomb);
-        }
+        } else
+            event.setCancelled(true);
     }
 
     @EventHandler
@@ -72,5 +75,30 @@ public class PlayerEvent implements Listener {
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         event.setCancelled(true); // Cancel player drop item
+    }
+
+    @EventHandler
+    public void onPlayerBlockBreak(BlockBreakEvent event) {
+
+        event.setCancelled(true); // Cancel block break
+    }
+
+    @EventHandler
+    public void onPlayerDie(PlayerDeathEvent event) {
+
+        GameManager gameManager = Bomberman.getGameManager();
+        Player player = event.getEntity();
+        PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
+
+        Player killer = player.getKiller();
+
+        if (killer == null)
+            event.setDeathMessage(player.getName() + " viens d'exploser");
+        else if (killer.equals(player))
+            event.setDeathMessage(player.getName() + " viens de se faire exploser");
+        else
+            event.setDeathMessage(player.getName() + " viens de se faire exploser par " + killer.getName());
+
+        playerBomberman.setSpectator();
     }
 }
