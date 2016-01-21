@@ -20,7 +20,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * GameManager of Bomberman plugin
@@ -31,7 +30,6 @@ import java.util.logging.Logger;
 public class GameManager extends Game<PlayerBomberman> {
 
     private final Server server;
-    private final Logger logger;
     private final TimerBomberman timer;
     private final PowerupManager powerupManager;
     private final ScoreboardBomberman scoreboardBomberman;
@@ -43,7 +41,6 @@ public class GameManager extends Game<PlayerBomberman> {
         super("bomberman", "Bomberman", "", PlayerBomberman.class);
 
         this.server = plugin.getServer();
-        this.logger = plugin.getLogger();
         this.timer = new TimerBomberman(this);
         this.powerupManager = new PowerupManager();
         this.scoreboardBomberman = new ScoreboardBomberman(this);
@@ -78,10 +75,6 @@ public class GameManager extends Game<PlayerBomberman> {
 
     public Server getServer() {
         return server;
-    }
-
-    public Logger getLogger() {
-        return logger;
     }
 
     public TimerBomberman getTimer() {
@@ -137,7 +130,7 @@ public class GameManager extends Game<PlayerBomberman> {
 
     public void endGame() {
 
-        this.handleGameEnd();
+        timer.setToZero();
 
         List<PlayerBomberman> playerBombermanList = getPlayerBombermanList();
 
@@ -148,6 +141,6 @@ public class GameManager extends Game<PlayerBomberman> {
             getCoherenceMachine().getTemplateManager().getPlayerWinTemplate().execute(player);
         }
 
-        timer.setToZero();
+        this.handleGameEnd();
     }
 }
