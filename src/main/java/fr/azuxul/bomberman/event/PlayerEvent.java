@@ -34,24 +34,27 @@ public class PlayerEvent implements Listener {
         GameManager gameManager = Bomberman.getGameManager();
         Block block = event.getBlock();
 
+        event.setCancelled(true);
+
         if (block.getType().equals(Material.TNT) && gameManager.getStatus().equals(Status.IN_GAME)) {
 
-            if (!block.getLocation().add(0, -1, 0).getBlock().getType().equals(Material.STONE)) {
-                event.setCancelled(true);
+            Location location = block.getLocation();
+
+            if (!location.clone().add(0, -1, 0).getBlock().getType().equals(Material.STONE))
                 return;
-            }
 
             Player player = event.getPlayer();
             PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
-            block.setType(Material.AIR);
-            Location location = block.getLocation();
 
-            Bomb bomb = new Bomb(((CraftWorld) block.getWorld()).getHandle(), location.getX() + 0.5, location.getY() + 0.1, location.getZ() + 0.5, 60, playerBomberman.getRadius(), player);
-            playerBomberman.setBombNumber(playerBomberman.getBombNumber() - 1);
+            if (playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs()) {
 
-            ((CraftWorld) block.getWorld()).getHandle().addEntity(bomb);
-        } else
-            event.setCancelled(true);
+                block.setType(Material.TNT);
+
+                Bomb bomb = new Bomb(((CraftWorld) block.getWorld()).getHandle(), location.getX() + 0.5, location.getY() + 0.1, location.getZ() + 0.5, 60, playerBomberman.getRadius(), player);
+
+                ((CraftWorld) block.getWorld()).getHandle().addEntity(bomb);
+            }
+        }
     }
 
     @EventHandler
@@ -91,14 +94,19 @@ public class PlayerEvent implements Listener {
         PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
         Player killer = player.getKiller();
+        final String deathMessageBase = gameManager.getCoherenceMachine().getGameTag() + " " + player.getName();
 
         if (killer == null)
-            event.setDeathMessage(player.getName() + " viens d'exploser");
+            event.setDeathMessage(deathMessageBase + " viens d'exploser");
         else if (killer.equals(player))
-            event.setDeathMessage(player.getName() + " viens de se faire exploser");
+            event.setDeathMessage(deathMessageBase + " viens de se faire exploser");
         else
-            event.setDeathMessage(player.getName() + " viens de se faire exploser par " + killer.getName());
+            event.setDeathMessage(deathMessageBase + " viens de se faire exploser par " + killer.getName());
 
         playerBomberman.setSpectator();
+
+        if (gameManager.getConnectedPlayers() <= 1)
+            gameManager.endGame();
+
     }
 }

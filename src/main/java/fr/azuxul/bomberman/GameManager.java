@@ -12,8 +12,10 @@ import net.samagames.api.games.IGameProperties;
 import net.samagames.tools.LocationUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -98,7 +100,7 @@ public class GameManager extends Game<PlayerBomberman> {
         return playerSpawnList;
     }
 
-    private List<PlayerBomberman> getPlayerBombermanList() {
+    public List<PlayerBomberman> getPlayerBombermanList() {
 
         return new ArrayList<>(this.getInGamePlayers().values());
     }
@@ -116,11 +118,12 @@ public class GameManager extends Game<PlayerBomberman> {
             if (player != null) {
 
                 player.getInventory().clear();
+                player.getInventory().addItem(new ItemStack(Material.TNT));
                 player.setGameMode(GameMode.SURVIVAL);
                 player.teleport(getPlayerSpawnList().get(spawnIndex));
                 spawnIndex++;
 
-                playerBomberman.setBombNumber(3);
+                playerBomberman.setBombNumber(1);
                 playerBomberman.setRadius(2);
 
                 if (spawnIndex >= getPlayerSpawnList().size()) {
@@ -135,6 +138,15 @@ public class GameManager extends Game<PlayerBomberman> {
     public void endGame() {
 
         this.handleGameEnd();
+
+        List<PlayerBomberman> playerBombermanList = getPlayerBombermanList();
+
+        if (!playerBombermanList.isEmpty()) {
+
+            Player player = playerBombermanList.get(0).getPlayerIfOnline();
+
+            getCoherenceMachine().getTemplateManager().getPlayerWinTemplate().execute(player);
+        }
 
         timer.setToZero();
     }

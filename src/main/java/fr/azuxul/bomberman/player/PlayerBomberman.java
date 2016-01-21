@@ -3,9 +3,7 @@ package fr.azuxul.bomberman.player;
 import fr.azuxul.bomberman.powerup.PowerupTypes;
 import net.samagames.api.games.GamePlayer;
 import net.samagames.tools.scoreboards.ObjectiveSign;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -21,13 +19,22 @@ public class PlayerBomberman extends GamePlayer {
     private ObjectiveSign objectiveSign;
     private int bombNumber;
     private int radius;
+    private int placedBombs;
 
     public PlayerBomberman(Player player) {
         super(player);
         powerupTypes = null;
         objectiveSign = null;
-        bombNumber = 3;
+        bombNumber = 1;
         radius = 2;
+    }
+
+    public int getPlacedBombs() {
+        return placedBombs;
+    }
+
+    public void setPlacedBombs(int placedBombs) {
+        this.placedBombs = placedBombs;
     }
 
     public PowerupTypes getPowerupTypes() {
@@ -44,8 +51,6 @@ public class PlayerBomberman extends GamePlayer {
 
     public void setBombNumber(int bombNumber) {
         this.bombNumber = bombNumber;
-
-        getPlayerIfOnline().getInventory().setItem(0, new ItemStack(Material.TNT, bombNumber > 64 ? 64 : bombNumber));
     }
 
     public int getRadius() {

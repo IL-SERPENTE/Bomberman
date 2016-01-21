@@ -22,16 +22,16 @@ public class ScoreboardBomberman {
         this.gameManager = gameManager;
     }
 
-    private static ObjectiveSign generateObjectiveSign() {
+    private ObjectiveSign generateObjectiveSign() {
 
-        ObjectiveSign objectiveSign = new ObjectiveSign("BombermanSc", ChatColor.GOLD + "Bomberman");
+        ObjectiveSign objectiveSign = new ObjectiveSign("BombermanSc", ChatColor.AQUA + gameManager.getGameName());
 
         objectiveSign.setLine(0, "00:00");
         objectiveSign.setLine(1, ChatColor.GRAY + "Temps restant:");
         objectiveSign.setLine(2, " ");
         objectiveSign.setLine(3, "Aucun");
         objectiveSign.setLine(4, ChatColor.GRAY + "Booster actif:");
-        objectiveSign.setLine(5, ChatColor.GRAY + "Nombre de bombes:" + ChatColor.RESET + " 0");
+        objectiveSign.setLine(5, ChatColor.GRAY + "Nombre de bombes simultanés:" + ChatColor.RESET + " 0");
         objectiveSign.setLine(6, ChatColor.GRAY + "Puissance de l'explosion:" + ChatColor.RESET + " 0");
         objectiveSign.setLine(7, "  ");
         objectiveSign.setLine(8, ChatColor.GRAY + "Joueurs restants:" + ChatColor.RESET + " 0");
@@ -60,7 +60,7 @@ public class ScoreboardBomberman {
         PowerupTypes powerup = playerBomberman.getPowerupTypes();
 
         objectiveSign.setLine(3, powerup == null ? "Aucun" : powerup.getName());
-        objectiveSign.setLine(5, ChatColor.GRAY + "Nombre de bombes: " + ChatColor.RESET + playerBomberman.getBombNumber());
+        objectiveSign.setLine(5, ChatColor.GRAY + "Nombre de bombes simultanés: " + ChatColor.RESET + playerBomberman.getBombNumber());
         objectiveSign.setLine(6, ChatColor.GRAY + "Puissance de l'explosion: " + ChatColor.RESET + playerBomberman.getRadius());
 
         objectiveSign.setLine(8, ChatColor.GRAY + "Joueurs restants: " + ChatColor.RESET + gameManager.getConnectedPlayers());

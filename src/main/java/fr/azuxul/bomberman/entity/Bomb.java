@@ -41,6 +41,8 @@ public class Bomb extends EntityTNTPrimed {
         this.fuseTicks = fuseTicks;
         this.radius = radius;
         this.owner = gameManager.getPlayer(owner.getUniqueId());
+
+        this.owner.setPlacedBombs(this.owner.getPlacedBombs() + 1);
     }
 
     private boolean explodeBlock(Location location, boolean breakCobblestone) {
@@ -66,10 +68,7 @@ public class Bomb extends EntityTNTPrimed {
 
         if (placePowerup) {
 
-            if (owner.getBombNumber() <= 2)
-                gameManager.getPowerupManager().spawnBombPowerup(location.add(0, -2.3, 0));
 
-            else {
 
                 int random = RandomUtils.nextInt(1000);
 
@@ -81,7 +80,7 @@ public class Bomb extends EntityTNTPrimed {
 
                 else if (random <= 650)
                     gameManager.getPowerupManager().spawnBombPowerup(location.add(0, -2.3, 0));
-            }
+
 
         }
 
@@ -129,6 +128,7 @@ public class Bomb extends EntityTNTPrimed {
             if (this.fuseTicks-- <= 0) {
                 if (!this.world.isClientSide) {
                     this.explode();
+                    this.owner.setPlacedBombs(this.owner.getBombNumber() - 1);
                 }
 
                 this.die();
