@@ -4,7 +4,6 @@ import fr.azuxul.bomberman.Bomberman;
 import fr.azuxul.bomberman.GameManager;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import fr.azuxul.bomberman.powerup.PowerupTypes;
-import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.EntityTNTPrimed;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import net.minecraft.server.v1_8_R3.World;
@@ -19,20 +18,16 @@ import org.bukkit.entity.Player;
 import java.util.*;
 
 /**
- * Class description
+ * Bomb entity
  *
  * @author Azuxul
+ * @version 1.0
  */
 public class Bomb extends EntityTNTPrimed {
 
     private static GameManager gameManager;
     private int radius;
     private PlayerBomberman owner;
-
-    public Bomb(World world, double x, double y, double z, EntityLiving source) {
-        super(world, x, y, z, source);
-        gameManager = Bomberman.getGameManager();
-    }
 
     public Bomb(World world, double x, double y, double z, int fuseTicks, int radius, Player owner) {
         super(world, x, y, z, ((CraftPlayer) owner).getHandle());
@@ -43,6 +38,10 @@ public class Bomb extends EntityTNTPrimed {
         this.owner = gameManager.getPlayer(owner.getUniqueId());
 
         this.owner.setPlacedBombs(this.owner.getPlacedBombs() + 1);
+    }
+
+    public void setFuseTicks(int ticks) {
+        this.fuseTicks = ticks;
     }
 
     private boolean explodeBlock(Location location, boolean breakCobblestone) {
@@ -68,29 +67,39 @@ public class Bomb extends EntityTNTPrimed {
 
         if (placePowerup) {
 
+            int random = RandomUtils.nextInt(1000);
 
+            if (random <= 220)
+                gameManager.getPowerupManager().spawnBoosterPowerup(location.add(0, -2.3, 0));
 
-                int random = RandomUtils.nextInt(1000);
+            else if (random <= 500)
+                gameManager.getPowerupManager().spawnRadiusPowerup(location.add(0, -2.3, 0));
 
-                if (random <= 220)
-                    gameManager.getPowerupManager().spawnBoosterPowerup(location.add(0, -2.3, 0));
-
-                else if (random <= 500)
-                    gameManager.getPowerupManager().spawnRadiusPowerup(location.add(0, -2.3, 0));
-
-                else if (random <= 650)
-                    gameManager.getPowerupManager().spawnBombPowerup(location.add(0, -2.3, 0));
-
+            else if (random <= 650)
+                gameManager.getPowerupManager().spawnBombPowerup(location.add(0, -2.3, 0));
 
         }
 
-        damagePlayersAtBlock(location.clone());
+        Location locationY = location.clone();
+
+        locationY.setY(0);
+
+        damagePlayersAtBlock(locationY);
+        explodeBombs(locationY);
         world.createExplosion(location.add(0, 1, 0), 0);
 
         return blockBreak;
     }
 
-    private void explodeBlocks(Map<BlockFace, Boolean> faces, Location location, int radius, boolean breakCoobestone) {
+    /**
+     * Explode blocks
+     *
+     * @param faces            map with boolean and face
+     * @param location         center of explosion
+     * @param radius           radus of explosion
+     * @param breakCobblestone if true break cobblestone
+     */
+    private void explodeBlocks(Map<BlockFace, Boolean> faces, Location location, int radius, boolean breakCobblestone) {
 
         faces.entrySet().stream().filter(Map.Entry::getValue).forEach(entry -> {
 
@@ -98,14 +107,12 @@ public class Bomb extends EntityTNTPrimed {
             double x = (double) radius * blockFace.getModX();
             double z = (double) radius * blockFace.getModZ();
 
-            entry.setValue(!explodeBlock(location.clone().add(x, -1, z), breakCoobestone));
+            entry.setValue(!explodeBlock(location.clone().add(x, -1, z), breakCobblestone));
         });
 
     }
 
     private void damagePlayersAtBlock(Location location) {
-
-        location.setY(0);
 
         List<PlayerBomberman> playerBombermanList = new ArrayList<>(gameManager.getInGamePlayers().values());
 
@@ -121,6 +128,21 @@ public class Bomb extends EntityTNTPrimed {
         }
     }
 
+    private void explodeBombs(Location location) {
+
+        List<Bomb> bombList = gameManager.getBombManager().getBombs();
+
+        for (Bomb bomb : bombList) {
+
+            Location playerLocation = new Location(bomb.getWorld().getWorld(), bomb.locX, bomb.locY, bomb.locZ);
+            playerLocation.setY(0);
+
+            if (playerLocation.distance(location) <= 0.5)
+                bomb.setFuseTicks(0);
+        }
+
+    }
+
     @Override
     public void t_() {
         if (this.world.spigotConfig.currentPrimedTnt++ <= this.world.spigotConfig.maxTntTicksPerTick) {
@@ -128,7 +150,6 @@ public class Bomb extends EntityTNTPrimed {
             if (this.fuseTicks-- <= 0) {
                 if (!this.world.isClientSide) {
                     this.explode();
-                    this.owner.setPlacedBombs(this.owner.getBombNumber() - 1);
                 }
 
                 this.die();
@@ -141,6 +162,8 @@ public class Bomb extends EntityTNTPrimed {
     }
 
     private void explode() {
+
+        this.owner.setPlacedBombs(this.owner.getPlacedBombs() - 1);
 
         Location location = new Location(getWorld().getWorld(), locX, locY, locZ);
         EnumMap<BlockFace, Boolean> faces = new EnumMap<>(BlockFace.class);

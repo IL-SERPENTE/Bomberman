@@ -2,13 +2,11 @@ package fr.azuxul.bomberman.event;
 
 import fr.azuxul.bomberman.Bomberman;
 import fr.azuxul.bomberman.GameManager;
-import fr.azuxul.bomberman.entity.Bomb;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import net.samagames.api.games.Status;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -50,9 +48,7 @@ public class PlayerEvent implements Listener {
 
                 block.setType(Material.TNT);
 
-                Bomb bomb = new Bomb(((CraftWorld) block.getWorld()).getHandle(), location.getX() + 0.5, location.getY() + 0.1, location.getZ() + 0.5, 60, playerBomberman.getRadius(), player);
-
-                ((CraftWorld) block.getWorld()).getHandle().addEntity(bomb);
+                gameManager.getBombManager().spawnBomb(location, playerBomberman);
             }
         }
     }
