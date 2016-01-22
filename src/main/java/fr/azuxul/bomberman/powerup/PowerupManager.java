@@ -1,7 +1,9 @@
 package fr.azuxul.bomberman.powerup;
 
-import net.samagames.tools.powerups.ActivePowerup;
+import fr.azuxul.bomberman.entity.Powerup;
+import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,30 +15,25 @@ import java.util.List;
  */
 public class PowerupManager {
 
-    private final List<ActivePowerup> powerups;
+    private final List<Powerup> powerups;
 
     public PowerupManager() {
 
         this.powerups = new ArrayList<>();
     }
 
-    public List<ActivePowerup> getPowerups() {
+    public List<Powerup> getPowerups() {
 
         return powerups;
     }
 
-    public void spawnBoosterPowerup(Location location) {
+    public void spawnPowerup(net.samagames.tools.powerups.Powerup powerupType, Location location) {
 
-        powerups.add(new BoosterPowerup().spawn(location));
-    }
+        World world = ((CraftWorld) location.getWorld()).getHandle();
+        Powerup powerup = new Powerup(world, location.getX(), location.getY(), location.getZ(), powerupType);
 
-    public void spawnBombPowerup(Location location) {
+        powerups.add(powerup);
 
-        powerups.add(new BombPowerup().spawn(location));
-    }
-
-    public void spawnRadiusPowerup(Location location) {
-
-        powerups.add(new RadiusPowerup().spawn(location));
+        powerup.spawn();
     }
 }

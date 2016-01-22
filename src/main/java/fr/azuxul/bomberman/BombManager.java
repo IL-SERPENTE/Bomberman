@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class BombManager {
 
-    private List<Bomb> bombs;
+    private final List<Bomb> bombs;
 
     public BombManager() {
 

@@ -1,7 +1,9 @@
 package fr.azuxul.bomberman;
 
 import fr.azuxul.bomberman.entity.Bomb;
+import fr.azuxul.bomberman.entity.Powerup;
 import fr.azuxul.bomberman.event.PlayerEvent;
+import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.EntityTypes;
 import net.samagames.api.SamaGamesAPI;
 import org.bukkit.Difficulty;
@@ -45,6 +47,7 @@ public class Bomberman extends JavaPlugin {
 
         // Register entity
         registerEntity("Bomb", 69, Bomb.class);
+        registerEntity("Powerup", 70, Powerup.class);
 
         // Kick players
         getServer().getOnlinePlayers().forEach(player -> player.kickPlayer(""));
@@ -66,7 +69,7 @@ public class Bomberman extends JavaPlugin {
     @Override
     public void onDisable() {
 
-        gameManager.getPowerupManager().getPowerups().forEach(activePowerup -> activePowerup.remove(false));
+        gameManager.getPowerupManager().getPowerups().forEach(Entity::die);
     }
 
     /**

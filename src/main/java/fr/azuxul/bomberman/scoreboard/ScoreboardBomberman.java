@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
  */
 public class ScoreboardBomberman {
 
-    GameManager gameManager;
+    private final GameManager gameManager;
 
     public ScoreboardBomberman(GameManager gameManager) {
 

@@ -99,7 +99,7 @@ public class GameManager extends Game<PlayerBomberman> {
         return playerSpawnList;
     }
 
-    public List<PlayerBomberman> getPlayerBombermanList() {
+    private List<PlayerBomberman> getPlayerBombermanList() {
 
         return new ArrayList<>(this.getInGamePlayers().values());
     }

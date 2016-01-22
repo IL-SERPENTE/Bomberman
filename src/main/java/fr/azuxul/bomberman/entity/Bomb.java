@@ -3,7 +3,10 @@ package fr.azuxul.bomberman.entity;
 import fr.azuxul.bomberman.Bomberman;
 import fr.azuxul.bomberman.GameManager;
 import fr.azuxul.bomberman.player.PlayerBomberman;
+import fr.azuxul.bomberman.powerup.BombPowerup;
+import fr.azuxul.bomberman.powerup.BoosterPowerup;
 import fr.azuxul.bomberman.powerup.PowerupTypes;
+import fr.azuxul.bomberman.powerup.RadiusPowerup;
 import net.minecraft.server.v1_8_R3.EntityTNTPrimed;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import net.minecraft.server.v1_8_R3.World;
@@ -26,8 +29,8 @@ import java.util.*;
 public class Bomb extends EntityTNTPrimed {
 
     private static GameManager gameManager;
-    private int radius;
-    private PlayerBomberman owner;
+    private final int radius;
+    private final PlayerBomberman owner;
 
     public Bomb(World world, double x, double y, double z, int fuseTicks, int radius, Player owner) {
         super(world, x, y, z, ((CraftPlayer) owner).getHandle());
@@ -40,7 +43,7 @@ public class Bomb extends EntityTNTPrimed {
         this.owner.setPlacedBombs(this.owner.getPlacedBombs() + 1);
     }
 
-    public void setFuseTicks(int ticks) {
+    private void setFuseTicks(int ticks) {
         this.fuseTicks = ticks;
     }
 
@@ -68,15 +71,16 @@ public class Bomb extends EntityTNTPrimed {
         if (placePowerup) {
 
             int random = RandomUtils.nextInt(1000);
+            Location locationPowerup = location.add(0, -1.3, 0);
 
             if (random <= 220)
-                gameManager.getPowerupManager().spawnBoosterPowerup(location.add(0, -2.3, 0));
+                gameManager.getPowerupManager().spawnPowerup(new BoosterPowerup(), locationPowerup);
 
             else if (random <= 500)
-                gameManager.getPowerupManager().spawnRadiusPowerup(location.add(0, -2.3, 0));
+                gameManager.getPowerupManager().spawnPowerup(new RadiusPowerup(), locationPowerup);
 
             else if (random <= 650)
-                gameManager.getPowerupManager().spawnBombPowerup(location.add(0, -2.3, 0));
+                gameManager.getPowerupManager().spawnPowerup(new BombPowerup(), locationPowerup);
 
         }
 
