@@ -23,6 +23,7 @@ public class Powerup extends EntityArmorStand {
     private final net.samagames.tools.powerups.Powerup powerupType;
     private final EntityItem item;
     private final EntityArmorStand armorStand;
+    private int dispawnTicks;
 
     public Powerup(World world, double x, double y, double z, net.samagames.tools.powerups.Powerup powerupType) {
 
@@ -65,7 +66,7 @@ public class Powerup extends EntityArmorStand {
 
         item.b(nbtTagCompoundItem); // Init nbtTagCompound
 
-        nbtTagCompoundItem.setBoolean("Invulnerable", true); // Set Invulnerable
+        nbtTagCompoundItem.setBoolean(NBTTags.INVULNERABLE.getName(), true); // Set Invulnerable
         nbtTagCompoundItem.setBoolean(NBTTags.NO_GRAVITY.getName(), true); // Set NoGravity
         nbtTagCompoundItem.setInt(NBTTags.AGE.getName(), -32768); // Set Age
         nbtTagCompoundItem.setInt(NBTTags.PICKUP_DELAY.getName(), 32767); // Set CustomName
@@ -106,6 +107,14 @@ public class Powerup extends EntityArmorStand {
         return entityArmorStand;
     }
 
+    @Override
+    public void t_() {
+        super.t_();
+
+        if (++dispawnTicks >= 600)
+            this.die();
+    }
+
     /**
      * Detect collides with entity human
      *
@@ -118,16 +127,19 @@ public class Powerup extends EntityArmorStand {
         Location playerLocation = player.getLocation();
         GameManager gameManager = Bomberman.getGameManager();
         Status status = gameManager.getStatus();
-        double distanceAtCoin = this.getBukkitEntity().getLocation().distance(playerLocation); // Calculate distance
+        double distanceSquaredAtCoin = this.getBukkitEntity().getLocation().distanceSquared(playerLocation); // Calculate distance
 
         // If IN_GAME, player game mode is not to spectator, coin is alive and distance at coins is <= 1.5
-        if (status.equals(Status.IN_GAME) && !player.getGameMode().equals(GameMode.SPECTATOR) && this.isAlive() && distanceAtCoin <= 1.2) {
-
+        if (status.equals(Status.IN_GAME) && isValidPlayer(player) && this.isAlive() && distanceSquaredAtCoin <= 1.44) {
             powerupType.onPickup(player);
-            item.die();
             die();
         }
 
+    }
+
+    private boolean isValidPlayer(Player player) {
+
+        return !player.isSneaking() && !player.getGameMode().equals(GameMode.SPECTATOR);
     }
 
     /**

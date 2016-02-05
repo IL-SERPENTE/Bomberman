@@ -1,7 +1,7 @@
 package fr.azuxul.bomberman.event;
 
-import fr.azuxul.bomberman.Bomberman;
 import fr.azuxul.bomberman.GameManager;
+import fr.azuxul.bomberman.map.CaseMap;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import net.samagames.api.games.Status;
 import org.bukkit.Location;
@@ -13,9 +13,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
 /**
@@ -26,10 +28,40 @@ import org.bukkit.event.weather.WeatherChangeEvent;
  */
 public class PlayerEvent implements Listener {
 
+    GameManager gameManager;
+
+    public PlayerEvent(GameManager gameManager) {
+
+        this.gameManager = gameManager;
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        if (gameManager.getStatus().equals(Status.IN_GAME)) {
+
+            Player player = event.getPlayer();
+            PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
+
+            if (gameManager.getInGamePlayers().values().contains(playerBomberman) && !event.getFrom().getBlock().equals(event.getTo().getBlock())) {
+
+                CaseMap caseMap = playerBomberman.getCaseMap();
+
+                if (caseMap != null)
+                    caseMap.getPlayers().remove(playerBomberman);
+
+                caseMap = gameManager.getMapManager().getCaseAtWorldLocation(event.getTo());
+
+                if (caseMap != null) {
+                    playerBomberman.setCaseMap(caseMap);
+                    caseMap.getPlayers().add(playerBomberman);
+                }
+            }
+        }
+    }
+
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
 
-        GameManager gameManager = Bomberman.getGameManager();
         Block block = event.getBlock();
 
         event.setCancelled(true);
@@ -85,24 +117,33 @@ public class PlayerEvent implements Listener {
     @EventHandler
     public void onPlayerDie(PlayerDeathEvent event) {
 
-        GameManager gameManager = Bomberman.getGameManager();
-        Player player = event.getEntity();
-        PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
+        if (gameManager.getStatus().equals(Status.IN_GAME)) {
 
-        Player killer = player.getKiller();
-        final String deathMessageBase = gameManager.getCoherenceMachine().getGameTag() + " " + player.getName();
+            Player player = event.getEntity();
+            PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
-        if (killer == null)
-            event.setDeathMessage(deathMessageBase + " viens d'exploser");
-        else if (killer.equals(player))
-            event.setDeathMessage(deathMessageBase + " viens de se faire exploser");
-        else
-            event.setDeathMessage(deathMessageBase + " viens de se faire exploser par " + killer.getName());
+            Player killer = player.getKiller();
+            final String deathMessageBase = gameManager.getCoherenceMachine().getGameTag() + " " + player.getName();
 
-        playerBomberman.setSpectator();
+            if (killer == null)
+                event.setDeathMessage(deathMessageBase + " viens d'exploser");
+            else if (killer.equals(player))
+                event.setDeathMessage(deathMessageBase + " viens de se faire exploser");
+            else
+                event.setDeathMessage(deathMessageBase + " viens de se faire exploser par " + killer.getName());
 
-        if (gameManager.getConnectedPlayers() <= 1)
-            gameManager.endGame();
+            playerBomberman.setSpectator();
 
+            if (gameManager.getConnectedPlayers() <= 1)
+                gameManager.endGame();
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDamage(EntityDamageByEntityEvent event) {
+
+        if (Double.compare(event.getDamage(), 777.77) == 0) {
+            event.setCancelled(true);
+        }
     }
 }

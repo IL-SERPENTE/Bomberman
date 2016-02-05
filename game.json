@@ -10,6 +10,8 @@
       "world, 25, 70, -23, 0, 0",
       "world, 25, 70, 25, 0, 0"
     ],
+    "higher-loc": "world, 27, 71, 27, 0, 0",
+    "smaller-loc": "world, -25, 71, -25, 0, 0",
     "timer": 8
   }
 }

@@ -40,7 +40,7 @@ public class Bomberman extends JavaPlugin {
         samaGamesAPI.getGameManager().getGameProperties(); // Get properties
 
         // Register events
-        getServer().getPluginManager().registerEvents(new PlayerEvent(), this);
+        getServer().getPluginManager().registerEvents(new PlayerEvent(gameManager), this);
 
         // Register timer
         getServer().getScheduler().scheduleSyncRepeatingTask(this, gameManager.getTimer(), 0L, 20L);
@@ -55,6 +55,7 @@ public class Bomberman extends JavaPlugin {
         Location spawn = gameManager.getSpawn();
         org.bukkit.World world = spawn.getWorld();
 
+        world.setPVP(true); // Enable pvp for damage player
         world.setSpawnLocation(spawn.getBlockX(), spawn.getBlockY() + 3, spawn.getBlockZ()); // Set spawn location
         world.setDifficulty(Difficulty.NORMAL); // Set difficulty
         world.setGameRuleValue("doMobSpawning", "false"); // Set doMobSpawning game rule

@@ -2,6 +2,7 @@ package fr.azuxul.bomberman;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonPrimitive;
+import fr.azuxul.bomberman.map.MapManager;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import fr.azuxul.bomberman.powerup.PowerupManager;
 import fr.azuxul.bomberman.scoreboard.ScoreboardBomberman;
@@ -35,6 +36,7 @@ public class GameManager extends Game<PlayerBomberman> {
     private final ScoreboardBomberman scoreboardBomberman;
     private final BombManager bombManager;
     private final List<Location> playerSpawnList;
+    private final MapManager mapManager;
     private Location spawn;
 
     public GameManager(JavaPlugin plugin) {
@@ -48,6 +50,12 @@ public class GameManager extends Game<PlayerBomberman> {
         this.scoreboardBomberman = new ScoreboardBomberman(this);
         this.playerSpawnList = new ArrayList<>();
 
+        IGameProperties gameProperties = SamaGamesAPI.get().getGameManager().getGameProperties();
+        Location pos = LocationUtils.str2loc(gameProperties.getOption("higher-loc", new JsonPrimitive("world, 27, 71, 27, 0, 0")).getAsString());
+        Location neg = LocationUtils.str2loc(gameProperties.getOption("smaller-loc", new JsonPrimitive("world, -25, 71, -25, 0, 0")).getAsString());
+
+        this.mapManager = new MapManager(this, neg, pos);
+
         initLocations();
     }
 
@@ -58,7 +66,7 @@ public class GameManager extends Game<PlayerBomberman> {
 
         IGameProperties gameProperties = SamaGamesAPI.get().getGameManager().getGameProperties();
 
-        // Generate default json array  of spawnLocations
+        // Generate default json array of spawnLocations
         JsonArray defaultObject = new JsonArray();
         defaultObject.add(new JsonPrimitive("world, -23, 70, -23, 0, 0"));
         defaultObject.add(new JsonPrimitive("world, -23, 70, 25, 0, 0"));
@@ -102,6 +110,10 @@ public class GameManager extends Game<PlayerBomberman> {
     private List<PlayerBomberman> getPlayerBombermanList() {
 
         return new ArrayList<>(this.getInGamePlayers().values());
+    }
+
+    public MapManager getMapManager() {
+        return mapManager;
     }
 
     @Override

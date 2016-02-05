@@ -1,5 +1,7 @@
 package fr.azuxul.bomberman.player;
 
+import fr.azuxul.bomberman.Bomberman;
+import fr.azuxul.bomberman.map.CaseMap;
 import fr.azuxul.bomberman.powerup.PowerupTypes;
 import net.samagames.api.games.GamePlayer;
 import net.samagames.tools.scoreboards.ObjectiveSign;
@@ -17,6 +19,7 @@ public class PlayerBomberman extends GamePlayer {
 
     private PowerupTypes powerupTypes;
     private ObjectiveSign objectiveSign;
+    private CaseMap caseMap;
     private int bombNumber;
     private int radius;
     private int placedBombs;
@@ -27,6 +30,7 @@ public class PlayerBomberman extends GamePlayer {
         objectiveSign = null;
         bombNumber = 1;
         radius = 2;
+        caseMap = Bomberman.getGameManager().getMapManager().getCaseAtWorldLocation(player.getLocation());
     }
 
     public int getPlacedBombs() {
@@ -67,6 +71,14 @@ public class PlayerBomberman extends GamePlayer {
 
     public void setObjectiveSign(ObjectiveSign objectiveSign) {
         this.objectiveSign = objectiveSign;
+    }
+
+    public CaseMap getCaseMap() {
+        return caseMap;
+    }
+
+    public void setCaseMap(CaseMap caseMap) {
+        this.caseMap = caseMap;
     }
 
     /**
