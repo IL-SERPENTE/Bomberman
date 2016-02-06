@@ -46,7 +46,7 @@ public class Bomb extends EntityTNTPrimed {
     public void t_() {
         if (this.world.spigotConfig.currentPrimedTnt++ <= this.world.spigotConfig.maxTntTicksPerTick) {
 
-            if (this.fuseTicks-- <= 0) {
+            if (this.fuseTicks-- <= 0 && isAlive()) {
                 if (!this.world.isClientSide) {
                     this.explode();
                 }
@@ -58,11 +58,12 @@ public class Bomb extends EntityTNTPrimed {
         }
     }
 
-    private void explode() {
+    public void explode() {
 
         CaseMap caseMap = gameManager.getMapManager().getCaseAtWorldLocation(new Location(getWorld().getWorld(), locX, locY, locZ));
 
         this.owner.setPlacedBombs(this.owner.getPlacedBombs() - 1);
+        die();
 
         if (owner.getPowerupTypes() == null)
             caseMap.explode(false, owner);
@@ -70,11 +71,11 @@ public class Bomb extends EntityTNTPrimed {
             caseMap.explode(true, owner);
         else if (owner.getPowerupTypes().equals(PowerupTypes.SUPER_BOMB)) {
 
+            caseMap.explode(false, owner);
             //TODO: Add super bomb
 
         } else
             caseMap.explode(false, owner);
-
     }
 
     @Override

@@ -1,6 +1,7 @@
 package fr.azuxul.bomberman.map;
 
 import fr.azuxul.bomberman.GameManager;
+import fr.azuxul.bomberman.entity.Bomb;
 import fr.azuxul.bomberman.entity.Powerup;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import fr.azuxul.bomberman.powerup.BombPowerup;
@@ -30,6 +31,7 @@ public class CaseMap {
     GameManager gameManager;
     Location worldLocation;
     Powerup powerup;
+    Bomb bomb;
     Material block;
     List<PlayerBomberman> players;
     int xMap;
@@ -61,6 +63,7 @@ public class CaseMap {
         faces.put(BlockFace.WEST, true);
 
         explodeCase(cobblestone, source, 0);
+        killEntitys(source);
 
         for (int i = 1; i <= radius; i++) {
             final int finalI = i;
@@ -83,12 +86,9 @@ public class CaseMap {
 
         boolean explode = false;
 
-        if (block.equals(Material.AIR)) {
-            if (powerup != null)
-                powerup.die();
-
-            killPlayers(source);
-        } else {
+        if (block.equals(Material.AIR))
+            killEntitys(source);
+        else {
             if (block.equals(Material.DIRT) || (cobblestone && block.equals(Material.COBBLESTONE))) {
                 block = Material.AIR;
                 spawnPowerup(worldLocation);
@@ -106,10 +106,22 @@ public class CaseMap {
         return explode;
     }
 
-    private void killPlayers(PlayerBomberman source) {
+    private void killEntitys(PlayerBomberman source) {
+
+        if (powerup != null && powerup.isAlive()) {
+            powerup.die();
+            powerup = null;
+        }
+
+        if (bomb != null && bomb.isAlive()) {
+            bomb.explode();
+            bomb = null;
+        }
+
         if (!players.isEmpty())
             for (PlayerBomberman player : players) {
                 player.getPlayerIfOnline().damage(777.77D, source.getPlayerIfOnline());
+                players.remove(player);
             }
     }
 
@@ -160,6 +172,10 @@ public class CaseMap {
 
         if (powerupToSpawn != null)
             powerup = gameManager.getPowerupManager().spawnPowerup(powerupToSpawn, locationPowerup);
+    }
+
+    public void setBomb(Bomb bomb) {
+        this.bomb = bomb;
     }
 
     public Location getWorldLocation() {

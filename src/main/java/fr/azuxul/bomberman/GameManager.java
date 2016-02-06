@@ -35,7 +35,6 @@ public class GameManager extends Game<PlayerBomberman> {
     private final TimerBomberman timer;
     private final PowerupManager powerupManager;
     private final ScoreboardBomberman scoreboardBomberman;
-    private final BombManager bombManager;
     private final List<Location> playerSpawnList;
     private final MapManager mapManager;
     private final Plugin plugin;
@@ -49,7 +48,6 @@ public class GameManager extends Game<PlayerBomberman> {
         this.server = plugin.getServer();
         this.timer = new TimerBomberman(this);
         this.powerupManager = new PowerupManager();
-        this.bombManager = new BombManager(this);
         this.scoreboardBomberman = new ScoreboardBomberman(this);
         this.playerSpawnList = new ArrayList<>();
 
@@ -84,10 +82,6 @@ public class GameManager extends Game<PlayerBomberman> {
 
     public Plugin getPlugin() {
         return plugin;
-    }
-
-    public BombManager getBombManager() {
-        return bombManager;
     }
 
     public ScoreboardBomberman getScoreboardBomberman() {

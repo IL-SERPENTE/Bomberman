@@ -69,7 +69,9 @@ public class PlayerEvent implements Listener {
 
         if (block.getType().equals(Material.TNT) && gameManager.getStatus().equals(Status.IN_GAME)) {
 
-            if (!event.getBlockAgainst().getType().equals(Material.STONE))
+            Location location = block.getLocation();
+
+            if (!location.clone().add(0, -1, 0).getBlock().getType().equals(Material.STONE))
                 return;
 
             Player player = event.getPlayer();
@@ -77,12 +79,10 @@ public class PlayerEvent implements Listener {
 
             if (playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs()) {
 
-                Location location = block.getLocation();
-
                 event.setCancelled(false);
                 player.getInventory().setItem(0, new ItemStack(Material.TNT));
 
-                gameManager.getBombManager().spawnBomb(location, playerBomberman);
+                gameManager.getMapManager().spawnBomb(location, playerBomberman);
             }
         }
     }
