@@ -13,6 +13,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -59,7 +60,7 @@ public class CaseMap {
         faces.put(BlockFace.SOUTH, true);
         faces.put(BlockFace.WEST, true);
 
-        explodeCase(cobblestone, source);
+        explodeCase(cobblestone, source, 0);
 
         for (int i = 1; i <= radius; i++) {
             final int finalI = i;
@@ -72,13 +73,13 @@ public class CaseMap {
 
                     CaseMap caseMap = map[x][y];
 
-                    entry.setValue(!caseMap.explodeCase(cobblestone, source));
+                    entry.setValue(!caseMap.explodeCase(cobblestone, source, finalI));
                 }
             });
         }
     }
 
-    public boolean explodeCase(boolean cobblestone, PlayerBomberman source) {
+    public boolean explodeCase(boolean cobblestone, PlayerBomberman source, int indexRadius) {
 
         boolean explode = false;
 
@@ -98,7 +99,7 @@ public class CaseMap {
         }
 
         if (block.equals(Material.AIR))
-            displayExplosion();
+            displayExplosion(indexRadius);
 
         updateInWorld();
 
@@ -119,9 +120,22 @@ public class CaseMap {
         }
     }
 
-    private void displayExplosion() {
+    @SuppressWarnings("deprecation")
+    private void displayExplosion(int radius) {
 
         World world = ((CraftWorld) worldLocation.getWorld()).getHandle();
+
+        if (radius <= 3 || RandomUtils.nextInt(1000) >= (radius - 3) * 50) {
+
+            Location location = worldLocation.clone().add(0, -1, 0);
+
+            for (Player player : gameManager.getServer().getOnlinePlayers()) {
+
+                player.sendBlockChange(location, Material.STAINED_CLAY, (byte) 14);
+
+                gameManager.getServer().getScheduler().runTaskLaterAsynchronously(gameManager.getPlugin(), () -> player.sendBlockChange(location, Material.STONE, (byte) 0), RandomUtils.nextInt(30) + 30L);
+            }
+        }
 
         //worldLocation.getWorld().createExplosion(worldLocation, 0.5f);
         //ParticleEffect.EXPLOSION_LARGE.display(0.1f, 0.1f, 0.1f, 0, 1, worldLocation.clone().add(0, 1, 0), 30);

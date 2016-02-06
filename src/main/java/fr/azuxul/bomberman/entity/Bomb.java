@@ -34,8 +34,6 @@ public class Bomb extends EntityTNTPrimed {
         this.fuseTicks = fuseTicks;
         this.radius = radius;
         this.owner = gameManager.getPlayer(owner.getUniqueId());
-
-        this.owner.setPlacedBombs(this.owner.getPlacedBombs() + 1);
     }
 
     @Override

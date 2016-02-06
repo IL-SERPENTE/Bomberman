@@ -38,6 +38,8 @@ public class BombManager {
 
         Block block = location.getBlock();
 
+        player.setPlacedBombs(player.getPlacedBombs() + 1);
+
         block.setType(Material.CARPET);
         block.setData((byte) 8);
 
