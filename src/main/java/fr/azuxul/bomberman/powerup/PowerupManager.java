@@ -27,7 +27,7 @@ public class PowerupManager {
         return powerups;
     }
 
-    public void spawnPowerup(net.samagames.tools.powerups.Powerup powerupType, Location location) {
+    public Powerup spawnPowerup(net.samagames.tools.powerups.Powerup powerupType, Location location) {
 
         World world = ((CraftWorld) location.getWorld()).getHandle();
         Powerup powerup = new Powerup(world, location.getX(), location.getY(), location.getZ(), powerupType);
@@ -35,5 +35,7 @@ public class PowerupManager {
         powerups.add(powerup);
 
         powerup.spawn();
+
+        return powerup;
     }
 }

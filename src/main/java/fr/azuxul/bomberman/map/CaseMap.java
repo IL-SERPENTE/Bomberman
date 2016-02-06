@@ -82,21 +82,20 @@ public class CaseMap {
 
         boolean explode = false;
 
-        if (block.equals(Material.DIRT) || (cobblestone && block.equals(Material.COBBLESTONE))) {
-            block = Material.AIR;
-            spawnPowerup(worldLocation);
+        if (block.equals(Material.AIR)) {
+            if (powerup != null)
+                powerup.die();
 
-            explode = true;
-        } else if (block.equals(Material.COBBLESTONE) || block.equals(Material.STONE))
-            explode = true;
+            killPlayers(source);
+        } else {
+            if (block.equals(Material.DIRT) || (cobblestone && block.equals(Material.COBBLESTONE))) {
+                block = Material.AIR;
+                spawnPowerup(worldLocation);
 
-        if (powerup != null)
-            powerup.die();
-
-        if (!players.isEmpty())
-            for (PlayerBomberman player : players) {
-                player.getPlayerIfOnline().damage(777.77D, source.getPlayerIfOnline());
-            }
+                explode = true;
+            } else if (block.equals(Material.COBBLESTONE) || block.equals(Material.STONE))
+                explode = true;
+        }
 
         if (block.equals(Material.AIR))
             displayExplosion();
@@ -104,6 +103,13 @@ public class CaseMap {
         updateInWorld();
 
         return explode;
+    }
+
+    private void killPlayers(PlayerBomberman source) {
+        if (!players.isEmpty())
+            for (PlayerBomberman player : players) {
+                player.getPlayerIfOnline().damage(777.77D, source.getPlayerIfOnline());
+            }
     }
 
     public void updateInWorld() {
@@ -139,7 +145,7 @@ public class CaseMap {
             powerupToSpawn = new BombPowerup();
 
         if (powerupToSpawn != null)
-            gameManager.getPowerupManager().spawnPowerup(powerupToSpawn, locationPowerup);
+            powerup = gameManager.getPowerupManager().spawnPowerup(powerupToSpawn, locationPowerup);
     }
 
     public Location getWorldLocation() {
