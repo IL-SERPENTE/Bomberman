@@ -19,6 +19,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * PlayerEvents
@@ -68,9 +69,7 @@ public class PlayerEvent implements Listener {
 
         if (block.getType().equals(Material.TNT) && gameManager.getStatus().equals(Status.IN_GAME)) {
 
-            Location location = block.getLocation();
-
-            if (!location.clone().add(0, -1, 0).getBlock().getType().equals(Material.STONE))
+            if (!event.getBlockAgainst().getType().equals(Material.STONE))
                 return;
 
             Player player = event.getPlayer();
@@ -78,7 +77,10 @@ public class PlayerEvent implements Listener {
 
             if (playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs()) {
 
-                block.setType(Material.TNT);
+                Location location = block.getLocation();
+
+                event.setCancelled(false);
+                player.getInventory().setItem(0, new ItemStack(Material.TNT));
 
                 gameManager.getBombManager().spawnBomb(location, playerBomberman);
             }

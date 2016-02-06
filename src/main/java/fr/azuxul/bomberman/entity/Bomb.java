@@ -5,6 +5,7 @@ import fr.azuxul.bomberman.GameManager;
 import fr.azuxul.bomberman.map.CaseMap;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import fr.azuxul.bomberman.powerup.PowerupTypes;
+import net.minecraft.server.v1_8_R3.DamageSource;
 import net.minecraft.server.v1_8_R3.EntityTNTPrimed;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import net.minecraft.server.v1_8_R3.World;
@@ -35,6 +36,12 @@ public class Bomb extends EntityTNTPrimed {
         this.owner = gameManager.getPlayer(owner.getUniqueId());
 
         this.owner.setPlacedBombs(this.owner.getPlacedBombs() + 1);
+    }
+
+    @Override
+    public boolean damageEntity(DamageSource damagesource, float damage) {
+
+        return false;
     }
 
     @Override

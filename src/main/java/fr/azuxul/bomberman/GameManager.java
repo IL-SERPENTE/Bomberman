@@ -17,6 +17,7 @@ import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -37,16 +38,18 @@ public class GameManager extends Game<PlayerBomberman> {
     private final BombManager bombManager;
     private final List<Location> playerSpawnList;
     private final MapManager mapManager;
+    private final Plugin plugin;
     private Location spawn;
 
     public GameManager(JavaPlugin plugin) {
 
         super("bomberman", "Bomberman", "", PlayerBomberman.class);
 
+        this.plugin = plugin;
         this.server = plugin.getServer();
         this.timer = new TimerBomberman(this);
         this.powerupManager = new PowerupManager();
-        this.bombManager = new BombManager();
+        this.bombManager = new BombManager(this);
         this.scoreboardBomberman = new ScoreboardBomberman(this);
         this.playerSpawnList = new ArrayList<>();
 
@@ -77,6 +80,10 @@ public class GameManager extends Game<PlayerBomberman> {
 
         // Add spawn locations in list
         gameProperties.getOption("spawn-locations", defaultObject).getAsJsonArray().forEach(location -> playerSpawnList.add(LocationUtils.str2loc(location.getAsString()).add(0, 2, 0)));
+    }
+
+    public Plugin getPlugin() {
+        return plugin;
     }
 
     public BombManager getBombManager() {
