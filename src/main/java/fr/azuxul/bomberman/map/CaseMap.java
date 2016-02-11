@@ -7,12 +7,10 @@ import fr.azuxul.bomberman.player.PlayerBomberman;
 import fr.azuxul.bomberman.powerup.BombPowerup;
 import fr.azuxul.bomberman.powerup.BoosterPowerup;
 import fr.azuxul.bomberman.powerup.RadiusPowerup;
-import net.minecraft.server.v1_8_R3.World;
 import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -136,8 +134,6 @@ public class CaseMap {
 
     @SuppressWarnings("deprecation")
     private void displayExplosion(int radius) {
-
-        World world = ((CraftWorld) worldLocation.getWorld()).getHandle();
 
         if (radius <= 3 || RandomUtils.nextInt(1000) >= (radius - 3) * 50) {
 
