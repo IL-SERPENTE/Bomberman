@@ -7,7 +7,6 @@ import fr.azuxul.bomberman.player.PlayerBomberman;
 import fr.azuxul.bomberman.powerup.BombPowerup;
 import fr.azuxul.bomberman.powerup.BoosterPowerup;
 import fr.azuxul.bomberman.powerup.RadiusPowerup;
-import net.minecraft.server.v1_8_R3.EnumParticle;
 import net.minecraft.server.v1_8_R3.World;
 import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Location;
@@ -22,9 +21,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class description
+ * Case of map
  *
  * @author Azuxul
+ * @version 1.0
  */
 public class CaseMap {
 
@@ -118,11 +118,13 @@ public class CaseMap {
             bomb = null;
         }
 
-        if (!players.isEmpty())
-            for (PlayerBomberman player : players) {
+        if (!players.isEmpty()) {
+
+            for (PlayerBomberman player : players)
                 player.getPlayerIfOnline().damage(777.77D, source.getPlayerIfOnline());
-                players.remove(player);
-            }
+
+            players.clear();
+        }
     }
 
     public void updateInWorld() {
@@ -148,11 +150,6 @@ public class CaseMap {
                 gameManager.getServer().getScheduler().runTaskLaterAsynchronously(gameManager.getPlugin(), () -> player.sendBlockChange(location, Material.STONE, (byte) 0), RandomUtils.nextInt(30) + 30L);
             }
         }
-
-        //worldLocation.getWorld().createExplosion(worldLocation, 0.5f);
-        //ParticleEffect.EXPLOSION_LARGE.display(0.1f, 0.1f, 0.1f, 0, 1, worldLocation.clone().add(0, 1, 0), 30);
-
-        world.addParticle(EnumParticle.EXPLOSION_LARGE, worldLocation.getBlockX() + 0.5, worldLocation.getBlockY(), worldLocation.getBlockZ() + 0.5, world.random.nextFloat(), world.random.nextFloat(), world.random.nextFloat());
     }
 
     private void spawnPowerup(Location location) {

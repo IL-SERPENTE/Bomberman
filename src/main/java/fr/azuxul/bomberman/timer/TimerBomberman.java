@@ -17,7 +17,8 @@ public class TimerBomberman implements Runnable {
 
     private final GameManager gameManager;
     private final Server server;
-    private short seconds, minutes;
+    private short seconds;
+    private short minutes;
 
     /**
      * Class constructor
