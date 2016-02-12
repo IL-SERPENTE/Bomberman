@@ -34,6 +34,10 @@ public class Bomb extends EntityTNTPrimed {
         this.fuseTicks = fuseTicks;
         this.radius = radius;
         this.owner = gameManager.getPlayer(owner.getUniqueId());
+        this.motX = 0;
+        this.motY = 0.15;
+        this.motZ = 0;
+        this.velocityChanged = true;
     }
 
     @Override
@@ -66,16 +70,13 @@ public class Bomb extends EntityTNTPrimed {
         die();
 
         if (owner.getPowerupTypes() == null)
-            caseMap.explode(false, owner);
+            caseMap.explode(false, false, owner);
         else if (owner.getPowerupTypes().equals(PowerupTypes.HYPER_BOMB))
-            caseMap.explode(true, owner);
-        else if (owner.getPowerupTypes().equals(PowerupTypes.SUPER_BOMB)) {
-
-            caseMap.explode(false, owner);
-            //TODO: Add super bomb
-
-        } else
-            caseMap.explode(false, owner);
+            caseMap.explode(true, false, owner);
+        else if (owner.getPowerupTypes().equals(PowerupTypes.SUPER_BOMB))
+            caseMap.explode(false, true, owner);
+        else
+            caseMap.explode(false, false, owner);
     }
 
     @Override

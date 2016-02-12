@@ -4,7 +4,6 @@ import fr.azuxul.bomberman.Bomberman;
 import fr.azuxul.bomberman.GameManager;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import net.samagames.tools.powerups.Powerup;
-import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -22,7 +21,7 @@ public class BoosterPowerup implements Powerup {
 
     public BoosterPowerup() {
 
-        this.type = PowerupTypes.values()[RandomUtils.nextInt(PowerupTypes.values().length)];
+        this.type = PowerupTypes.getRandomPowerupType();
         this.gameManager = Bomberman.getGameManager();
     }
 
@@ -31,7 +30,13 @@ public class BoosterPowerup implements Powerup {
 
         PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
-        playerBomberman.setPowerup(type);
+        if (type.equals(PowerupTypes.SPEED))
+            playerBomberman.setSpeed(playerBomberman.getSpeed() + 0.1f);
+        else if (type.equals(PowerupTypes.SLOWNESS))
+            playerBomberman.setSpeed(playerBomberman.getSpeed() - 0.1f);
+        else
+            playerBomberman.setPowerup(type);
+
         gameManager.getScoreboardBomberman().display(player);
     }
 

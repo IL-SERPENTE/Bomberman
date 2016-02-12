@@ -75,6 +75,11 @@ public class Powerup extends EntityArmorStand {
 
     }
 
+    private static boolean isValidPlayer(Player player) {
+
+        return !player.isSneaking() && !player.getGameMode().equals(GameMode.SPECTATOR);
+    }
+
     /**
      * Spawn powerup
      */
@@ -135,11 +140,6 @@ public class Powerup extends EntityArmorStand {
             die();
         }
 
-    }
-
-    private boolean isValidPlayer(Player player) {
-
-        return !player.isSneaking() && !player.getGameMode().equals(GameMode.SPECTATOR);
     }
 
     /**

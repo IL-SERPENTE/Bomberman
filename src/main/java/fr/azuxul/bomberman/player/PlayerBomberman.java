@@ -23,6 +23,7 @@ public class PlayerBomberman extends GamePlayer {
     private int bombNumber;
     private int radius;
     private int placedBombs;
+    private float speed;
 
     public PlayerBomberman(Player player) {
         super(player);
@@ -30,7 +31,24 @@ public class PlayerBomberman extends GamePlayer {
         objectiveSign = null;
         bombNumber = 1;
         radius = 2;
+        speed = 0.2f;
         caseMap = Bomberman.getGameManager().getMapManager().getCaseAtWorldLocation(player.getLocation());
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+
+        if (speed > 0.5) {
+            this.speed = 0.5f;
+        } else if (speed < 0.1) {
+            this.speed = 0.1f;
+        } else
+            this.speed = speed;
+
+        getPlayerIfOnline().setWalkSpeed(this.speed);
     }
 
     public int getPlacedBombs() {

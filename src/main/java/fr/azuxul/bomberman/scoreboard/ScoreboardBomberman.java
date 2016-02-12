@@ -31,10 +31,11 @@ public class ScoreboardBomberman {
         objectiveSign.setLine(2, " ");
         objectiveSign.setLine(3, "Aucun");
         objectiveSign.setLine(4, ChatColor.GRAY + "Booster actif :");
-        objectiveSign.setLine(5, ChatColor.GRAY + "Nombre de bombes simultanés :" + ChatColor.RESET + " 0");
-        objectiveSign.setLine(6, ChatColor.GRAY + "Puissance de l'explosion :" + ChatColor.RESET + " 0");
-        objectiveSign.setLine(7, "  ");
-        objectiveSign.setLine(8, ChatColor.GRAY + "Joueurs restants :" + ChatColor.RESET + " 0");
+        objectiveSign.setLine(5, ChatColor.GRAY + "Speed :" + ChatColor.RESET + " 0");
+        objectiveSign.setLine(6, ChatColor.GRAY + "Nombre de bombes simultanés :" + ChatColor.RESET + " 0");
+        objectiveSign.setLine(7, ChatColor.GRAY + "Puissance de l'explosion :" + ChatColor.RESET + " 0");
+        objectiveSign.setLine(8, "  ");
+        objectiveSign.setLine(9, ChatColor.GRAY + "Joueurs restants :" + ChatColor.RESET + " 0");
 
         return objectiveSign;
     }
@@ -60,10 +61,11 @@ public class ScoreboardBomberman {
         PowerupTypes powerup = playerBomberman.getPowerupTypes();
 
         objectiveSign.setLine(3, powerup == null ? "Aucun" : powerup.getName());
-        objectiveSign.setLine(5, ChatColor.GRAY + "Nombre de bombes simultanés : " + ChatColor.RESET + playerBomberman.getBombNumber());
-        objectiveSign.setLine(6, ChatColor.GRAY + "Puissance de l'explosion : " + ChatColor.RESET + playerBomberman.getRadius());
+        objectiveSign.setLine(5, ChatColor.GRAY + "Speed : " + ChatColor.RESET + playerBomberman.getSpeed());
+        objectiveSign.setLine(6, ChatColor.GRAY + "Nombre de bombes simultanés : " + ChatColor.RESET + playerBomberman.getBombNumber());
+        objectiveSign.setLine(7, ChatColor.GRAY + "Puissance de l'explosion : " + ChatColor.RESET + playerBomberman.getRadius());
 
-        objectiveSign.setLine(8, ChatColor.GRAY + "Joueurs restants : " + ChatColor.RESET + gameManager.getConnectedPlayers());
+        objectiveSign.setLine(9, ChatColor.GRAY + "Joueurs restants : " + ChatColor.RESET + gameManager.getConnectedPlayers());
 
         objectiveSign.updateLines(false);
     }

@@ -50,7 +50,7 @@ public class CaseMap {
         this.map = map;
     }
 
-    public void explode(boolean cobblestone, PlayerBomberman source) {
+    public void explode(boolean cobblestone, boolean ignoreFirstBreak, PlayerBomberman source) {
 
         int radius = source.getRadius();
         EnumMap<BlockFace, Boolean> faces = new EnumMap<>(BlockFace.class);
@@ -74,34 +74,36 @@ public class CaseMap {
 
                     CaseMap caseMap = map[x][y];
 
-                    entry.setValue(!caseMap.explodeCase(cobblestone, source, finalI));
+                    Material blockBreak = caseMap.explodeCase(cobblestone, source, finalI);
+                    boolean continueExplode = false;
+
+                    if (blockBreak.equals(Material.AIR) || (blockBreak.equals(Material.DIRT) && ignoreFirstBreak))
+                        continueExplode = true;
+
+                    entry.setValue(continueExplode);
                 }
             });
         }
     }
 
-    public boolean explodeCase(boolean cobblestone, PlayerBomberman source, int indexRadius) {
+    public Material explodeCase(boolean cobblestone, PlayerBomberman source, int indexRadius) {
 
-        boolean explode = false;
+        Material blockExplode = block;
 
         if (block.equals(Material.AIR))
             killEntitys(source);
-        else {
+        else
             if (block.equals(Material.DIRT) || (cobblestone && block.equals(Material.COBBLESTONE))) {
                 block = Material.AIR;
                 spawnPowerup(worldLocation);
-
-                explode = true;
-            } else if (block.equals(Material.COBBLESTONE) || block.equals(Material.STONE))
-                explode = true;
-        }
+            }
 
         if (block.equals(Material.AIR))
             displayExplosion(indexRadius);
 
         updateInWorld();
 
-        return explode;
+        return blockExplode;
     }
 
     private void killEntitys(PlayerBomberman source) {
@@ -167,10 +169,6 @@ public class CaseMap {
             powerup = gameManager.getPowerupManager().spawnPowerup(powerupToSpawn, locationPowerup);
     }
 
-    public void setBomb(Bomb bomb) {
-        this.bomb = bomb;
-    }
-
     public Location getWorldLocation() {
         return worldLocation;
     }
@@ -193,5 +191,13 @@ public class CaseMap {
 
     public int getyMap() {
         return yMap;
+    }
+
+    public Bomb getBomb() {
+        return bomb;
+    }
+
+    public void setBomb(Bomb bomb) {
+        this.bomb = bomb;
     }
 }

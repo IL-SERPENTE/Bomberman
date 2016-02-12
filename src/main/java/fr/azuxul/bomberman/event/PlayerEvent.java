@@ -3,6 +3,7 @@ package fr.azuxul.bomberman.event;
 import fr.azuxul.bomberman.GameManager;
 import fr.azuxul.bomberman.map.CaseMap;
 import fr.azuxul.bomberman.player.PlayerBomberman;
+import fr.azuxul.bomberman.powerup.PowerupTypes;
 import net.samagames.api.games.Status;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -38,12 +39,11 @@ public class PlayerEvent implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        if (gameManager.getStatus().equals(Status.IN_GAME)) {
 
             Player player = event.getPlayer();
             PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
-            if (gameManager.getInGamePlayers().values().contains(playerBomberman) && !event.getFrom().getBlock().equals(event.getTo().getBlock())) {
+        if (gameManager.getInGamePlayers().values().contains(playerBomberman) && !event.getFrom().getBlock().equals(event.getTo().getBlock()) && gameManager.getStatus().equals(Status.IN_GAME)) {
 
                 CaseMap caseMap = playerBomberman.getCaseMap();
 
@@ -55,9 +55,11 @@ public class PlayerEvent implements Listener {
                 if (caseMap != null) {
                     playerBomberman.setCaseMap(caseMap);
                     caseMap.getPlayers().add(playerBomberman);
+
+                    if (playerBomberman.getPowerupTypes() != null && playerBomberman.getPowerupTypes().equals(PowerupTypes.AUTO_PLACE) && caseMap.getBomb() == null && playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs())
+                        gameManager.getMapManager().spawnBomb(event.getTo().getBlock().getLocation(), playerBomberman);
                 }
             }
-        }
     }
 
     @EventHandler
@@ -144,7 +146,7 @@ public class PlayerEvent implements Listener {
     @EventHandler
     public void onPlayerDamage(EntityDamageByEntityEvent event) {
 
-        if (Double.compare(event.getDamage(), 777.77) == 0) {
+        if ((int) (event.getDamage() - 777.77) != 0 || !gameManager.getStatus().equals(Status.IN_GAME)) {
             event.setCancelled(true);
         }
     }
