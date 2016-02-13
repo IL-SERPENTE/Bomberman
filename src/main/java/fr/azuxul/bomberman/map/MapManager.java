@@ -14,6 +14,7 @@ import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
  * Map manager
  *
  * @author Azuxul
+ * @version 1.0
  */
 public class MapManager {
 

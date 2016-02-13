@@ -14,7 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -58,7 +58,8 @@ public class PlayerEvent implements Listener {
 
                     if (playerBomberman.getPowerupTypes() != null && playerBomberman.getPowerupTypes().equals(PowerupTypes.AUTO_PLACE) && caseMap.getBomb() == null && playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs())
                         gameManager.getMapManager().spawnBomb(event.getTo().getBlock().getLocation(), playerBomberman);
-                }
+                } else
+                    player.kickPlayer("Out of map");
             }
     }
 
@@ -144,7 +145,7 @@ public class PlayerEvent implements Listener {
     }
 
     @EventHandler
-    public void onPlayerDamage(EntityDamageByEntityEvent event) {
+    public void onPlayerDamage(EntityDamageEvent event) {
 
         if ((int) (event.getDamage() - 777.77) != 0 || !gameManager.getStatus().equals(Status.IN_GAME)) {
             event.setCancelled(true);

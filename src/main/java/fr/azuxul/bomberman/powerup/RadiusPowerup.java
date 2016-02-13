@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * Class description
+ * Radius powerup
  *
  * @author Azuxul
  */

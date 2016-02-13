@@ -9,9 +9,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * Class description
+ * Bomb powerup
  *
  * @author Azuxul
+ * @version 1.0
  */
 public class BombPowerup implements Powerup {
 

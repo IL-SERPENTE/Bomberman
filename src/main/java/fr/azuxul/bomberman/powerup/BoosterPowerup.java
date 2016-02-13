@@ -10,9 +10,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * Class description
+ * Booster powerup
  *
  * @author Azuxul
+ * @version 1.0
  */
 public class BoosterPowerup implements Powerup {
 

@@ -10,6 +10,7 @@ import fr.azuxul.bomberman.timer.TimerBomberman;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Game;
 import net.samagames.api.games.IGameProperties;
+import net.samagames.api.games.Status;
 import net.samagames.tools.LocationUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -21,6 +22,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -121,6 +123,7 @@ public class GameManager extends Game<PlayerBomberman> {
     public void startGame() {
 
         List<PlayerBomberman> playerBombermanList = getPlayerBombermanList();
+        Collections.shuffle(getPlayerBombermanList());
         int spawnIndex = 0;
 
         for (PlayerBomberman playerBomberman : playerBombermanList) {
@@ -145,6 +148,21 @@ public class GameManager extends Game<PlayerBomberman> {
         }
 
         super.startGame();
+    }
+
+    @Override
+    public void handleLogin(Player player) {
+        super.handleLogin(player);
+
+        player.setGameMode(GameMode.ADVENTURE);
+    }
+
+    @Override
+    public void handleLogout(Player player) {
+        super.handleLogout(player);
+
+        if (getConnectedPlayers() <= 1 && getStatus().equals(Status.IN_GAME))
+            endGame();
     }
 
     public void endGame() {
