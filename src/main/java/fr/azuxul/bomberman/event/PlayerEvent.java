@@ -5,6 +5,7 @@ import fr.azuxul.bomberman.map.CaseMap;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import fr.azuxul.bomberman.powerup.PowerupTypes;
 import net.samagames.api.games.Status;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -134,10 +135,15 @@ public class PlayerEvent implements Listener {
                 event.setDeathMessage(deathMessageBase + " viens d'exploser");
             else if (killer.equals(player))
                 event.setDeathMessage(deathMessageBase + " viens de se faire exploser");
-            else
+            else {
+
                 event.setDeathMessage(deathMessageBase + " viens de se faire exploser par " + killer.getName());
+                gameManager.getPlayer(killer.getUniqueId()).addCoins(5, "Meurtre de " + player.getName());
+            }
 
             playerBomberman.setSpectator();
+            player.teleport(gameManager.getSpecSpawn());
+            player.setGameMode(GameMode.ADVENTURE);
 
             if (gameManager.getConnectedPlayers() <= 1)
                 gameManager.endGame();

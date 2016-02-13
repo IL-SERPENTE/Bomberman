@@ -57,7 +57,7 @@ public class Bomberman extends JavaPlugin {
 
         world.setPVP(true); // Enable pvp for damage player
         world.setSpawnLocation(spawn.getBlockX(), spawn.getBlockY() + 3, spawn.getBlockZ()); // Set spawn location
-        world.setDifficulty(Difficulty.NORMAL); // Set difficulty
+        world.setDifficulty(Difficulty.PEACEFUL); // Set difficulty
         world.setGameRuleValue("doMobSpawning", "false"); // Set doMobSpawning game rule
         world.setGameRuleValue("reducedDebugInfo", "true"); // Reduce debug info (Mask location)
         world.setStorm(false); // Clear storm

@@ -41,8 +41,8 @@ public class PlayerBomberman extends GamePlayer {
 
     public void setSpeed(float speed) {
 
-        if (speed > 0.5) {
-            this.speed = 0.5f;
+        if (speed > 0.4) {
+            this.speed = 0.4f;
         } else if (speed < 0.1) {
             this.speed = 0.1f;
         } else

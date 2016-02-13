@@ -41,6 +41,7 @@ public class GameManager extends Game<PlayerBomberman> {
     private final MapManager mapManager;
     private final Plugin plugin;
     private Location spawn;
+    private Location specSpawn;
 
     public GameManager(JavaPlugin plugin) {
 
@@ -77,6 +78,7 @@ public class GameManager extends Game<PlayerBomberman> {
         defaultObject.add(new JsonPrimitive("world, 25, 70, 25, 0, 0"));
 
         this.spawn = LocationUtils.str2loc(gameProperties.getOption("wating-lobby", new JsonPrimitive("world, 0, 90, 0, 0, 0")).getAsString());
+        this.specSpawn = LocationUtils.str2loc(gameProperties.getOption("spectators-spawn", new JsonPrimitive("world, 1, 77, 1, 0, 0")).getAsString());
 
         // Add spawn locations in list
         gameProperties.getOption("spawn-locations", defaultObject).getAsJsonArray().forEach(location -> playerSpawnList.add(LocationUtils.str2loc(location.getAsString()).add(0, 2, 0)));
@@ -104,6 +106,10 @@ public class GameManager extends Game<PlayerBomberman> {
 
     public Location getSpawn() {
         return spawn;
+    }
+
+    public Location getSpecSpawn() {
+        return specSpawn;
     }
 
     private List<Location> getPlayerSpawnList() {
@@ -161,7 +167,7 @@ public class GameManager extends Game<PlayerBomberman> {
     public void handleLogout(Player player) {
         super.handleLogout(player);
 
-        if (getConnectedPlayers() <= 1 && getStatus().equals(Status.IN_GAME))
+        if (getConnectedPlayers() - 1 <= 1 && getStatus().equals(Status.IN_GAME))
             endGame();
     }
 
@@ -176,6 +182,8 @@ public class GameManager extends Game<PlayerBomberman> {
             Player player = playerBombermanList.get(0).getPlayerIfOnline();
 
             getCoherenceMachine().getTemplateManager().getPlayerWinTemplate().execute(player);
+            playerBombermanList.get(0).addCoins(30, "Partie gagné");
+            playerBombermanList.get(0).addStars(1, "Partie gagné");
         }
 
         this.handleGameEnd();
