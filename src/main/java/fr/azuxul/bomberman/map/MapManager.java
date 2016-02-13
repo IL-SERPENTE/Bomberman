@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.entity.Player;
 
 /**
  * Map manager
@@ -78,6 +79,27 @@ public class MapManager {
             result = map[x][y];
 
         return result;
+    }
+
+    public void movePlayer(Player player, Location locTo) {
+
+        PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
+
+        CaseMap caseMap = playerBomberman.getCaseMap();
+
+        if (caseMap != null)
+            caseMap.getPlayers().remove(playerBomberman);
+
+        caseMap = gameManager.getMapManager().getCaseAtWorldLocation(locTo);
+
+        if (caseMap != null) {
+            playerBomberman.setCaseMap(caseMap);
+            caseMap.getPlayers().add(playerBomberman);
+
+            if (playerBomberman.getPowerupTypes() != null && playerBomberman.getPowerupTypes().equals(PowerupTypes.AUTO_PLACE) && caseMap.getBomb() == null && playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs())
+                gameManager.getMapManager().spawnBomb(locTo.getBlock().getLocation(), playerBomberman);
+        } else
+            player.kickPlayer("Out of map");
     }
 
     @SuppressWarnings("deprecation")

@@ -153,6 +153,7 @@ public class GameManager extends Game<PlayerBomberman> {
             }
         }
 
+        specSpawn.getWorld().setSpawnLocation(specSpawn.getBlockX(), specSpawn.getBlockY(), specSpawn.getBlockZ());
         super.startGame();
     }
 

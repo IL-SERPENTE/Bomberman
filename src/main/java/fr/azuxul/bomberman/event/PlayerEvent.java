@@ -1,11 +1,8 @@
 package fr.azuxul.bomberman.event;
 
 import fr.azuxul.bomberman.GameManager;
-import fr.azuxul.bomberman.map.CaseMap;
 import fr.azuxul.bomberman.player.PlayerBomberman;
-import fr.azuxul.bomberman.powerup.PowerupTypes;
 import net.samagames.api.games.Status;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -41,27 +38,18 @@ public class PlayerEvent implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
 
-            Player player = event.getPlayer();
-            PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
+        Player player = event.getPlayer();
+        PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
-        if (gameManager.getInGamePlayers().values().contains(playerBomberman) && !event.getFrom().getBlock().equals(event.getTo().getBlock()) && gameManager.getStatus().equals(Status.IN_GAME)) {
+        if (playerBomberman.isModerator() || playerBomberman.isSpectator()) {
 
-                CaseMap caseMap = playerBomberman.getCaseMap();
+            Location locTo = event.getTo();
 
-                if (caseMap != null)
-                    caseMap.getPlayers().remove(playerBomberman);
+            if (gameManager.getMapManager().getCaseAtWorldLocation(locTo) == null || locTo.getY() <= 0 || locTo.getY() >= 256)
+                player.teleport(gameManager.getSpecSpawn());
+        } else if (!event.getFrom().getBlock().equals(event.getTo().getBlock()) && gameManager.getStatus().equals(Status.IN_GAME))
+            gameManager.getMapManager().movePlayer(player, event.getTo());
 
-                caseMap = gameManager.getMapManager().getCaseAtWorldLocation(event.getTo());
-
-                if (caseMap != null) {
-                    playerBomberman.setCaseMap(caseMap);
-                    caseMap.getPlayers().add(playerBomberman);
-
-                    if (playerBomberman.getPowerupTypes() != null && playerBomberman.getPowerupTypes().equals(PowerupTypes.AUTO_PLACE) && caseMap.getBomb() == null && playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs())
-                        gameManager.getMapManager().spawnBomb(event.getTo().getBlock().getLocation(), playerBomberman);
-                } else
-                    player.kickPlayer("Out of map");
-            }
     }
 
     @EventHandler
@@ -142,8 +130,6 @@ public class PlayerEvent implements Listener {
             }
 
             playerBomberman.setSpectator();
-            player.teleport(gameManager.getSpecSpawn());
-            player.setGameMode(GameMode.ADVENTURE);
 
             if (gameManager.getConnectedPlayers() <= 1)
                 gameManager.endGame();
