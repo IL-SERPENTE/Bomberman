@@ -2,7 +2,6 @@ package fr.azuxul.bomberman.timer;
 
 import com.google.gson.JsonPrimitive;
 import fr.azuxul.bomberman.GameManager;
-import fr.azuxul.bomberman.player.PlayerBomberman;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Status;
 import org.bukkit.Server;
@@ -54,15 +53,7 @@ public class TimerBomberman implements Runnable {
         }
 
         // Update scoreboard to all player and update player
-        server.getOnlinePlayers().forEach(player -> {
-
-            PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
-
-            if (playerBomberman != null)
-                playerBomberman.update();
-
-            gameManager.getScoreboardBomberman().display(player);
-        });
+        server.getOnlinePlayers().forEach(gameManager.getScoreboardBomberman()::display);
     }
 
     /**

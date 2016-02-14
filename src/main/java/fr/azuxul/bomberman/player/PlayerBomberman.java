@@ -5,9 +5,12 @@ import fr.azuxul.bomberman.map.CaseMap;
 import fr.azuxul.bomberman.powerup.PowerupTypes;
 import net.samagames.api.games.GamePlayer;
 import net.samagames.tools.scoreboards.ObjectiveSign;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * Player for Bomberman plugin
@@ -73,6 +76,7 @@ public class PlayerBomberman extends GamePlayer {
 
     public void setBombNumber(int bombNumber) {
         this.bombNumber = bombNumber;
+        updateInventory();
     }
 
     public int getRadius() {
@@ -81,6 +85,7 @@ public class PlayerBomberman extends GamePlayer {
 
     public void setRadius(int radius) {
         this.radius = radius;
+        updateInventory();
     }
 
     public ObjectiveSign getObjectiveSign() {
@@ -99,22 +104,24 @@ public class PlayerBomberman extends GamePlayer {
         this.caseMap = caseMap;
     }
 
-    /**
-     * Update player stats (active effects)
-     * 1 update/s
-     */
-    public void update() {
+    public void updateInventory() {
+
+        int itemBombNb = bombNumber > 64 ? 64 : bombNumber;
+        ItemStack itemBombNumber = new ItemStack(Material.TNT, itemBombNb);
+        ItemMeta itemMeta = itemBombNumber.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.RESET.toString() + ChatColor.GREEN + "Nombre de bombes : " + ChatColor.GOLD + bombNumber);
+        itemBombNumber.setItemMeta(itemMeta);
+
+        int itemRadiusNb = radius > 64 ? 64 : radius;
+        ItemStack itemRadiusNbumber = new ItemStack(Material.BRICK, itemRadiusNb);
+        itemMeta = itemRadiusNbumber.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.RESET.toString() + ChatColor.GREEN + "Puissance : " + ChatColor.GOLD + itemRadiusNb);
+        itemRadiusNbumber.setItemMeta(itemMeta);
 
         Player player = getPlayerIfOnline();
+        Inventory inventory = player.getInventory();
 
-        if (powerupTypes != null) {
-
-            if (powerupTypes.equals(PowerupTypes.SPEED))
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 30, 0), true);
-
-            else if (powerupTypes.equals(PowerupTypes.SLOWNESS))
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 30, 0), true);
-        }
-
+        inventory.setItem(8, itemRadiusNbumber);
+        inventory.setItem(7, itemBombNumber);
     }
 }

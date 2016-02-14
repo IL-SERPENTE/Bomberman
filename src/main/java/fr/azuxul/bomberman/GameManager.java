@@ -12,12 +12,10 @@ import net.samagames.api.games.Game;
 import net.samagames.api.games.IGameProperties;
 import net.samagames.api.games.Status;
 import net.samagames.tools.LocationUtils;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Server;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -132,6 +130,11 @@ public class GameManager extends Game<PlayerBomberman> {
         Collections.shuffle(getPlayerBombermanList());
         int spawnIndex = 0;
 
+        ItemStack bomb = new ItemStack(Material.CARPET, 1, (short) 8);
+        ItemMeta itemMeta = bomb.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.GOLD + "Bomb");
+        bomb.setItemMeta(itemMeta);
+
         for (PlayerBomberman playerBomberman : playerBombermanList) {
 
             Player player = playerBomberman.getPlayerIfOnline();
@@ -139,7 +142,8 @@ public class GameManager extends Game<PlayerBomberman> {
             if (player != null) {
 
                 player.getInventory().clear();
-                player.getInventory().addItem(new ItemStack(Material.TNT));
+                player.getInventory().addItem(bomb);
+                playerBomberman.updateInventory();
                 player.setGameMode(GameMode.SURVIVAL);
                 player.teleport(getPlayerSpawnList().get(spawnIndex));
                 spawnIndex++;

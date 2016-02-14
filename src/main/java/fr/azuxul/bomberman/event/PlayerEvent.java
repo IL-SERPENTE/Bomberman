@@ -3,6 +3,7 @@ package fr.azuxul.bomberman.event;
 import fr.azuxul.bomberman.GameManager;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import net.samagames.api.games.Status;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -19,6 +20,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * PlayerEvents
@@ -59,7 +61,7 @@ public class PlayerEvent implements Listener {
 
         event.setCancelled(true);
 
-        if (block.getType().equals(Material.TNT) && gameManager.getStatus().equals(Status.IN_GAME)) {
+        if (block.getType().equals(Material.CARPET) && block.getData() == 8 && gameManager.getStatus().equals(Status.IN_GAME)) {
 
             Location location = block.getLocation();
 
@@ -72,7 +74,11 @@ public class PlayerEvent implements Listener {
             if (playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs()) {
 
                 event.setCancelled(false);
-                player.getInventory().setItem(0, new ItemStack(Material.TNT));
+                ItemStack bomb = new ItemStack(Material.CARPET, 1, (short) 8);
+                ItemMeta itemMeta = bomb.getItemMeta();
+                itemMeta.setDisplayName(ChatColor.GOLD + "Bomb");
+                bomb.setItemMeta(itemMeta);
+                player.getInventory().setItem(0, bomb);
 
                 gameManager.getMapManager().spawnBomb(location, playerBomberman);
             }
