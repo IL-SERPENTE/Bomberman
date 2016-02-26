@@ -70,7 +70,7 @@ public class CaseMap {
                 int x = xMap + finalI * face.getModX();
                 int y = yMap + finalI * face.getModZ();
 
-                if (x < gameManager.getMapManager().getWight() && x > -1 && y < gameManager.getMapManager().getHeight() && y > -1) {
+                if (hasValidCoordinates(x, y)) {
 
                     CaseMap caseMap = map[x][y];
 
@@ -84,6 +84,11 @@ public class CaseMap {
                 }
             });
         }
+    }
+
+    public boolean hasValidCoordinates(int x, int y) {
+
+        return x < gameManager.getMapManager().getWight() && x > -1 && y < gameManager.getMapManager().getHeight() && y > -1;
     }
 
     public Material explodeCase(boolean cobblestone, PlayerBomberman source, int indexRadius) {

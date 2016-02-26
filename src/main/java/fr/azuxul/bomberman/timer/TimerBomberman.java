@@ -52,7 +52,7 @@ public class TimerBomberman implements Runnable {
             }
         }
 
-        // Update scoreboard to all player and update player
+        // Update scoreboard to all player
         server.getOnlinePlayers().forEach(gameManager.getScoreboardBomberman()::display);
     }
 
