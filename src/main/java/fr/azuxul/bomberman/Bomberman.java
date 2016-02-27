@@ -60,6 +60,7 @@ public class Bomberman extends JavaPlugin {
         world.setDifficulty(Difficulty.PEACEFUL); // Set difficulty
         world.setGameRuleValue("doMobSpawning", "false"); // Set doMobSpawning game rule
         world.setGameRuleValue("reducedDebugInfo", "true"); // Reduce debug info (Mask location)
+        world.setGameRuleValue("keepInventory", "true"); // Set player keep inventory
         world.setStorm(false); // Clear storm
         world.setThundering(false); // Clear weather
         world.setThunderDuration(0); // Clear weather
