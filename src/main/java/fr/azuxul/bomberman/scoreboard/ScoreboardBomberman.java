@@ -64,7 +64,7 @@ public class ScoreboardBomberman {
         String displayPowerup = powerup == null ? "Aucun" : powerup.getName();
 
         objectiveSign.setLine(3, ChatColor.GREEN + displayPowerup);
-        objectiveSign.setLine(5, "Speed : " + ChatColor.GREEN + (Math.round(playerBomberman.getSpeed() * 10) - 2));
+        objectiveSign.setLine(5, "Vitesse : " + ChatColor.GREEN + (Math.round(playerBomberman.getSpeed() * 10) - 2));
         objectiveSign.setLine(6, "Nombre de bombes : " + ChatColor.GREEN + playerBomberman.getBombNumber());
         objectiveSign.setLine(7, "Puissance d'explosion : " + ChatColor.GREEN + playerBomberman.getRadius());
 
@@ -73,6 +73,6 @@ public class ScoreboardBomberman {
         objectiveSign.updateLines(false);
 
         if (!player.getGameMode().equals(GameMode.SPECTATOR))
-            Util.sendHotBarMessage(player, ChatColor.GREEN + "Powerup: " + ChatColor.GOLD + displayPowerup);
+            Util.sendHotBarMessage(player, ChatColor.GREEN + "Booster : " + ChatColor.GOLD + displayPowerup);
     }
 }
