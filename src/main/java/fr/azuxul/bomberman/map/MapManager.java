@@ -105,6 +105,7 @@ public class MapManager {
     @SuppressWarnings("deprecation")
     public void spawnBomb(Location location, PlayerBomberman player) {
 
+        location.setY(gameManager.getBombY());
         Block block = location.getBlock();
 
         CaseMap caseMap = gameManager.getMapManager().getCaseAtWorldLocation(location);

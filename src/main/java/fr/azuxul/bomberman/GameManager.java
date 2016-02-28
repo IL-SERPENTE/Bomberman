@@ -38,6 +38,7 @@ public class GameManager extends Game<PlayerBomberman> {
     private final List<Location> playerSpawnList;
     private final MapManager mapManager;
     private final Plugin plugin;
+    private final int bombY;
     private Location spawn;
     private Location specSpawn;
 
@@ -55,6 +56,8 @@ public class GameManager extends Game<PlayerBomberman> {
         IGameProperties gameProperties = SamaGamesAPI.get().getGameManager().getGameProperties();
         Location pos = LocationUtils.str2loc(gameProperties.getOption("higher-loc", new JsonPrimitive("world, 27, 71, 27, 0, 0")).getAsString());
         Location neg = LocationUtils.str2loc(gameProperties.getOption("smaller-loc", new JsonPrimitive("world, -25, 71, -25, 0, 0")).getAsString());
+
+        this.bombY = pos.getBlockY();
 
         this.mapManager = new MapManager(this, neg, pos);
 
@@ -80,6 +83,10 @@ public class GameManager extends Game<PlayerBomberman> {
 
         // Add spawn locations in list
         gameProperties.getOption("spawn-locations", defaultObject).getAsJsonArray().forEach(location -> playerSpawnList.add(LocationUtils.str2loc(location.getAsString()).add(0, 2, 0)));
+    }
+
+    public int getBombY() {
+        return bombY;
     }
 
     public Plugin getPlugin() {
