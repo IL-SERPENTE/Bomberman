@@ -1,10 +1,12 @@
 package fr.azuxul.bomberman.scoreboard;
 
 import fr.azuxul.bomberman.GameManager;
+import fr.azuxul.bomberman.Util;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import fr.azuxul.bomberman.powerup.PowerupTypes;
 import net.samagames.tools.scoreboards.ObjectiveSign;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 /**
@@ -68,5 +70,8 @@ public class ScoreboardBomberman {
         objectiveSign.setLine(9, ChatColor.GRAY + "Joueurs restants : " + ChatColor.RESET + gameManager.getConnectedPlayers());
 
         objectiveSign.updateLines(false);
+
+        if (powerup != null && !player.getGameMode().equals(GameMode.SPECTATOR))
+            Util.sendHotBarMessage(player, ChatColor.GREEN + "Powerup: " + ChatColor.GOLD + powerup.getName());
     }
 }

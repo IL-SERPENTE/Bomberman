@@ -12,12 +12,12 @@ import javax.annotation.Nonnull;
  */
 public enum PowerupTypes {
 
-    SPEED("Speed", 6),
-    SLOWNESS("Lenteur", 2),
-    AUTO_PLACE("Auto palce", 1),
-    RANDOM_FUSE("Mauvais contact", 5),
-    HYPER_BOMB("Hyper bomb", 6),
-    SUPER_BOMB("Super bomb", 4);
+    SPEED("Speed", 7),
+    SLOWNESS("Lenteur", 3),
+    AUTO_PLACE("Auto place", 1),
+    RANDOM_FUSE("Mauvais contact", 6),
+    HYPER_BOMB("Hyper bomb", 7),
+    SUPER_BOMB("Super bomb", 5);
 
     private final String name;
     private final int chance;
