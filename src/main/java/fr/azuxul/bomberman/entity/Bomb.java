@@ -5,12 +5,12 @@ import fr.azuxul.bomberman.GameManager;
 import fr.azuxul.bomberman.map.CaseMap;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import fr.azuxul.bomberman.powerup.PowerupTypes;
-import net.minecraft.server.v1_8_R3.DamageSource;
-import net.minecraft.server.v1_8_R3.EntityTNTPrimed;
-import net.minecraft.server.v1_8_R3.EnumParticle;
-import net.minecraft.server.v1_8_R3.World;
+import net.minecraft.server.v1_9_R1.DamageSource;
+import net.minecraft.server.v1_9_R1.EntityTNTPrimed;
+import net.minecraft.server.v1_9_R1.EnumParticle;
+import net.minecraft.server.v1_9_R1.World;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
@@ -26,6 +26,7 @@ public class Bomb extends EntityTNTPrimed {
     private static GameManager gameManager;
     private final int radius;
     private final PlayerBomberman owner;
+    private int fuseTicks;
 
     public Bomb(World world, double x, double y, double z, int fuseTicks, int radius, Player owner) {
         super(world, x, y, z, ((CraftPlayer) owner).getHandle());
@@ -46,8 +47,11 @@ public class Bomb extends EntityTNTPrimed {
         return false;
     }
 
+    /**
+     * Tick
+     */
     @Override
-    public void t_() {
+    public void m() {
         if (this.world.spigotConfig.currentPrimedTnt++ <= this.world.spigotConfig.maxTntTicksPerTick) {
 
             if (this.fuseTicks-- <= 0 && isAlive()) {
