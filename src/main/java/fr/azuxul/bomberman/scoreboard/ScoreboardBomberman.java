@@ -1,9 +1,9 @@
 package fr.azuxul.bomberman.scoreboard;
 
 import fr.azuxul.bomberman.GameManager;
-import fr.azuxul.bomberman.Util;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import fr.azuxul.bomberman.powerup.PowerupTypes;
+import net.samagames.tools.chat.ActionBarAPI;
 import net.samagames.tools.scoreboards.ObjectiveSign;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -73,6 +73,6 @@ public class ScoreboardBomberman {
         objectiveSign.updateLines(false);
 
         if (!player.getGameMode().equals(GameMode.SPECTATOR))
-            Util.sendHotBarMessage(player, ChatColor.GREEN + "Booster : " + ChatColor.GOLD + displayPowerup);
+            ActionBarAPI.sendMessage(player, ChatColor.GREEN + "Booster : " + ChatColor.GOLD + displayPowerup);
     }
 }
