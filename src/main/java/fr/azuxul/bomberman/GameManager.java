@@ -1,7 +1,6 @@
 package fr.azuxul.bomberman;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonObject;
 import fr.azuxul.bomberman.map.MapManager;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import fr.azuxul.bomberman.powerup.PowerupManager;
@@ -9,7 +8,6 @@ import fr.azuxul.bomberman.scoreboard.ScoreboardBomberman;
 import fr.azuxul.bomberman.timer.TimerBomberman;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Game;
-import net.samagames.api.games.IGameProperties;
 import net.samagames.api.games.Status;
 import net.samagames.tools.LocationUtils;
 import org.bukkit.*;
@@ -53,9 +51,9 @@ public class GameManager extends Game<PlayerBomberman> {
         this.scoreboardBomberman = new ScoreboardBomberman(this);
         this.playerSpawnList = new ArrayList<>();
 
-        IGameProperties gameProperties = SamaGamesAPI.get().getGameManager().getGameProperties();
-        Location pos = LocationUtils.str2loc(gameProperties.getOption("higher-loc", new JsonPrimitive("world, 27, 71, 27, 0, 0")).getAsString());
-        Location neg = LocationUtils.str2loc(gameProperties.getOption("smaller-loc", new JsonPrimitive("world, -25, 71, -25, 0, 0")).getAsString());
+        final JsonObject configs = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs();
+        Location pos = LocationUtils.str2loc(configs.get("higher-loc").getAsString());
+        Location neg = LocationUtils.str2loc(configs.get("smaller-loc").getAsString());
 
         this.bombY = pos.getBlockY();
 
@@ -69,20 +67,13 @@ public class GameManager extends Game<PlayerBomberman> {
      */
     private void initLocations() {
 
-        IGameProperties gameProperties = SamaGamesAPI.get().getGameManager().getGameProperties();
+        final JsonObject configs = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs();
 
-        // Generate default json array of spawnLocations
-        JsonArray defaultObject = new JsonArray();
-        defaultObject.add(new JsonPrimitive("world, -23, 70, -23, 0, 0"));
-        defaultObject.add(new JsonPrimitive("world, -23, 70, 25, 0, 0"));
-        defaultObject.add(new JsonPrimitive("world, 25, 70, -23, 0, 0"));
-        defaultObject.add(new JsonPrimitive("world, 25, 70, 25, 0, 0"));
-
-        this.spawn = LocationUtils.str2loc(gameProperties.getOption("wating-lobby", new JsonPrimitive("world, 0, 90, 0, 0, 0")).getAsString());
-        this.specSpawn = LocationUtils.str2loc(gameProperties.getOption("spectators-spawn", new JsonPrimitive("world, 1, 77, 1, 0, 0")).getAsString());
+        this.spawn = LocationUtils.str2loc(configs.get("wating-lobby").getAsString());
+        this.specSpawn = LocationUtils.str2loc(configs.get("spectators-spawn").getAsString());
 
         // Add spawn locations in list
-        gameProperties.getOption("spawn-locations", defaultObject).getAsJsonArray().forEach(location -> playerSpawnList.add(LocationUtils.str2loc(location.getAsString()).add(0, 2, 0)));
+        configs.get("spawn-locations").getAsJsonArray().forEach(location -> playerSpawnList.add(LocationUtils.str2loc(location.getAsString()).add(0, 2, 0)));
     }
 
     public int getBombY() {

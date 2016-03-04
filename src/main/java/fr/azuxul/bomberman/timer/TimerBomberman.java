@@ -28,7 +28,7 @@ public class TimerBomberman implements Runnable {
 
         this.gameManager = gameManager;
         this.server = gameManager.getServer();
-        this.minutes = SamaGamesAPI.get().getGameManager().getGameProperties().getOption("timer", new JsonPrimitive("8")).getAsShort();
+        this.minutes = SamaGamesAPI.get().getGameManager().getGameProperties().getConfig("timer", new JsonPrimitive("8")).getAsShort();
     }
 
     /**

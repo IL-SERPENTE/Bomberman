@@ -3,21 +3,5 @@
   "min-slots": 4,
   "max-slots": 6,
   "options": {
-    "wating-lobby": "world, 0, 90, 0, 0, 0",
-    "spectators-spawn": "world, 1, 80, 1, 0, 0",
-    "spawn-locations": [
-      "world, -23, 70, -23, 0, 0",
-      "world, -23, 70, 25, 0, 0",
-      "world, 25, 70, -23, 0, 0",
-      "world, 25, 70, 25, 0, 0",
-      "world, -18, 70, 1, 0, 0",
-      "world, 1, 70, 1, 0, 0",
-      "world, 20, 70, 1, 0, 0",
-      "world, 1, 70, 20, 0, 0",
-      "world, 1, 70, -18, 0, 0"
-    ],
-    "higher-loc": "world, 27, 71, 27, 0, 0",
-    "smaller-loc": "world, -25, 71, -25, 0, 0",
-    "timer": 8
   }
 }
