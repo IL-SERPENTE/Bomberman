@@ -1,9 +1,9 @@
 package fr.azuxul.bomberman.powerup;
 
 import fr.azuxul.bomberman.entity.Powerup;
-import net.minecraft.server.v1_9_R1.World;
+import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 
 import java.util.ArrayList;
 import java.util.List;

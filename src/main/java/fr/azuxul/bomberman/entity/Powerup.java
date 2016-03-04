@@ -3,13 +3,13 @@ package fr.azuxul.bomberman.entity;
 import fr.azuxul.bomberman.Bomberman;
 import fr.azuxul.bomberman.GameManager;
 import fr.azuxul.bomberman.NBTTags;
-import net.minecraft.server.v1_9_R1.*;
+import net.minecraft.server.v1_8_R3.*;
 import net.samagames.api.games.Status;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_9_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 
 /**
@@ -112,12 +112,9 @@ public class Powerup extends EntityArmorStand {
         return entityArmorStand;
     }
 
-    /**
-     * Ticks
-     */
     @Override
-    public void m() {
-        super.m();
+    public void t_() {
+        super.t_();
 
         if (++dispawnTicks >= 600)
             this.die();
