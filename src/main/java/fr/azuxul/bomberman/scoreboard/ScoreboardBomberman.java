@@ -3,6 +3,7 @@ package fr.azuxul.bomberman.scoreboard;
 import fr.azuxul.bomberman.GameManager;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import fr.azuxul.bomberman.powerup.PowerupTypes;
+import net.samagames.api.games.Status;
 import net.samagames.tools.chat.ActionBarAPI;
 import net.samagames.tools.scoreboards.ObjectiveSign;
 import org.bukkit.ChatColor;
@@ -44,6 +45,9 @@ public class ScoreboardBomberman {
 
     public void display(Player player) {
 
+        if (!gameManager.getStatus().equals(Status.IN_GAME)) // If game is not started
+            return;
+
         PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
         ObjectiveSign objectiveSign = playerBomberman.getObjectiveSign();
 
@@ -61,18 +65,17 @@ public class ScoreboardBomberman {
         }
 
         PowerupTypes powerup = playerBomberman.getPowerupTypes();
-        String displayPowerup = powerup == null ? "Aucun" : powerup.getName();
 
-        objectiveSign.setLine(3, ChatColor.GREEN + displayPowerup);
+        objectiveSign.setLine(3, ChatColor.GREEN + (powerup == null ? "Aucun" : powerup.getName()));
         objectiveSign.setLine(5, "Vitesse : " + ChatColor.GREEN + (Math.round(playerBomberman.getSpeed() * 10) - 2));
         objectiveSign.setLine(6, "Nombre de bombes : " + ChatColor.GREEN + playerBomberman.getBombNumber());
         objectiveSign.setLine(7, "Puissance d'explosion : " + ChatColor.GREEN + playerBomberman.getRadius());
 
         objectiveSign.setLine(9, "Joueurs restants : " + ChatColor.GOLD + gameManager.getConnectedPlayers());
 
-        objectiveSign.updateLines(false);
+        if (!player.getGameMode().equals(GameMode.SPECTATOR) && powerup != null)
+            ActionBarAPI.sendMessage(player, ChatColor.GREEN + "Booster : " + ChatColor.GOLD + powerup.getName());
 
-        if (!player.getGameMode().equals(GameMode.SPECTATOR))
-            ActionBarAPI.sendMessage(player, ChatColor.GREEN + "Booster : " + ChatColor.GOLD + displayPowerup);
+        objectiveSign.updateLines(false);
     }
 }

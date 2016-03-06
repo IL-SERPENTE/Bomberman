@@ -4,6 +4,7 @@ import fr.azuxul.bomberman.GameManager;
 import fr.azuxul.bomberman.entity.Bomb;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import fr.azuxul.bomberman.powerup.PowerupTypes;
+import net.samagames.tools.Area;
 import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,19 +25,22 @@ public class MapManager {
     private final int wight;
     private final Location smallerLoc;
     private final GameManager gameManager;
+    private final Area area;
 
     public MapManager(GameManager gameManager, Location smallerLoc, Location higherLoc) {
 
         this.smallerLoc = smallerLoc;
         this.gameManager = gameManager;
 
-        this.wight = higherLoc.getBlockX() - smallerLoc.getBlockX() + 1;
-        this.height = higherLoc.getBlockZ() - smallerLoc.getBlockZ() + 1;
+        this.area = new Area(smallerLoc, higherLoc);
+
+        this.wight = area.getSizeX() + 1;
+        this.height = area.getSizeZ() + 1;
 
         this.map = new CaseMap[wight][height];
 
-        for (int x = smallerLoc.getBlockX(); x <= higherLoc.getBlockX(); x++) {
-            for (int z = smallerLoc.getBlockZ(); z <= higherLoc.getBlockZ(); z++) {
+        for (int x = area.getMin().getBlockX(); x <= area.getMax().getBlockX(); x++) {
+            for (int z = area.getMin().getBlockZ(); z <= area.getMax().getBlockZ(); z++) {
 
                 int mapX = worldLocXToMapLocX(x);
                 int mapY = worldLocZToMapLocY(z);
@@ -52,12 +56,12 @@ public class MapManager {
 
     public int worldLocXToMapLocX(int xWorld) {
 
-        return xWorld + Math.abs(smallerLoc.getBlockX());
+        return xWorld - area.getMin().getBlockX();
     }
 
     public int worldLocZToMapLocY(int zWorld) {
 
-        return zWorld + Math.abs(smallerLoc.getBlockZ());
+        return zWorld - area.getMin().getBlockZ();
     }
 
     public int getHeight() {
@@ -75,8 +79,14 @@ public class MapManager {
         int x = worldLocXToMapLocX(location.getBlockX());
         int y = worldLocZToMapLocY(location.getBlockZ());
 
-        if (x < wight && x > -1 && y < height && y > -1)
+        System.out.println(x < wight && x > -1 && y < height && y > -1);
+        System.out.println(y < height && y > -1);
+        System.out.println(x < wight && x > -1);
+
+        if (x < wight && x > -1 && y < height && y > -1) {
             result = map[x][y];
+            System.out.println("meow");
+        }
 
         return result;
     }
@@ -90,7 +100,8 @@ public class MapManager {
         if (caseMap != null)
             caseMap.getPlayers().remove(playerBomberman);
 
-        caseMap = gameManager.getMapManager().getCaseAtWorldLocation(locTo);
+        caseMap = getCaseAtWorldLocation(locTo);
+        System.out.println(caseMap);
 
         if (caseMap != null) {
             playerBomberman.setCaseMap(caseMap);

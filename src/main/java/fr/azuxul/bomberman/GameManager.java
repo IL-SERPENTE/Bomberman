@@ -69,7 +69,7 @@ public class GameManager extends Game<PlayerBomberman> {
 
         final JsonObject configs = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs();
 
-        this.spawn = LocationUtils.str2loc(configs.get("wating-lobby").getAsString());
+        this.spawn = LocationUtils.str2loc(configs.get("waiting-lobby").getAsString());
         this.specSpawn = LocationUtils.str2loc(configs.get("spectators-spawn").getAsString());
 
         // Add spawn locations in list
@@ -125,7 +125,7 @@ public class GameManager extends Game<PlayerBomberman> {
     public void startGame() {
 
         List<PlayerBomberman> playerBombermanList = getPlayerBombermanList();
-        Collections.shuffle(getPlayerBombermanList());
+        Collections.shuffle(getPlayerSpawnList());
         int spawnIndex = 0;
 
         ItemStack bomb = new ItemStack(Material.CARPET, 1, (short) 8);
