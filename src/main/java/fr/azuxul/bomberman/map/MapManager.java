@@ -23,13 +23,11 @@ public class MapManager {
     private final CaseMap[][] map;
     private final int height;
     private final int wight;
-    private final Location smallerLoc;
     private final GameManager gameManager;
     private final Area area;
 
     public MapManager(GameManager gameManager, Location smallerLoc, Location higherLoc) {
 
-        this.smallerLoc = smallerLoc;
         this.gameManager = gameManager;
 
         this.area = new Area(smallerLoc, higherLoc);
@@ -79,14 +77,8 @@ public class MapManager {
         int x = worldLocXToMapLocX(location.getBlockX());
         int y = worldLocZToMapLocY(location.getBlockZ());
 
-        System.out.println(x < wight && x > -1 && y < height && y > -1);
-        System.out.println(y < height && y > -1);
-        System.out.println(x < wight && x > -1);
-
-        if (x < wight && x > -1 && y < height && y > -1) {
+        if (x < wight && x > -1 && y < height && y > -1)
             result = map[x][y];
-            System.out.println("meow");
-        }
 
         return result;
     }
@@ -101,7 +93,6 @@ public class MapManager {
             caseMap.getPlayers().remove(playerBomberman);
 
         caseMap = getCaseAtWorldLocation(locTo);
-        System.out.println(caseMap);
 
         if (caseMap != null) {
             playerBomberman.setCaseMap(caseMap);
