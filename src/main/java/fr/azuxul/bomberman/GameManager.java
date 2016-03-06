@@ -164,6 +164,7 @@ public class GameManager extends Game<PlayerBomberman> {
         super.handleLogin(player);
 
         player.setGameMode(GameMode.ADVENTURE);
+        player.teleport(spawn);
     }
 
     @Override
