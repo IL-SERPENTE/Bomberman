@@ -107,13 +107,13 @@ public class PlayerBomberman extends GamePlayer {
     public void updateInventory() {
 
         int itemBombNb = bombNumber > 64 ? 64 : bombNumber;
-        ItemStack itemBombNumber = new ItemStack(Material.TNT, itemBombNb);
+        ItemStack itemBombNumber = new ItemStack(Material.DIAMOND_BLOCK, itemBombNb);
         ItemMeta itemMeta = itemBombNumber.getItemMeta();
         itemMeta.setDisplayName(ChatColor.RESET.toString() + ChatColor.GREEN + "Nombre de bombes : " + ChatColor.GOLD + bombNumber);
         itemBombNumber.setItemMeta(itemMeta);
 
         int itemRadiusNb = radius > 64 ? 64 : radius;
-        ItemStack itemRadiusNbumber = new ItemStack(Material.BRICK, itemRadiusNb);
+        ItemStack itemRadiusNbumber = new ItemStack(Material.EMERALD_BLOCK, itemRadiusNb);
         itemMeta = itemRadiusNbumber.getItemMeta();
         itemMeta.setDisplayName(ChatColor.RESET.toString() + ChatColor.GREEN + "Puissance : " + ChatColor.GOLD + itemRadiusNb);
         itemRadiusNbumber.setItemMeta(itemMeta);

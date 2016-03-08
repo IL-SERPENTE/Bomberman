@@ -171,7 +171,7 @@ public class GameManager extends Game<PlayerBomberman> {
     public void handleLogout(Player player) {
         super.handleLogout(player);
 
-        if (getConnectedPlayers() - 1 <= 1 && getStatus().equals(Status.IN_GAME))
+        if (getConnectedPlayers() <= 1 && getStatus().equals(Status.IN_GAME))
             endGame();
     }
 

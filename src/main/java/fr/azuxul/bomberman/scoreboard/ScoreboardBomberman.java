@@ -29,16 +29,15 @@ public class ScoreboardBomberman {
 
         ObjectiveSign objectiveSign = new ObjectiveSign("BombermanSc", ChatColor.AQUA + gameManager.getGameName());
 
-        objectiveSign.setLine(0, ChatColor.GRAY + "00:00");
-        objectiveSign.setLine(1, "Temps restant :");
-        objectiveSign.setLine(2, " ");
-        objectiveSign.setLine(3, ChatColor.GREEN + "Aucun");
-        objectiveSign.setLine(4, "Booster actif :");
-        objectiveSign.setLine(5, "Speed :" + ChatColor.GREEN + " 0");
-        objectiveSign.setLine(6, "Nombre de bombes :" + ChatColor.GREEN + " 0");
-        objectiveSign.setLine(7, "Puissance d'explosion :" + ChatColor.GRAY + " 0");
-        objectiveSign.setLine(8, "  ");
-        objectiveSign.setLine(9, "Joueurs restants :" + ChatColor.GOLD + " 0");
+        objectiveSign.setLine(9, " ");
+        objectiveSign.setLine(8, ChatColor.GOLD + "⚡  Vitesse :" + ChatColor.RESET + " -1");
+        objectiveSign.setLine(7, ChatColor.GOLD + "⠾   Nombre de bombes :" + ChatColor.RESET + " -1");
+        objectiveSign.setLine(6, ChatColor.GOLD + "⚠  Portée de l’explosion :" + ChatColor.RESET + " -1");
+        objectiveSign.setLine(5, "  ");
+        objectiveSign.setLine(4, ChatColor.BLACK.toString() + ChatColor.BOLD + "▓▒░ BOOSTER ACTIF ░▒▓");
+        objectiveSign.setLine(3, ChatColor.RESET + "Aucun");
+        objectiveSign.setLine(2, "   ");
+        objectiveSign.setLine(1, ChatColor.GOLD + "☺  Joueurs restant :" + ChatColor.RESET + " -1");
 
         return objectiveSign;
     }
@@ -59,19 +58,19 @@ public class ScoreboardBomberman {
         }
 
         try {
-            objectiveSign.setLine(0, ChatColor.GRAY + String.format("%02d:%02d", gameManager.getTimer().getMinutes(), gameManager.getTimer().getSeconds()));
+            objectiveSign.setLine(0, ChatColor.GOLD + "⌛   Temps restant : " + ChatColor.RESET + String.format("%02d:%02d", gameManager.getTimer().getMinutes(), gameManager.getTimer().getSeconds()));
         } catch (Exception e) {
             gameManager.getServer().getLogger().info(String.valueOf(e));
         }
 
         PowerupTypes powerup = playerBomberman.getPowerupTypes();
 
-        objectiveSign.setLine(3, ChatColor.GREEN + (powerup == null ? "Aucun" : powerup.getName()));
-        objectiveSign.setLine(5, "Vitesse : " + ChatColor.GREEN + (Math.round(playerBomberman.getSpeed() * 10) - 2));
-        objectiveSign.setLine(6, "Nombre de bombes : " + ChatColor.GREEN + playerBomberman.getBombNumber());
-        objectiveSign.setLine(7, "Puissance d'explosion : " + ChatColor.GREEN + playerBomberman.getRadius());
+        objectiveSign.setLine(3, ChatColor.RESET + (powerup == null ? "Aucun" : powerup.getName()));
+        objectiveSign.setLine(8, ChatColor.GOLD + "⚡   Vitesse : " + ChatColor.RESET + (Math.round(playerBomberman.getSpeed() * 10) - 2));
+        objectiveSign.setLine(7, ChatColor.GOLD + "⠾   Nombre de bombes : " + ChatColor.RESET + playerBomberman.getBombNumber());
+        objectiveSign.setLine(6, ChatColor.GOLD + "⚠  Portée de l’explosion : " + ChatColor.RESET + playerBomberman.getRadius());
 
-        objectiveSign.setLine(9, "Joueurs restants : " + ChatColor.GOLD + gameManager.getConnectedPlayers());
+        objectiveSign.setLine(1, ChatColor.GOLD + "☺   Joueurs restant : " + ChatColor.RESET + gameManager.getConnectedPlayers());
 
         if (!player.getGameMode().equals(GameMode.SPECTATOR) && powerup != null)
             ActionBarAPI.sendMessage(player, ChatColor.GREEN + "Booster : " + ChatColor.GOLD + powerup.getName());
