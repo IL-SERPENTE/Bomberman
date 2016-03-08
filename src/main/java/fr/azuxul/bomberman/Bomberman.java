@@ -3,7 +3,6 @@ package fr.azuxul.bomberman;
 import fr.azuxul.bomberman.entity.Bomb;
 import fr.azuxul.bomberman.entity.Powerup;
 import fr.azuxul.bomberman.event.PlayerEvent;
-import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.EntityTypes;
 import net.samagames.api.SamaGamesAPI;
 import org.bukkit.Difficulty;
@@ -66,12 +65,6 @@ public class Bomberman extends JavaPlugin {
         world.setThunderDuration(0); // Clear weather
         world.setWeatherDuration(0); // Clear weather
 
-    }
-
-    @Override
-    public void onDisable() {
-
-        gameManager.getPowerupManager().getPowerups().forEach(Entity::die);
     }
 
     /**
