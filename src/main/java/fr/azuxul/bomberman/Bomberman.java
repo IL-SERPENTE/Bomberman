@@ -3,14 +3,15 @@ package fr.azuxul.bomberman;
 import fr.azuxul.bomberman.entity.Bomb;
 import fr.azuxul.bomberman.entity.Powerup;
 import fr.azuxul.bomberman.event.PlayerEvent;
+import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.EntityTypes;
 import net.samagames.api.SamaGamesAPI;
 import org.bukkit.Difficulty;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
+import java.util.Map;
 
 /**
  * Main class of Bomberman plugin
@@ -24,6 +25,21 @@ public class Bomberman extends JavaPlugin {
 
     public static GameManager getGameManager() {
         return gameManager;
+    }
+
+    private static void registerEntityInEntityEnum(Class paramClass, String paramString, int paramInt) throws Exception {
+        ((Map<String, Class<? extends Entity>>) getPrivateStatic(EntityTypes.class, "c")).put(paramString, paramClass);
+        ((Map<Class<? extends Entity>, String>) getPrivateStatic(EntityTypes.class, "d")).put(paramClass, paramString);
+        ((Map<Integer, Class<? extends Entity>>) getPrivateStatic(EntityTypes.class, "e")).put(paramInt, paramClass);
+        ((Map<Class<? extends Entity>, Integer>) getPrivateStatic(EntityTypes.class, "f")).put(paramClass, paramInt);
+        ((Map<String, Integer>) getPrivateStatic(EntityTypes.class, "g")).put(paramString, paramInt);
+    }
+
+    private static Object getPrivateStatic(Class clazz, String f) throws Exception {
+        Field field = clazz.getDeclaredField(f);
+        field.setAccessible(true);
+
+        return field.get(null);
     }
 
     @Override
@@ -45,8 +61,12 @@ public class Bomberman extends JavaPlugin {
         getServer().getScheduler().runTaskTimerAsynchronously(this, gameManager.getTimer(), 0L, 20L);
 
         // Register entity
-        registerEntity("Bomb", 69, Bomb.class);
-        registerEntity("Powerup", 70, Powerup.class);
+        try {
+            registerEntityInEntityEnum(Bomb.class, "Bomb", 69);
+            registerEntityInEntityEnum(Powerup.class, "Powerup", 70);
+        } catch (Exception e) {
+            getLogger().warning("Error to register entitys " + e);
+        }
 
         // Kick players
         getServer().getOnlinePlayers().forEach(player -> player.kickPlayer(""));
@@ -65,26 +85,5 @@ public class Bomberman extends JavaPlugin {
         world.setThunderDuration(0); // Clear weather
         world.setWeatherDuration(0); // Clear weather
 
-    }
-
-    /**
-     * Register entity
-     *
-     * @param name  entity name
-     * @param id    entity id
-     * @param clazz entity class
-     */
-    private void registerEntity(String name, int id, Class clazz) {
-
-        // Exception when plugin are reloaded
-
-        try {
-            Method method = EntityTypes.class.getDeclaredMethod("a", Class.class, String.class, int.class); // Get method for register new entity
-            method.setAccessible(true); // Set accessible
-            method.invoke(null, clazz, name, id); // Invoke
-
-        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
-            getLogger().warning(String.valueOf(e));
-        }
     }
 }

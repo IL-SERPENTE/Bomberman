@@ -44,16 +44,18 @@ public class TimerBomberman implements Runnable {
             // GAME TIMER
 
             seconds--;
-            if (seconds <= 0) {
+            if (seconds <= -1) {
                 minutes--;
-                seconds = 60;
-                if (minutes <= 0)
+                seconds = 59;
+                if (minutes <= -1) {
+                    setToZero();
                     gameManager.endGame();
+                }
             }
-        }
 
-        // Update scoreboard to all player
-        server.getOnlinePlayers().forEach(gameManager.getScoreboardBomberman()::display);
+            // Update scoreboard to all player
+            server.getOnlinePlayers().forEach(gameManager.getScoreboardBomberman()::display);
+        }
     }
 
     /**
