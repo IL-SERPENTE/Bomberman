@@ -181,6 +181,10 @@ public class GameManager extends Game<PlayerBomberman> {
 
         List<PlayerBomberman> playerBombermanList = getPlayerBombermanList();
 
+        for (PlayerBomberman playerBomberman : getRegisteredGamePlayers().values()) {
+            playerBomberman.getPlayerIfOnline().sendTitle(ChatColor.GOLD + "Fin de la partie !", ChatColor.GREEN + "Vous avez fait " + playerBomberman.getKills() + " kill(s) !");
+        }
+
         if (!playerBombermanList.isEmpty()) {
 
             Player player = playerBombermanList.get(0).getPlayerIfOnline();

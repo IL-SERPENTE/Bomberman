@@ -132,7 +132,11 @@ public class PlayerEvent implements Listener {
             else {
 
                 event.setDeathMessage(deathMessageBase + " viens de se faire exploser par " + killer.getName());
-                gameManager.getPlayer(killer.getUniqueId()).addCoins(5, "Meurtre de " + player.getName());
+
+                PlayerBomberman killerBomberman = gameManager.getPlayer(killer.getUniqueId());
+
+                killerBomberman.addCoins(5, "Meurtre de " + player.getName());
+                killerBomberman.setKills(killerBomberman.getKills() + 1);
             }
 
             playerBomberman.setSpectator();

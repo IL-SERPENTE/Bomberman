@@ -11,6 +11,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 
 /**
  * Powerup entity
@@ -85,9 +86,9 @@ public class Powerup extends EntityArmorStand {
      */
     public void spawn() {
 
-        world.addEntity(this);
-        world.addEntity(armorStand);
-        world.addEntity(item);
+        world.addEntity(this, CreatureSpawnEvent.SpawnReason.CUSTOM);
+        world.addEntity(armorStand, CreatureSpawnEvent.SpawnReason.CUSTOM);
+        world.addEntity(item, CreatureSpawnEvent.SpawnReason.CUSTOM);
 
         armorStand.getBukkitEntity().setPassenger(item.getBukkitEntity());
     }

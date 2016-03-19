@@ -26,6 +26,7 @@ public class PlayerBomberman extends GamePlayer {
     private int bombNumber;
     private int radius;
     private int placedBombs;
+    private int kills;
     private float speed;
 
     public PlayerBomberman(Player player) {
@@ -35,7 +36,16 @@ public class PlayerBomberman extends GamePlayer {
         bombNumber = 1;
         radius = 2;
         speed = 0.2f;
+        kills = 0;
         caseMap = Bomberman.getGameManager().getMapManager().getCaseAtWorldLocation(player.getLocation());
+    }
+
+    public int getKills() {
+        return kills;
+    }
+
+    public void setKills(int kills) {
+        this.kills = kills;
     }
 
     public float getSpeed() {
