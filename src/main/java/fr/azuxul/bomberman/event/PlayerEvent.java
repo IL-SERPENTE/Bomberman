@@ -49,8 +49,6 @@ public class PlayerEvent implements Listener {
             Player player = event.getPlayer();
             PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
-            System.out.println("ok");
-
             if (material.equals(Material.GREEN_RECORD)) {
                 player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + ChatColor.GREEN + " La musique est désormait activée !");
 
