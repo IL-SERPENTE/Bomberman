@@ -11,6 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -18,6 +19,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
@@ -36,6 +38,48 @@ public class PlayerEvent implements Listener {
     public PlayerEvent(GameManager gameManager) {
 
         this.gameManager = gameManager;
+    }
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+
+        if (event.getItem() != null && (event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK))) {
+
+            Material material = event.getItem().getType();
+            Player player = event.getPlayer();
+            PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
+
+            System.out.println("ok");
+
+            if (material.equals(Material.GREEN_RECORD)) {
+                player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + ChatColor.GREEN + " La musique est désormait activée !");
+
+                ItemStack record = new ItemStack(Material.RECORD_4);
+                ItemMeta itemMeta = record.getItemMeta();
+                itemMeta.setDisplayName(ChatColor.RED + "Desactiver la musique !");
+                record.setItemMeta(itemMeta);
+
+                player.getInventory().setItem(8, record);
+
+                playerBomberman.setPlayMusic(true);
+                playerBomberman.setRecordPlayTime(-2);
+
+            } else if (material.equals(Material.RECORD_4)) {
+                player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + ChatColor.RED + " La musique est désormait desactivée !");
+
+                ItemStack record = new ItemStack(Material.GREEN_RECORD);
+                ItemMeta itemMeta = record.getItemMeta();
+                itemMeta.setDisplayName(ChatColor.GREEN + "Activer la musique !");
+                record.setItemMeta(itemMeta);
+
+                player.getInventory().setItem(8, record);
+
+                playerBomberman.setPlayMusic(false);
+                playerBomberman.stopWaitingRecord(gameManager.getSpawn());
+
+            }
+
+        }
     }
 
     @EventHandler

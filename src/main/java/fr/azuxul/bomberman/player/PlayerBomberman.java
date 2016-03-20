@@ -34,6 +34,7 @@ public class PlayerBomberman extends GamePlayer {
     private int kills;
     private int recordPlayTime;
     private float speed;
+    private boolean playMusic;
 
     public PlayerBomberman(Player player) {
         super(player);
@@ -44,7 +45,16 @@ public class PlayerBomberman extends GamePlayer {
         speed = 0.2f;
         kills = 0;
         recordPlayTime = -2;
+        playMusic = false;
         caseMap = Bomberman.getGameManager().getMapManager().getCaseAtWorldLocation(player.getLocation());
+    }
+
+    public boolean isPlayMusic() {
+        return playMusic;
+    }
+
+    public void setPlayMusic(boolean playMusic) {
+        this.playMusic = playMusic;
     }
 
     public int getKills() {
@@ -152,11 +162,12 @@ public class PlayerBomberman extends GamePlayer {
 
     public void playMusic(Music music, Location location) {
 
-        CraftPlayer craftPlayer = (CraftPlayer) getPlayerIfOnline();
-        PacketPlayOutWorldEvent packetPlayOutWorldEvent = new PacketPlayOutWorldEvent(1005, new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ()), music.getRecordId(), false);
+        if (playMusic) {
+            CraftPlayer craftPlayer = (CraftPlayer) getPlayerIfOnline();
+            PacketPlayOutWorldEvent packetPlayOutWorldEvent = new PacketPlayOutWorldEvent(1005, new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ()), music.getRecordId(), false);
 
-        craftPlayer.getHandle().playerConnection.sendPacket(packetPlayOutWorldEvent);
-
+            craftPlayer.getHandle().playerConnection.sendPacket(packetPlayOutWorldEvent);
+        }
     }
 
     public int getRecordPlayTime() {

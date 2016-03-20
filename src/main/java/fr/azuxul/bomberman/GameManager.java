@@ -178,6 +178,14 @@ public class GameManager extends Game<PlayerBomberman> {
 
         player.setGameMode(GameMode.ADVENTURE);
         player.teleport(spawn);
+        player.getInventory().clear();
+
+        ItemStack record = new ItemStack(Material.GREEN_RECORD);
+        ItemMeta itemMeta = record.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.GREEN + "Activer la musique !");
+        record.setItemMeta(itemMeta);
+
+        player.getInventory().setItem(8, record);
     }
 
     @Override
