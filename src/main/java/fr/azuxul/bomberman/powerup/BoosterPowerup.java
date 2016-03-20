@@ -48,7 +48,7 @@ public class BoosterPowerup implements Powerup {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.WOOD);
+        return new ItemStack(Material.IRON_BLOCK);
     }
 
     @Override
