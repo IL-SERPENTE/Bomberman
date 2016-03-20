@@ -1,12 +1,17 @@
 package fr.azuxul.bomberman.player;
 
 import fr.azuxul.bomberman.Bomberman;
+import fr.azuxul.bomberman.Music;
 import fr.azuxul.bomberman.map.CaseMap;
 import fr.azuxul.bomberman.powerup.PowerupTypes;
+import net.minecraft.server.v1_8_R3.BlockPosition;
+import net.minecraft.server.v1_8_R3.PacketPlayOutWorldEvent;
 import net.samagames.api.games.GamePlayer;
 import net.samagames.tools.scoreboards.ObjectiveSign;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -27,6 +32,7 @@ public class PlayerBomberman extends GamePlayer {
     private int radius;
     private int placedBombs;
     private int kills;
+    private int recordPlayTime;
     private float speed;
 
     public PlayerBomberman(Player player) {
@@ -37,6 +43,7 @@ public class PlayerBomberman extends GamePlayer {
         radius = 2;
         speed = 0.2f;
         kills = 0;
+        recordPlayTime = -2;
         caseMap = Bomberman.getGameManager().getMapManager().getCaseAtWorldLocation(player.getLocation());
     }
 
@@ -133,5 +140,30 @@ public class PlayerBomberman extends GamePlayer {
 
         inventory.setItem(8, itemRadiusNbumber);
         inventory.setItem(7, itemBombNumber);
+    }
+
+    public void stopWaitingRecord(Location spawn) {
+
+        CraftPlayer craftPlayer = (CraftPlayer) getPlayerIfOnline();
+        PacketPlayOutWorldEvent packetPlayOutWorldEvent = new PacketPlayOutWorldEvent(1005, new BlockPosition(spawn.getBlockX(), spawn.getBlockY(), spawn.getBlockZ()), 0, false);
+
+        craftPlayer.getHandle().playerConnection.sendPacket(packetPlayOutWorldEvent);
+    }
+
+    public void playMusic(Music music, Location location) {
+
+        CraftPlayer craftPlayer = (CraftPlayer) getPlayerIfOnline();
+        PacketPlayOutWorldEvent packetPlayOutWorldEvent = new PacketPlayOutWorldEvent(1005, new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ()), music.getRecordId(), false);
+
+        craftPlayer.getHandle().playerConnection.sendPacket(packetPlayOutWorldEvent);
+
+    }
+
+    public int getRecordPlayTime() {
+        return recordPlayTime;
+    }
+
+    public void setRecordPlayTime(int recordPlayTime) {
+        this.recordPlayTime = recordPlayTime;
     }
 }

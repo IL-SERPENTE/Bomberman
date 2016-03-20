@@ -2,6 +2,7 @@ package fr.azuxul.bomberman.timer;
 
 import com.google.gson.JsonPrimitive;
 import fr.azuxul.bomberman.GameManager;
+import fr.azuxul.bomberman.Music;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Status;
 import org.bukkit.Server;
@@ -55,6 +56,28 @@ public class TimerBomberman implements Runnable {
 
             // Update scoreboard to all player
             server.getOnlinePlayers().forEach(gameManager.getScoreboardBomberman()::display);
+        }
+
+        if (!gameStatus.equals(Status.FINISHED)) {
+
+            Music music = gameManager.getMusic();
+
+            gameManager.getInGamePlayers().values().forEach(playerBomberman -> {
+
+                int recordPlayTime = playerBomberman.getRecordPlayTime() + 1;
+
+                if (recordPlayTime > music.getTime() || recordPlayTime == -1) {
+
+                    if (music.equals(Music.WAITING))
+                        playerBomberman.playMusic(music, gameManager.getSpawn());
+                    else
+                        playerBomberman.playMusic(music, playerBomberman.getPlayerIfOnline().getLocation());
+
+                    playerBomberman.setRecordPlayTime(0);
+                } else {
+                    playerBomberman.setRecordPlayTime(recordPlayTime);
+                }
+            });
         }
     }
 

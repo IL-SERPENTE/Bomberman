@@ -39,6 +39,7 @@ public class GameManager extends Game<PlayerBomberman> {
     private final int bombY;
     private Location spawn;
     private Location specSpawn;
+    private Music music;
 
     public GameManager(JavaPlugin plugin) {
 
@@ -50,6 +51,7 @@ public class GameManager extends Game<PlayerBomberman> {
         this.powerupManager = new PowerupManager();
         this.scoreboardBomberman = new ScoreboardBomberman(this);
         this.playerSpawnList = new ArrayList<>();
+        this.music = Music.WAITING;
 
         final JsonObject configs = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs();
         Location pos = LocationUtils.str2loc(configs.get("higher-loc").getAsString());
@@ -133,6 +135,8 @@ public class GameManager extends Game<PlayerBomberman> {
         itemMeta.setDisplayName(ChatColor.GOLD + "Bomb");
         bomb.setItemMeta(itemMeta);
 
+        music = Music.GAME;
+
         for (PlayerBomberman playerBomberman : playerBombermanList) {
 
             Player player = playerBomberman.getPlayerIfOnline();
@@ -152,11 +156,20 @@ public class GameManager extends Game<PlayerBomberman> {
                 if (spawnIndex >= getPlayerSpawnList().size()) {
                     spawnIndex = 0;
                 }
+
+                playerBomberman.stopWaitingRecord(spawn);
+                playerBomberman.playMusic(Music.START, player.getLocation());
+                playerBomberman.setRecordPlayTime(Music.START.getTime() * -1);
+
             }
         }
 
         specSpawn.getWorld().setSpawnLocation(specSpawn.getBlockX(), specSpawn.getBlockY(), specSpawn.getBlockZ());
         super.startGame();
+    }
+
+    public Music getMusic() {
+        return music;
     }
 
     @Override
@@ -183,6 +196,7 @@ public class GameManager extends Game<PlayerBomberman> {
 
         for (PlayerBomberman playerBomberman : getRegisteredGamePlayers().values()) {
             playerBomberman.getPlayerIfOnline().sendTitle(ChatColor.GOLD + "Fin de la partie !", ChatColor.GREEN + "Vous avez fait " + playerBomberman.getKills() + " kill(s) !");
+            playerBomberman.playMusic(Music.END, playerBomberman.getPlayerIfOnline().getLocation());
         }
 
         if (!playerBombermanList.isEmpty()) {

@@ -10,6 +10,8 @@ import net.minecraft.server.v1_8_R3.EntityTNTPrimed;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
@@ -77,6 +79,9 @@ public class Bomb extends EntityTNTPrimed {
             caseMap.explode(false, true, owner);
         else
             caseMap.explode(false, false, owner);
+
+        CraftWorld craftWorld = getWorld().getWorld();
+        craftWorld.playSound(new Location(craftWorld, locX, locY, locZ), Sound.EXPLODE, 10.0f, 20.0f);
     }
 
     @Override

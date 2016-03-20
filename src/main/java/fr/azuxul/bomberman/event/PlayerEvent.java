@@ -1,6 +1,7 @@
 package fr.azuxul.bomberman.event;
 
 import fr.azuxul.bomberman.GameManager;
+import fr.azuxul.bomberman.Music;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import net.samagames.api.games.Status;
 import org.bukkit.ChatColor;
@@ -30,7 +31,7 @@ import org.bukkit.inventory.meta.ItemMeta;
  */
 public class PlayerEvent implements Listener {
 
-    GameManager gameManager;
+    private final GameManager gameManager;
 
     public PlayerEvent(GameManager gameManager) {
 
@@ -140,6 +141,7 @@ public class PlayerEvent implements Listener {
             }
 
             playerBomberman.setSpectator();
+            playerBomberman.playMusic(Music.DEATH, player.getLocation());
 
             if (gameManager.getConnectedPlayers() <= 1)
                 gameManager.endGame();
