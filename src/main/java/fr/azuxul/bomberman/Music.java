@@ -8,7 +8,7 @@ package fr.azuxul.bomberman;
  */
 public enum Music {
 
-    WAITING(2259, 21),
+    WAITING(2259, 18),
     START(2256, 5),
     GAME(2257, 23),
     END(2258, 4),
