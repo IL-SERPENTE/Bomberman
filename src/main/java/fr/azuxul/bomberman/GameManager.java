@@ -148,6 +148,7 @@ public class GameManager extends Game<PlayerBomberman> {
                 playerBomberman.updateInventory();
                 player.setGameMode(GameMode.SURVIVAL);
                 player.teleport(getPlayerSpawnList().get(spawnIndex));
+                player.getInventory().setHeldItemSlot(0);
                 spawnIndex++;
 
                 playerBomberman.setBombNumber(1);
