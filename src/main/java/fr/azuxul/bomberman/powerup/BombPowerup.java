@@ -4,9 +4,11 @@ import fr.azuxul.bomberman.Bomberman;
 import fr.azuxul.bomberman.GameManager;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import net.samagames.tools.powerups.Powerup;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * Bomb powerup
@@ -26,6 +28,14 @@ public class BombPowerup implements Powerup {
 
         playerBomberman.setBombNumber(bombNb);
         gameManager.getScoreboardBomberman().display(player);
+
+        ItemStack bomb = new ItemStack(Material.CARPET, 1, (short) 8);
+        ItemMeta itemMeta = bomb.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.GOLD + "Bomb");
+        bomb.setItemMeta(itemMeta);
+        bomb.setAmount(playerBomberman.getBombNumber() - playerBomberman.getPlacedBombs());
+
+        player.getInventory().setItem(0, bomb);
     }
 
     @Override

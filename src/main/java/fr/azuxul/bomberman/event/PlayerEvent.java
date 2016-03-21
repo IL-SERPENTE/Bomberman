@@ -121,9 +121,10 @@ public class PlayerEvent implements Listener {
                 ItemMeta itemMeta = bomb.getItemMeta();
                 itemMeta.setDisplayName(ChatColor.GOLD + "Bomb");
                 bomb.setItemMeta(itemMeta);
-                player.getInventory().setItem(0, bomb);
 
                 gameManager.getMapManager().spawnBomb(location, playerBomberman);
+                bomb.setAmount(playerBomberman.getBombNumber() - playerBomberman.getPlacedBombs());
+                player.getInventory().setItem(0, bomb);
             }
         }
     }

@@ -113,7 +113,7 @@ public class MapManager {
 
         CaseMap caseMap = gameManager.getMapManager().getCaseAtWorldLocation(location);
 
-        if (caseMap != null) {
+        if (caseMap != null && (caseMap.getBomb() == null || (caseMap.getBomb() != null && !caseMap.getBomb().isAlive()))) {
             player.setPlacedBombs(player.getPlacedBombs() + 1);
 
             block.setType(Material.CARPET);

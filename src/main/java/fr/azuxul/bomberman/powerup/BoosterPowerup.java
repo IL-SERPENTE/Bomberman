@@ -35,8 +35,14 @@ public class BoosterPowerup implements Powerup {
             playerBomberman.setSpeed(playerBomberman.getSpeed() + 0.1f);
         else if (type.equals(PowerupTypes.SLOWNESS))
             playerBomberman.setSpeed(playerBomberman.getSpeed() - 0.1f);
-        else
+        else {
+            if (type.equals(PowerupTypes.AUTO_PLACE)) {
+                //noinspection deprecation
+                player.sendTitle(ChatColor.RED + "\u26A0 Recuperation d'un booster Auto place ! \u26A0", ChatColor.GOLD + "Il place automatiquement des bombs sous vos pieds");
+            }
+
             playerBomberman.setPowerup(type);
+        }
 
         gameManager.getScoreboardBomberman().display(player);
     }

@@ -9,11 +9,15 @@ import net.minecraft.server.v1_8_R3.DamageSource;
 import net.minecraft.server.v1_8_R3.EntityTNTPrimed;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import net.minecraft.server.v1_8_R3.World;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Objects;
 
@@ -82,6 +86,19 @@ public class Bomb extends EntityTNTPrimed {
 
         CraftWorld craftWorld = getWorld().getWorld();
         craftWorld.playSound(new Location(craftWorld, locX, locY, locZ), Sound.EXPLODE, 10.0f, 20.0f);
+
+        Player ownerPlayer = owner.getPlayerIfOnline();
+        if (ownerPlayer != null) {
+
+            ItemStack bomb = new ItemStack(Material.CARPET, 1, (short) 8);
+            ItemMeta itemMeta = bomb.getItemMeta();
+            itemMeta.setDisplayName(ChatColor.GOLD + "Bomb");
+            bomb.setItemMeta(itemMeta);
+            bomb.setAmount(owner.getBombNumber() - owner.getPlacedBombs());
+
+            ownerPlayer.getInventory().setItem(0, bomb);
+        }
+
     }
 
     @Override
