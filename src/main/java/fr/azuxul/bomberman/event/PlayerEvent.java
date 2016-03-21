@@ -116,13 +116,12 @@ public class PlayerEvent implements Listener {
 
             if (playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs()) {
 
-                event.setCancelled(false);
                 ItemStack bomb = new ItemStack(Material.CARPET, 1, (short) 8);
                 ItemMeta itemMeta = bomb.getItemMeta();
                 itemMeta.setDisplayName(ChatColor.GOLD + "Bomb");
                 bomb.setItemMeta(itemMeta);
 
-                gameManager.getMapManager().spawnBomb(location, playerBomberman);
+                event.setCancelled(!gameManager.getMapManager().spawnBomb(location, playerBomberman));
                 bomb.setAmount(playerBomberman.getBombNumber() - playerBomberman.getPlacedBombs());
                 player.getInventory().setItem(0, bomb);
             }

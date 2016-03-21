@@ -106,7 +106,7 @@ public class MapManager {
     }
 
     @SuppressWarnings("deprecation")
-    public void spawnBomb(Location location, PlayerBomberman player) {
+    public boolean spawnBomb(Location location, PlayerBomberman player) {
 
         location.setY(gameManager.getBombY());
         Block block = location.getBlock();
@@ -130,6 +130,10 @@ public class MapManager {
                 ((CraftWorld) location.getWorld()).getHandle().addEntity(bomb, CreatureSpawnEvent.SpawnReason.CUSTOM);
 
             }, 20L);
+
+            return true;
+        } else {
+            return false;
         }
     }
 
