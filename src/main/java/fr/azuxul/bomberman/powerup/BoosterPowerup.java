@@ -49,12 +49,18 @@ public class BoosterPowerup implements Powerup {
 
     @Override
     public String getName() {
-        return ChatColor.GOLD + "Booster";
+        if (type.equals(PowerupTypes.SPEED) || type.equals(PowerupTypes.SLOWNESS))
+            return ChatColor.AQUA + "Speed modifier";
+        else
+            return ChatColor.GOLD + "Booster";
     }
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.IRON_BLOCK);
+        if (type.equals(PowerupTypes.SPEED) || type.equals(PowerupTypes.SLOWNESS))
+            return new ItemStack(Material.REDSTONE_BLOCK);
+        else
+            return new ItemStack(Material.IRON_BLOCK);
     }
 
     @Override
