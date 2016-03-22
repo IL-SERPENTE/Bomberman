@@ -45,7 +45,7 @@ public class BombPowerup implements Powerup {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.TNT);
+        return new ItemStack(Material.DIAMOND_BLOCK);
     }
 
     @Override
