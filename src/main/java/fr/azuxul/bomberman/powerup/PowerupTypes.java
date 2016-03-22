@@ -1,5 +1,6 @@
 package fr.azuxul.bomberman.powerup;
 
+import net.samagames.api.SamaGamesAPI;
 import org.apache.commons.lang.math.RandomUtils;
 
 import javax.annotation.Nonnull;
@@ -12,20 +13,20 @@ import javax.annotation.Nonnull;
  */
 public enum PowerupTypes {
 
-    SPEED("Speed", 7),
-    SLOWNESS("Lenteur", 3),
-    AUTO_PLACE("Auto place", 1),
-    RANDOM_FUSE("Mauvais contact", 6),
-    HYPER_BOMB("Hyper bomb", 7),
-    SUPER_BOMB("Super bomb", 5);
+    SPEED("Speed", "speed"),
+    SLOWNESS("Lenteur", "slowness"),
+    AUTO_PLACE("Auto place", "auto-place"),
+    RANDOM_FUSE("Mauvais contact", "random-fuse"),
+    HYPER_BOMB("Hyper bomb", "hyper-bomb"),
+    SUPER_BOMB("Super bomb", "super-bomb");
 
     private final String name;
     private final int chance;
 
-    PowerupTypes(String name, int chance) {
+    PowerupTypes(String name, String jsonName) {
 
         this.name = name;
-        this.chance = chance;
+        this.chance = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs().get("powerup-chance").getAsJsonObject().get(jsonName).getAsInt();
     }
 
     @Nonnull

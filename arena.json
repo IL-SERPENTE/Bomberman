@@ -12,6 +12,14 @@
     "world, 1, 70, 20, 0, 0",
     "world, 1, 70, -18, 0, 0"
   ],
+  "booster-chance": {
+    "speed": 7,
+    "slowness": 3,
+    "auto-place": 1,
+    "random-fuse": 6,
+    "hyper-bomb": 7,
+    "super-bomb": 5
+  },
   "higher-loc": "world, 27, 71, 27, 0, 0",
   "smaller-loc": "world, -25, 71, -25, 0, 0",
   "timer": 8
