@@ -26,7 +26,7 @@ public enum PowerupTypes {
     PowerupTypes(String name, String jsonName) {
 
         this.name = name;
-        this.chance = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs().get("powerup-chance").getAsJsonObject().get(jsonName).getAsInt();
+        this.chance = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs().get("booster-chance").getAsJsonObject().get(jsonName).getAsInt();
     }
 
     @Nonnull
