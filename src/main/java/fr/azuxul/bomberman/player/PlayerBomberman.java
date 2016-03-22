@@ -45,7 +45,7 @@ public class PlayerBomberman extends GamePlayer {
         speed = 0.2f;
         kills = 0;
         recordPlayTime = -2;
-        playMusic = false;
+        playMusic = true;
         caseMap = Bomberman.getGameManager().getMapManager().getCaseAtWorldLocation(player.getLocation());
     }
 

@@ -10,6 +10,7 @@ import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Game;
 import net.samagames.api.games.Status;
 import net.samagames.tools.LocationUtils;
+import net.samagames.tools.RulesBook;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -37,9 +38,11 @@ public class GameManager extends Game<PlayerBomberman> {
     private final MapManager mapManager;
     private final Plugin plugin;
     private final int bombY;
+    private final ItemStack rulesBook;
     private Location spawn;
     private Location specSpawn;
     private Music music;
+
 
     public GameManager(JavaPlugin plugin) {
 
@@ -62,6 +65,10 @@ public class GameManager extends Game<PlayerBomberman> {
         this.mapManager = new MapManager(this, neg, pos);
 
         initLocations();
+
+        this.rulesBook = new RulesBook("§6§lLivre de règles").addOwner("Azuxul")
+                .addPage("§lA",
+                        " B").toItemStack();
     }
 
     /**
@@ -169,6 +176,10 @@ public class GameManager extends Game<PlayerBomberman> {
         super.startGame();
     }
 
+    public ItemStack getRulesBook() {
+        return rulesBook;
+    }
+
     public Music getMusic() {
         return music;
     }
@@ -181,9 +192,9 @@ public class GameManager extends Game<PlayerBomberman> {
         player.teleport(spawn);
         player.getInventory().clear();
 
-        ItemStack record = new ItemStack(Material.GREEN_RECORD);
+        ItemStack record = new ItemStack(Material.RECORD_4);
         ItemMeta itemMeta = record.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.GREEN + "Activer la musique !");
+        itemMeta.setDisplayName(ChatColor.RED + "Desactiver la musique !");
         record.setItemMeta(itemMeta);
 
         player.getInventory().setItem(8, record);
