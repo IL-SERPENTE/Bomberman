@@ -169,12 +169,12 @@ public class PlayerEvent implements Listener {
             final String deathMessageBase = gameManager.getCoherenceMachine().getGameTag() + " " + player.getName();
 
             if (killer == null)
-                event.setDeathMessage(deathMessageBase + " viens d'exploser");
+                event.setDeathMessage(deathMessageBase + " vient d'exploser");
             else if (killer.equals(player))
-                event.setDeathMessage(deathMessageBase + " viens de se faire exploser");
+                event.setDeathMessage(deathMessageBase + " vient de se faire exploser");
             else {
 
-                event.setDeathMessage(deathMessageBase + " viens de se faire exploser par " + killer.getName());
+                event.setDeathMessage(deathMessageBase + " vient de se faire exploser par " + killer.getName());
 
                 PlayerBomberman killerBomberman = gameManager.getPlayer(killer.getUniqueId());
 
