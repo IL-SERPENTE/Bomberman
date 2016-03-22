@@ -66,9 +66,29 @@ public class GameManager extends Game<PlayerBomberman> {
 
         initLocations();
 
-        this.rulesBook = new RulesBook("§6§lLivre de règles").addOwner("Azuxul")
-                .addPage("§lA",
-                        " B").toItemStack();
+        this.rulesBook = new RulesBook(ChatColor.RED + "§lBomberman").addOwner("Azuxul")
+                .addPage("§lBut du jeu", " Le but est de faire\n" +
+                        " exploser les autres\n joueurs et d'être\n" +
+                        " le dernier joueur\n à être en vie !\n" +
+                        " La partie se termine\n" +
+                        " lorsqu'il reste un\n joueur ou que le\n" +
+                        " timer est arrivé à 0.")
+                .addPage("§lBombes", " Le nombre de bombes\n est à 1 par defaut,\n" +
+                        " mais vous pouvez\n récuperer des\n" +
+                        " powerups afin de\n l'augmenter tout\n" +
+                        " comme la force de\n l'explosion. Les\n" +
+                        " bombes cassent le\n premier bloc qu'elles\n" +
+                        " rencontrent et\n explosent en chaine !")
+                .addPage("§lBooster 1/2", " Différents boosters\n" +
+                        " apparaîtront\n lorsqu'un mur\n" +
+                        " explosera, il en\n exsiste de trois\n" +
+                        " types : Les booster\n positifs, les négatifs\n" +
+                        " et ceux de vitesse.\n" +
+                        " Le booster est infini\n jusqu'à en\n" +
+                        " récuperer un autre.\n En se déplaçant\n")
+                .addPage("§lBooster 2/2", " en sneak, vous\n" +
+                        " ne récupérez pas\n les boosters.")
+                .toItemStack();
     }
 
     /**
@@ -198,6 +218,7 @@ public class GameManager extends Game<PlayerBomberman> {
         record.setItemMeta(itemMeta);
 
         player.getInventory().setItem(8, record);
+        player.getInventory().setItem(4, getRulesBook());
     }
 
     @Override
