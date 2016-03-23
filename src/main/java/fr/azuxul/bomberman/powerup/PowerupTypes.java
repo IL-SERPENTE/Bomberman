@@ -16,7 +16,7 @@ public enum PowerupTypes {
     SPEED("Speed", "speed"),
     SLOWNESS("Lenteur", "slowness"),
     AUTO_PLACE("Auto place", "auto-place"),
-    RANDOM_FUSE("Mauvais contact", "random-fuse"),
+    RANDOM_FUSE("Random bomb", "random-fuse"),
     HYPER_BOMB("Hyper bomb", "hyper-bomb"),
     SUPER_BOMB("Super bomb", "super-bomb");
 
