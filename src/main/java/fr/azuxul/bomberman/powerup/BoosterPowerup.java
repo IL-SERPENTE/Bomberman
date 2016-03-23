@@ -38,7 +38,7 @@ public class BoosterPowerup implements Powerup {
         else {
             if (type.equals(PowerupTypes.AUTO_PLACE)) {
                 //noinspection deprecation
-                player.sendTitle(ChatColor.RED + "\u26A0 Recuperation d'un booster Auto place ! \u26A0", ChatColor.GOLD + "Il place automatiquement des bombs sous vos pieds");
+                player.sendTitle(ChatColor.RED + "\u26A0 Malus \"AutoPlace\" activé ! \u26A0", ChatColor.GOLD + "Il place automatiquement des bombs sous vos pieds");
             }
 
             playerBomberman.setPowerup(type);
