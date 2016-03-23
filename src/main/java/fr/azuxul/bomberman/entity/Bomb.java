@@ -32,6 +32,7 @@ public class Bomb extends EntityTNTPrimed {
     private static GameManager gameManager;
     private final int radius;
     private final PlayerBomberman owner;
+    private final Location barierLocation;
 
     public Bomb(World world, double x, double y, double z, int fuseTicks, int radius, Player owner) {
         super(world, x, y, z, ((CraftPlayer) owner).getHandle());
@@ -44,6 +45,7 @@ public class Bomb extends EntityTNTPrimed {
         this.motY = 0.15;
         this.motZ = 0;
         this.velocityChanged = true;
+        this.barierLocation = new Location(world.getWorld(), x, y + 1, z);
     }
 
     @Override
@@ -99,6 +101,7 @@ public class Bomb extends EntityTNTPrimed {
             ownerPlayer.getInventory().setItem(0, bomb);
         }
 
+        barierLocation.getBlock().setType(Material.AIR);
     }
 
     @Override
