@@ -91,6 +91,11 @@ public class GameManager extends Game<PlayerBomberman> {
                 .toItemStack();
     }
 
+    public boolean isTestServer() {
+
+        return SamaGamesAPI.get().getServerName().startsWith("TestServer_");
+    }
+
     /**
      * Initialize locations from game.json file
      */

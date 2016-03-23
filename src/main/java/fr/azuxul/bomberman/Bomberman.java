@@ -6,8 +6,11 @@ import fr.azuxul.bomberman.event.PlayerEvent;
 import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.EntityTypes;
 import net.samagames.api.SamaGamesAPI;
+import net.samagames.api.resourcepacks.IResourceCallback;
 import org.bukkit.Difficulty;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
@@ -52,7 +55,21 @@ public class Bomberman extends JavaPlugin {
         }
 
         samaGamesAPI.getGameManager().registerGame(gameManager); // Register game on SamaGameAPI
-        samaGamesAPI.getResourcePacksManager().forceUrlPack("http://samagames.net/packs/BomberMan.zip", null);
+        if (!gameManager.isTestServer())
+            samaGamesAPI.getResourcePacksManager().forceUrlPack("http://samagames.net/packs/BomberMan.zip", new IResourceCallback() {
+                @Override
+                public void callback(Player player, PlayerResourcePackStatusEvent.Status status) {
+
+                    if (status.equals(PlayerResourcePackStatusEvent.Status.SUCCESSFULLY_LOADED)) {
+                        gameManager.getPlayer(player.getUniqueId()).setRecordPlayTime(-2);
+                    }
+                }
+
+                @Override
+                public boolean automaticKick(Player player) {
+                    return false;
+                }
+            });
         samaGamesAPI.getGameManager().getGameProperties(); // Get properties
 
         // Register events
