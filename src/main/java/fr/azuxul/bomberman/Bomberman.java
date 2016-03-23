@@ -67,7 +67,7 @@ public class Bomberman extends JavaPlugin {
 
                 @Override
                 public boolean automaticKick(Player player) {
-                    return false;
+                    return true;
                 }
             });
         samaGamesAPI.getGameManager().getGameProperties(); // Get properties

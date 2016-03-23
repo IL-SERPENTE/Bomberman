@@ -66,7 +66,7 @@ public class GameManager extends Game<PlayerBomberman> {
 
         initLocations();
 
-        this.rulesBook = new RulesBook(ChatColor.RED + "§lBomberman").addOwner("Azuxul")
+        this.rulesBook = new RulesBook(ChatColor.RED + "§lBomberman").addOwner("Azuxul").addContributor("LordFinn")
                 .addPage("§lBut du jeu", " Le but est de faire\n" +
                         " exploser les autres\n joueurs et d'être\n" +
                         " le dernier joueur\n à être en vie !\n" +
