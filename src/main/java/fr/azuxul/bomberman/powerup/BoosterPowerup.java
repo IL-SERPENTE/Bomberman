@@ -3,6 +3,7 @@ package fr.azuxul.bomberman.powerup;
 import fr.azuxul.bomberman.Bomberman;
 import fr.azuxul.bomberman.GameManager;
 import fr.azuxul.bomberman.player.PlayerBomberman;
+import net.samagames.tools.Titles;
 import net.samagames.tools.powerups.Powerup;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -37,8 +38,7 @@ public class BoosterPowerup implements Powerup {
             playerBomberman.setSpeed(playerBomberman.getSpeed() - 0.1f);
         else {
             if (type.equals(PowerupTypes.AUTO_PLACE)) {
-                //noinspection deprecation
-                player.sendTitle(ChatColor.RED + "\u26A0 Malus \"AutoPlace\" activé ! \u26A0", ChatColor.GOLD + "Il place automatiquement des bombs sous vos pieds");
+                Titles.sendTitle(player, 1, 2, 1, ChatColor.RED + "\u26A0 Malus \"AutoPlace\" activé ! \u26A0", ChatColor.GOLD + "Il place automatiquement des bombs sous vos pieds");
             }
 
             playerBomberman.setPowerup(type);
