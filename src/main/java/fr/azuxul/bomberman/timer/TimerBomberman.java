@@ -3,6 +3,7 @@ package fr.azuxul.bomberman.timer;
 import com.google.gson.JsonPrimitive;
 import fr.azuxul.bomberman.GameManager;
 import fr.azuxul.bomberman.Music;
+import fr.azuxul.bomberman.player.PlayerBomberman;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Status;
 import org.bukkit.Server;
@@ -60,24 +61,27 @@ public class TimerBomberman implements Runnable {
 
         if (!gameStatus.equals(Status.FINISHED)) {
 
-            Music music = gameManager.getMusic();
+            gameManager.getInGamePlayers().values().forEach(this::sendMusicToPlayer);
+            gameManager.getSpectatorPlayers().values().forEach(this::sendMusicToPlayer);
+        }
+    }
 
-            gameManager.getInGamePlayers().values().forEach(playerBomberman -> {
+    private void sendMusicToPlayer(PlayerBomberman playerBomberman) {
 
-                int recordPlayTime = playerBomberman.getRecordPlayTime() + 1;
+        Music music = gameManager.getMusic();
 
-                if (recordPlayTime > music.getTime() || recordPlayTime == -1) {
+        int recordPlayTime = playerBomberman.getRecordPlayTime() + 1;
 
-                    if (music.equals(Music.WAITING))
-                        playerBomberman.playMusic(music, gameManager.getSpawn());
-                    else
-                        playerBomberman.playMusic(music, playerBomberman.getPlayerIfOnline().getLocation());
+        if (recordPlayTime > music.getTime() || recordPlayTime == -1) {
 
-                    playerBomberman.setRecordPlayTime(0);
-                } else {
-                    playerBomberman.setRecordPlayTime(recordPlayTime);
-                }
-            });
+            if (music.equals(Music.WAITING))
+                playerBomberman.playMusic(music, gameManager.getSpawn());
+            else
+                playerBomberman.playMusic(music, playerBomberman.getPlayerIfOnline().getLocation());
+
+            playerBomberman.setRecordPlayTime(0);
+        } else {
+            playerBomberman.setRecordPlayTime(recordPlayTime);
         }
     }
 
