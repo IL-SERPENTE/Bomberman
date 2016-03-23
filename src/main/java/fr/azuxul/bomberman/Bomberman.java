@@ -56,7 +56,7 @@ public class Bomberman extends JavaPlugin {
 
         samaGamesAPI.getGameManager().registerGame(gameManager); // Register game on SamaGameAPI
         if (!gameManager.isTestServer())
-            samaGamesAPI.getResourcePacksManager().forceUrlPack("http://samagames.net/packs/BomberMan.zip", new IResourceCallback() {
+            samaGamesAPI.getResourcePacksManager().forceUrlPack("http://resources.samagames.net/BomberMan.zip", new IResourceCallback() {
                 @Override
                 public void callback(Player player, PlayerResourcePackStatusEvent.Status status) {
 
