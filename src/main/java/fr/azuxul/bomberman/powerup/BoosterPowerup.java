@@ -38,7 +38,7 @@ public class BoosterPowerup implements Powerup {
             playerBomberman.setSpeed(playerBomberman.getSpeed() - 0.1f);
         else {
             if (type.equals(PowerupTypes.AUTO_PLACE)) {
-                Titles.sendTitle(player, 1, 2, 1, ChatColor.RED + "\u26A0 Malus \"AutoPlace\" activé ! \u26A0", ChatColor.GOLD + "Il place automatiquement des bombs sous vos pieds");
+                Titles.sendTitle(player, 1, 2, 1, ChatColor.RED + "\u26A0 Malus \\\"AutoPlace\\\" activé ! \u26A0", ChatColor.GOLD + "Il place automatiquement des bombs sous vos pieds");
             }
 
             playerBomberman.setPowerup(type);
