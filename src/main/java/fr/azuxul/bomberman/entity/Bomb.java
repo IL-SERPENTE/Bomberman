@@ -41,10 +41,6 @@ public class Bomb extends EntityTNTPrimed {
         this.fuseTicks = fuseTicks;
         this.radius = radius;
         this.owner = gameManager.getPlayer(owner.getUniqueId());
-        this.motX = 0;
-        this.motY = 0.10;
-        this.motZ = 0;
-        this.velocityChanged = true;
         this.barierLocation = new Location(world.getWorld(), x, y + 1, z);
     }
 
