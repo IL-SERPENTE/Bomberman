@@ -133,7 +133,6 @@ public class MapManager {
 
             return true;
         } else {
-            gameManager.getServer().getLogger().info("null bomb: " + (caseMap.getBomb() == null ? caseMap.getBomb() == null : (caseMap.getBomb() == null) + " is alive" + caseMap.getBomb().isAlive()));
             return false;
         }
     }

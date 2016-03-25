@@ -125,8 +125,6 @@ public class PlayerEvent implements Listener {
                     event.setCancelled(false);
                     block.getLocation().add(0, 1, 0).getBlock().setType(Material.BARRIER);
                     bomb.setAmount(playerBomberman.getBombNumber() - playerBomberman.getPlacedBombs());
-                } else {
-                    gameManager.getServer().getLogger().info("Meow ");
                 }
                 player.getInventory().setItem(0, bomb);
             }
