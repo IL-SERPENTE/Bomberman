@@ -42,6 +42,10 @@ public class Bomb extends EntityTNTPrimed {
         this.radius = radius;
         this.owner = gameManager.getPlayer(owner.getUniqueId());
         this.barierLocation = new Location(world.getWorld(), x, y + 1, z);
+        this.motX = 0;
+        this.motY = 0;
+        this.motZ = 0;
+        this.velocityChanged = true;
     }
 
     @Override

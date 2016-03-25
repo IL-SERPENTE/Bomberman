@@ -34,7 +34,6 @@ public class CaseMap {
     List<PlayerBomberman> players;
     int xMap;
     int yMap;
-    CaseMap[][] map;
 
     public CaseMap(GameManager gameManager, Location worldLocation, CaseMap[][] map, int xMap, int yMap) {
 
@@ -46,8 +45,6 @@ public class CaseMap {
         this.block = worldLocation.getBlock().getType();
         this.powerup = null;
         this.gameManager = gameManager;
-
-        this.map = map;
     }
 
     public void explode(boolean cobblestone, boolean ignoreFirstBreak, PlayerBomberman source) {
@@ -72,7 +69,7 @@ public class CaseMap {
 
                 if (hasValidCoordinates(x, y)) {
 
-                    CaseMap caseMap = map[x][y];
+                    CaseMap caseMap = gameManager.getMapManager().getMap()[x][y];
 
                     Material blockBreak = caseMap.explodeCase(cobblestone, source, finalI);
                     boolean continueExplode = false;
