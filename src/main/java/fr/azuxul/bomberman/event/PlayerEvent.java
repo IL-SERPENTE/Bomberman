@@ -86,7 +86,7 @@ public class PlayerEvent implements Listener {
         Player player = event.getPlayer();
         PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
-        if (playerBomberman.isModerator() || playerBomberman.isSpectator()) {
+        if (playerBomberman == null || playerBomberman.isModerator() || playerBomberman.isSpectator()) {
 
             Location locTo = event.getTo();
 

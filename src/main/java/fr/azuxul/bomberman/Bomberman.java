@@ -63,8 +63,10 @@ public class Bomberman extends JavaPlugin {
 
                     if (status.equals(PlayerResourcePackStatusEvent.Status.SUCCESSFULLY_LOADED)) {
                         PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
-                        playerBomberman.setRecordPlayTime(-2);
-                        playerBomberman.setPlayMusic(true);
+                        if (playerBomberman != null) {
+                            playerBomberman.setRecordPlayTime(-2);
+                            playerBomberman.setPlayMusic(true);
+                        }
                     }
                 }
 

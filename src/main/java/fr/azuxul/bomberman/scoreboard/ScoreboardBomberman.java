@@ -49,6 +49,10 @@ public class ScoreboardBomberman {
             return;
 
         PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
+
+        if (playerBomberman == null)
+            return;
+
         ObjectiveSign objectiveSign = playerBomberman.getObjectiveSign();
 
         if (objectiveSign == null) {
