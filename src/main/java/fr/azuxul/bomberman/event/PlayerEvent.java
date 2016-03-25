@@ -18,6 +18,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -95,6 +96,11 @@ public class PlayerEvent implements Listener {
         } else if (!event.getFrom().getBlock().equals(event.getTo().getBlock()) && gameManager.getStatus().equals(Status.IN_GAME))
             gameManager.getMapManager().movePlayer(player, event.getTo());
 
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        event.setCancelled(true);
     }
 
     @EventHandler
