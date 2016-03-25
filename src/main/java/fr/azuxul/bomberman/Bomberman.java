@@ -67,7 +67,6 @@ public class Bomberman extends JavaPlugin {
 
                 @Override
                 public boolean automaticKick(Player player) {
-                    player.kickPlayer("");
                     return true;
                 }
             });
