@@ -12,8 +12,11 @@ import net.samagames.api.games.Status;
 import net.samagames.tools.LocationUtils;
 import net.samagames.tools.RulesBook;
 import org.bukkit.*;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -252,6 +255,18 @@ public class GameManager extends Game<PlayerBomberman> {
             getCoherenceMachine().getTemplateManager().getPlayerWinTemplate().execute(player);
             playerBombermanList.get(0).addCoins(30, "Partie gagné");
             playerBombermanList.get(0).addStars(1, "Partie gagné");
+
+            for (int i = 3; i >= 0; i--) {
+                Firework firework = (Firework) player.getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
+                FireworkMeta fireworkMeta = firework.getFireworkMeta();
+
+                FireworkEffect effect = FireworkEffect.builder().with(FireworkEffect.Type.STAR).trail(true).flicker(true).withColor(Color.ORANGE, Color.RED).withFade(Color.BLUE, Color.GREEN).build();
+
+                fireworkMeta.addEffect(effect);
+                fireworkMeta.setPower(i);
+
+                firework.setFireworkMeta(fireworkMeta);
+            }
         }
 
         this.handleGameEnd();

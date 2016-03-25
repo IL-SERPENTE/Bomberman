@@ -33,6 +33,7 @@ public class PlayerBomberman extends GamePlayer {
     private int placedBombs;
     private int kills;
     private int recordPlayTime;
+    private int autoPlaceTime;
     private float speed;
     private boolean playMusic;
 
@@ -41,12 +42,21 @@ public class PlayerBomberman extends GamePlayer {
         powerupTypes = null;
         objectiveSign = null;
         bombNumber = 1;
+        autoPlaceTime = 0;
         radius = 2;
         speed = 0.2f;
         kills = 0;
         recordPlayTime = -2;
         playMusic = false;
         caseMap = Bomberman.getGameManager().getMapManager().getCaseAtWorldLocation(player.getLocation());
+    }
+
+    public void update() {
+
+        if (autoPlaceTime > 0 && --autoPlaceTime <= 0) {
+
+            powerupTypes = null;
+        }
     }
 
     public boolean isPlayMusic() {
@@ -94,7 +104,14 @@ public class PlayerBomberman extends GamePlayer {
     }
 
     public void setPowerup(PowerupTypes powerupTypes) {
+
         this.powerupTypes = powerupTypes;
+
+        if (powerupTypes.equals(PowerupTypes.AUTO_PLACE)) {
+            autoPlaceTime = 5;
+        } else {
+            autoPlaceTime = 0;
+        }
     }
 
     public int getBombNumber() {
