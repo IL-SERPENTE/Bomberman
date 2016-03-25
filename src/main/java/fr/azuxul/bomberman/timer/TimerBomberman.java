@@ -51,6 +51,7 @@ public class TimerBomberman implements Runnable {
                 seconds = 59;
                 if (minutes <= -1) {
                     setToZero();
+                    gameManager.getServer().getScheduler().runTask(gameManager.getPlugin(), gameManager::endGame);
                     gameManager.endGame();
                 }
             }

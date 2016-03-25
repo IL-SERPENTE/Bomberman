@@ -22,6 +22,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -162,8 +163,11 @@ public class GameManager extends Game<PlayerBomberman> {
     public void startGame() {
 
         List<PlayerBomberman> playerBombermanList = getPlayerBombermanList();
+        List<ArmorValue> armorValues = Arrays.asList(ArmorValue.values());
         Collections.shuffle(getPlayerSpawnList());
+        Collections.shuffle(armorValues);
         int spawnIndex = 0;
+        int armorIndex = 0;
 
         ItemStack bomb = new ItemStack(Material.CARPET, 1, (short) 8);
         ItemMeta itemMeta = bomb.getItemMeta();
@@ -178,19 +182,37 @@ public class GameManager extends Game<PlayerBomberman> {
 
             if (player != null) {
 
+                // Possible helmet data value : 1, 3, 4, 5, 6, 10, 11, 12, 14
+
+                ItemStack helmet = new ItemStack(Material.CARPET, 1, armorValues.get(armorIndex).getHelmetDataValue());
+
+                ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
+                Utils.setLeatherArmorColor(chestplate, armorValues.get(armorIndex).getArmorColor());
+
+                ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
+                Utils.setLeatherArmorColor(boots, Color.fromRGB(242, 127, 165));
+
                 player.getInventory().clear();
                 player.getInventory().addItem(bomb);
                 playerBomberman.updateInventory();
                 player.setGameMode(GameMode.SURVIVAL);
                 player.teleport(getPlayerSpawnList().get(spawnIndex));
                 player.getInventory().setHeldItemSlot(0);
+                player.getInventory().setHelmet(helmet);
+                player.getInventory().setChestplate(chestplate);
+                player.getInventory().setBoots(boots);
                 spawnIndex++;
+                armorIndex++;
 
                 playerBomberman.setBombNumber(1);
                 playerBomberman.setRadius(2);
 
                 if (spawnIndex >= getPlayerSpawnList().size()) {
                     spawnIndex = 0;
+                }
+
+                if (armorIndex >= armorValues.size()) {
+                    armorIndex = 0;
                 }
 
                 playerBomberman.stopWaitingRecord(spawn);
