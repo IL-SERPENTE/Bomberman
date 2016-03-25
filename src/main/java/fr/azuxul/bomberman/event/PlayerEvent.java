@@ -108,8 +108,10 @@ public class PlayerEvent implements Listener {
 
             Location location = block.getLocation();
 
-            if (!location.clone().add(0, -1, 0).getBlock().getType().equals(Material.STONE))
+            if (!location.clone().add(0, -1, 0).getBlock().getType().equals(Material.STONE)) {
+                gameManager.getServer().getLogger().info("Second if error !");
                 return;
+            }
 
             Player player = event.getPlayer();
             PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
@@ -127,7 +129,11 @@ public class PlayerEvent implements Listener {
                 }
                 bomb.setAmount(playerBomberman.getBombNumber() - playerBomberman.getPlacedBombs());
                 player.getInventory().setItem(0, bomb);
+            } else {
+                gameManager.getServer().getLogger().info("Third if error !");
             }
+        } else {
+            gameManager.getServer().getLogger().info("First if error !");
         }
     }
 
