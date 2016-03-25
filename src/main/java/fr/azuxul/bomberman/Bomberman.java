@@ -3,6 +3,7 @@ package fr.azuxul.bomberman;
 import fr.azuxul.bomberman.entity.Bomb;
 import fr.azuxul.bomberman.entity.Powerup;
 import fr.azuxul.bomberman.event.PlayerEvent;
+import fr.azuxul.bomberman.player.PlayerBomberman;
 import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.EntityTypes;
 import net.samagames.api.SamaGamesAPI;
@@ -61,7 +62,9 @@ public class Bomberman extends JavaPlugin {
                 public void callback(Player player, PlayerResourcePackStatusEvent.Status status) {
 
                     if (status.equals(PlayerResourcePackStatusEvent.Status.SUCCESSFULLY_LOADED)) {
-                        gameManager.getPlayer(player.getUniqueId()).setRecordPlayTime(-2);
+                        PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
+                        playerBomberman.setRecordPlayTime(-2);
+                        playerBomberman.setPlayMusic(true);
                     }
                 }
 
