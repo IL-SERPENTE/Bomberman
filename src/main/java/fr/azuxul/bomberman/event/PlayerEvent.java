@@ -110,6 +110,7 @@ public class PlayerEvent implements Listener {
 
         event.setCancelled(true);
 
+        //noinspection deprecation
         if (block.getType().equals(Material.CARPET) && block.getData() == 8 && gameManager.getStatus().equals(Status.IN_GAME)) {
 
             Location location = block.getLocation();

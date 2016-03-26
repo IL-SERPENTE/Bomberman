@@ -125,7 +125,7 @@ public class MapManager {
                 block.setType(Material.AIR);
 
                 int fuseTicks = player.getPowerupTypes() != null && player.getPowerupTypes().equals(PowerupTypes.RANDOM_FUSE) ? (RandomUtils.nextInt(4) + 1) * 20 : 50;
-                Bomb bomb = new Bomb(((CraftWorld) location.getWorld()).getHandle(), location.getX() + 0.5, location.getY() + 0.7, location.getZ() + 0.5, fuseTicks, player.getRadius(), player.getPlayerIfOnline());
+                Bomb bomb = new Bomb(((CraftWorld) location.getWorld()).getHandle(), location.getX() + 0.5, location.getY(), location.getZ() + 0.5, fuseTicks, player.getRadius(), player.getPlayerIfOnline());
 
                 caseMap.setBomb(bomb);
                 ((CraftWorld) location.getWorld()).getHandle().addEntity(bomb, CreatureSpawnEvent.SpawnReason.CUSTOM);
