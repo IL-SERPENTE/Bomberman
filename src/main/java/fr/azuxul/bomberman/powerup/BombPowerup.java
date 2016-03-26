@@ -31,7 +31,7 @@ public class BombPowerup implements Powerup {
 
         ItemStack bomb = new ItemStack(Material.CARPET, 1, (short) 8);
         ItemMeta itemMeta = bomb.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.GOLD + "Bomb");
+        itemMeta.setDisplayName(ChatColor.GOLD + "Bombe");
         bomb.setItemMeta(itemMeta);
         bomb.setAmount(playerBomberman.getBombNumber() - playerBomberman.getPlacedBombs());
 
@@ -40,7 +40,7 @@ public class BombPowerup implements Powerup {
 
     @Override
     public String getName() {
-        return "Bomb";
+        return "Bombe";
     }
 
     @Override
