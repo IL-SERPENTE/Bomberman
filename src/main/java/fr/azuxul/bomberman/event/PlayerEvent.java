@@ -21,6 +21,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
@@ -78,6 +79,14 @@ public class PlayerEvent implements Listener {
 
             }
 
+        }
+    }
+
+    @EventHandler
+    public void onPlayerHeldItem(PlayerItemHeldEvent event) {
+
+        if (gameManager.getStatus().equals(Status.IN_GAME)) {
+            event.setCancelled(true);
         }
     }
 
