@@ -26,16 +26,16 @@ import java.util.Map;
  */
 public class CaseMap {
 
-    GameManager gameManager;
-    Location worldLocation;
-    Powerup powerup;
-    Bomb bomb;
-    Material block;
-    List<PlayerBomberman> players;
-    int xMap;
-    int yMap;
+    private final GameManager gameManager;
+    private final Location worldLocation;
+    private final int xMap;
+    private final int yMap;
+    private Powerup powerup;
+    private Bomb bomb;
+    private Material block;
+    private List<PlayerBomberman> players;
 
-    public CaseMap(GameManager gameManager, Location worldLocation, CaseMap[][] map, int xMap, int yMap) {
+    public CaseMap(GameManager gameManager, Location worldLocation, int xMap, int yMap) {
 
         this.worldLocation = worldLocation;
         this.xMap = xMap;

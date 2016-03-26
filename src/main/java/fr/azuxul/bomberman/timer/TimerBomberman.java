@@ -64,7 +64,7 @@ public class TimerBomberman implements Runnable {
 
             gameManager.getInGamePlayers().values().forEach(PlayerBomberman::update);
             gameManager.getInGamePlayers().values().forEach(this::sendMusicToPlayer);
-            gameManager.getSpectatorPlayers().values().forEach(this::sendMusicToPlayer);
+            gameManager.getSpectatorPlayers().values().forEach(playerBomberman -> sendMusicToPlayer(playerBomberman));
         }
     }
 

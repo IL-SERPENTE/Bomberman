@@ -25,7 +25,7 @@ public class ScoreboardBomberman {
         this.gameManager = gameManager;
     }
 
-    private ObjectiveSign generateObjectiveSign() {
+    private static ObjectiveSign generateObjectiveSign() {
 
         ObjectiveSign objectiveSign = new ObjectiveSign("BombermanSc", ChatColor.DARK_RED.toString() + ChatColor.BOLD + "BOMBER" + ChatColor.WHITE + "MAN");
 

@@ -56,7 +56,6 @@ public class Bomb extends EntityTNTPrimed {
 
     @Override
     public void t_() {
-        if (this.world.spigotConfig.currentPrimedTnt++ <= this.world.spigotConfig.maxTntTicksPerTick) {
 
             if (this.fuseTicks-- <= 0 && isAlive()) {
                 if (!this.world.isClientSide) {
@@ -67,7 +66,6 @@ public class Bomb extends EntityTNTPrimed {
             } else {
                 this.world.addParticle(EnumParticle.SMOKE_NORMAL, this.locX, this.locY + 0.5D, this.locZ, 0.0D, 0.0D, 0.0D);
             }
-        }
     }
 
     public void explode() {
