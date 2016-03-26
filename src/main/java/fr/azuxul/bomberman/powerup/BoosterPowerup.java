@@ -50,7 +50,7 @@ public class BoosterPowerup implements Powerup {
     @Override
     public String getName() {
         if (type.equals(PowerupTypes.SPEED) || type.equals(PowerupTypes.SLOWNESS))
-            return ChatColor.AQUA + "Speed modifié";
+            return ChatColor.AQUA + "Vitesse modifiée";
         else
             return ChatColor.GOLD + "Booster";
     }

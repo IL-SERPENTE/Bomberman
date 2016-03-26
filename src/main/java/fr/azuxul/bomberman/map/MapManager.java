@@ -6,6 +6,7 @@ import fr.azuxul.bomberman.player.PlayerBomberman;
 import fr.azuxul.bomberman.powerup.PowerupTypes;
 import net.samagames.tools.Area;
 import org.apache.commons.lang.math.RandomUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -102,7 +103,7 @@ public class MapManager {
             if (playerBomberman.getPowerupTypes() != null && playerBomberman.getPowerupTypes().equals(PowerupTypes.AUTO_PLACE) && caseMap.getBomb() == null && playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs())
                 gameManager.getMapManager().spawnBomb(locTo.getBlock().getLocation(), playerBomberman);
         } else
-            player.kickPlayer("Out of map");
+            player.kickPlayer(ChatColor.RED + "Sortie de la map !");
     }
 
     @SuppressWarnings("deprecation")

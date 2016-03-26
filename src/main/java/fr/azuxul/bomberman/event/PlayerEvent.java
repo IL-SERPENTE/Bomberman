@@ -51,11 +51,11 @@ public class PlayerEvent implements Listener {
             PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
             if (material.equals(Material.GREEN_RECORD)) {
-                player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + ChatColor.GREEN + " La musique est désormait activée !");
+                player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + ChatColor.GREEN + " La musique est désormais activée !");
 
                 ItemStack record = new ItemStack(Material.RECORD_4);
                 ItemMeta itemMeta = record.getItemMeta();
-                itemMeta.setDisplayName(ChatColor.RED + "Desactiver la musique !");
+                itemMeta.setDisplayName(ChatColor.RED + "Désactiver la musique !");
                 record.setItemMeta(itemMeta);
 
                 player.getInventory().setItem(8, record);
@@ -64,7 +64,7 @@ public class PlayerEvent implements Listener {
                 playerBomberman.setRecordPlayTime(-2);
 
             } else if (material.equals(Material.RECORD_4)) {
-                player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + ChatColor.RED + " La musique est désormait desactivée !");
+                player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + ChatColor.RED + " La musique est désormais desactivée !");
 
                 ItemStack record = new ItemStack(Material.GREEN_RECORD);
                 ItemMeta itemMeta = record.getItemMeta();
@@ -124,7 +124,7 @@ public class PlayerEvent implements Listener {
 
                 ItemStack bomb = new ItemStack(Material.CARPET, 1, (short) 8);
                 ItemMeta itemMeta = bomb.getItemMeta();
-                itemMeta.setDisplayName(ChatColor.GOLD + "Bomb");
+                itemMeta.setDisplayName(ChatColor.GOLD + "Bombe");
                 bomb.setItemMeta(itemMeta);
 
                 if (gameManager.getMapManager().spawnBomb(location, playerBomberman)) {

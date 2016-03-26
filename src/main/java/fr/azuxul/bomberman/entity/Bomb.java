@@ -94,7 +94,7 @@ public class Bomb extends EntityTNTPrimed {
 
             ItemStack bomb = new ItemStack(Material.CARPET, 1, (short) 8);
             ItemMeta itemMeta = bomb.getItemMeta();
-            itemMeta.setDisplayName(ChatColor.GOLD + "Bomb");
+            itemMeta.setDisplayName(ChatColor.GOLD + "Bombe");
             bomb.setItemMeta(itemMeta);
             bomb.setAmount(owner.getBombNumber() - owner.getPlacedBombs());
 

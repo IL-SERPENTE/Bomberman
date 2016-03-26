@@ -244,7 +244,7 @@ public class GameManager extends Game<PlayerBomberman> {
 
         ItemStack record = new ItemStack(Material.RECORD_4);
         ItemMeta itemMeta = record.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.RED + "Desactiver la musique !");
+        itemMeta.setDisplayName(ChatColor.RED + "Désactiver la musique !");
         record.setItemMeta(itemMeta);
 
         player.getInventory().setItem(8, record);
@@ -275,8 +275,8 @@ public class GameManager extends Game<PlayerBomberman> {
             Player player = playerBombermanList.get(0).getPlayerIfOnline();
 
             getCoherenceMachine().getTemplateManager().getPlayerWinTemplate().execute(player);
-            playerBombermanList.get(0).addCoins(30, "Partie gagné");
-            playerBombermanList.get(0).addStars(1, "Partie gagné");
+            playerBombermanList.get(0).addCoins(30, "Partie gagnée");
+            playerBombermanList.get(0).addStars(1, "Partie gagnée");
 
             for (int i = 3; i >= 0; i--) {
                 Firework firework = (Firework) player.getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
