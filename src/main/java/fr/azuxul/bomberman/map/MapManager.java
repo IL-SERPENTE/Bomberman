@@ -45,7 +45,7 @@ public class MapManager {
                 int mapX = worldLocXToMapLocX(x);
                 int mapY = worldLocZToMapLocY(z);
 
-                map[mapX][mapY] = new CaseMap(gameManager, new Location(smallerLoc.getWorld(), x, smallerLoc.getY(), z), map, mapX, mapY);
+                map[mapX][mapY] = new CaseMap(gameManager, new Location(smallerLoc.getWorld(), x, smallerLoc.getY(), z), mapX, mapY);
             }
         }
     }
