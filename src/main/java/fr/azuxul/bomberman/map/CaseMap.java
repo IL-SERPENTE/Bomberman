@@ -122,8 +122,14 @@ public class CaseMap {
 
         if (!players.isEmpty()) {
 
-            for (PlayerBomberman player : players)
-                player.getPlayerIfOnline().damage(777.77D, source.getPlayerIfOnline());
+            for (PlayerBomberman player : players) {
+                Player p = player.getPlayerIfOnline();
+                Player pSource = source.getPlayerIfOnline();
+
+                if (p != null && pSource != null) {
+                    p.damage(777.77D, pSource);
+                }
+            }
 
             players.clear();
         }

@@ -118,7 +118,7 @@ public class Powerup extends EntityArmorStand {
     public void t_() {
         super.t_();
 
-        if (++dispawnTicks >= 600)
+        if (++dispawnTicks >= 600) // 30 seconds
             this.die();
     }
 
