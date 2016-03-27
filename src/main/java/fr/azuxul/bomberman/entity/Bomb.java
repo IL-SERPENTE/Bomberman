@@ -5,10 +5,7 @@ import fr.azuxul.bomberman.GameManager;
 import fr.azuxul.bomberman.map.CaseMap;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import fr.azuxul.bomberman.powerup.PowerupTypes;
-import net.minecraft.server.v1_8_R3.DamageSource;
-import net.minecraft.server.v1_8_R3.EntityTNTPrimed;
-import net.minecraft.server.v1_8_R3.EnumParticle;
-import net.minecraft.server.v1_8_R3.World;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -51,21 +48,32 @@ public class Bomb extends EntityTNTPrimed {
     @Override
     public boolean damageEntity(DamageSource damagesource, float damage) {
 
+        Entity damager = damagesource.i();
+
+        if (damager instanceof EntityPlayer) {
+
+            PlayerBomberman playerBomberman = gameManager.getPlayer(damager.getUniqueID());
+
+            if (owner.equals(playerBomberman) && owner.getPowerupTypes() != null && owner.getPowerupTypes().equals(PowerupTypes.BOMB_ACTIVATOR)) {
+
+                explode();
+            }
+        }
         return false;
     }
 
     @Override
     public void t_() {
 
-            if (this.fuseTicks-- <= 0 && isAlive()) {
-                if (!this.world.isClientSide) {
-                    this.explode();
-                }
-
-                this.die();
-            } else {
-                this.world.addParticle(EnumParticle.SMOKE_NORMAL, this.locX, this.locY + 0.5D, this.locZ, 0.0D, 0.0D, 0.0D);
+        if (this.fuseTicks-- <= 0 && isAlive()) {
+            if (!this.world.isClientSide) {
+                this.explode();
             }
+
+            this.die();
+        } else {
+            this.world.addParticle(EnumParticle.SMOKE_NORMAL, this.locX, this.locY + 0.5D, this.locZ, 0.0D, 0.0D, 0.0D);
+        }
     }
 
     public void explode() {

@@ -28,6 +28,7 @@ import org.bukkit.inventory.meta.ItemMeta;
  */
 public class PlayerBomberman extends GamePlayer {
 
+    private final GameManager gameManager;
     private PowerupTypes powerupTypes;
     private ObjectiveSign objectiveSign;
     private CaseMap caseMap;
@@ -42,6 +43,7 @@ public class PlayerBomberman extends GamePlayer {
 
     public PlayerBomberman(Player player) {
         super(player);
+        gameManager = Bomberman.getGameManager();
         powerupTypes = null;
         objectiveSign = null;
         bombNumber = 1;
@@ -51,7 +53,7 @@ public class PlayerBomberman extends GamePlayer {
         kills = 0;
         recordPlayTime = -2;
         playMusic = false;
-        caseMap = Bomberman.getGameManager().getMapManager().getCaseAtWorldLocation(player.getLocation());
+        caseMap = gameManager.getMapManager().getCaseAtWorldLocation(player.getLocation());
     }
 
     public void update() {
@@ -174,7 +176,6 @@ public class PlayerBomberman extends GamePlayer {
 
     public void explode(int radius) {
 
-        GameManager gameManager = Bomberman.getGameManager();
         Location baseLocation = getPlayerIfOnline().getLocation();
 
         baseLocation.getWorld().playSound(baseLocation, Sound.EXPLODE, 10.0f, 20.0f);
@@ -212,6 +213,40 @@ public class PlayerBomberman extends GamePlayer {
 
             craftPlayer.getHandle().playerConnection.sendPacket(packetPlayOutWorldEvent);
         }
+    }
+
+    public void startMusic() {
+
+        Player player = getPlayerIfOnline();
+
+        player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + ChatColor.GREEN + " La musique est désormais activée !");
+
+        ItemStack record = new ItemStack(Material.RECORD_4);
+        ItemMeta itemMeta = record.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.RED + "Désactiver la musique !");
+        record.setItemMeta(itemMeta);
+
+        player.getInventory().setItem(8, record);
+
+        setPlayMusic(true);
+        setRecordPlayTime(-2);
+    }
+
+    public void stopMusic() {
+
+        Player player = getPlayerIfOnline();
+
+        player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + ChatColor.RED + " La musique est désormais desactivée !");
+
+        ItemStack record = new ItemStack(Material.GREEN_RECORD);
+        ItemMeta itemMeta = record.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.GREEN + "Activer la musique !");
+        record.setItemMeta(itemMeta);
+
+        player.getInventory().setItem(8, record);
+
+        setPlayMusic(false);
+        stopWaitingRecord(gameManager.getSpawn());
     }
 
     public int getRecordPlayTime() {

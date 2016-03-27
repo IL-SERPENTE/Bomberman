@@ -47,38 +47,21 @@ public class PlayerEvent implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
 
-        if (event.getItem() != null && (event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK))) {
+        if (event.getItem() == null)
+            return;
 
-            Material material = event.getItem().getType();
-            Player player = event.getPlayer();
-            PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
+        Player player = event.getPlayer();
+        PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
+        Material material = event.getItem().getType();
+
+        if (event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 
             if (material.equals(Material.GREEN_RECORD)) {
-                player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + ChatColor.GREEN + " La musique est désormais activée !");
 
-                ItemStack record = new ItemStack(Material.RECORD_4);
-                ItemMeta itemMeta = record.getItemMeta();
-                itemMeta.setDisplayName(ChatColor.RED + "Désactiver la musique !");
-                record.setItemMeta(itemMeta);
-
-                player.getInventory().setItem(8, record);
-
-                playerBomberman.setPlayMusic(true);
-                playerBomberman.setRecordPlayTime(-2);
-
+                playerBomberman.startMusic();
             } else if (material.equals(Material.RECORD_4)) {
-                player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + ChatColor.RED + " La musique est désormais desactivée !");
 
-                ItemStack record = new ItemStack(Material.GREEN_RECORD);
-                ItemMeta itemMeta = record.getItemMeta();
-                itemMeta.setDisplayName(ChatColor.GREEN + "Activer la musique !");
-                record.setItemMeta(itemMeta);
-
-                player.getInventory().setItem(8, record);
-
-                playerBomberman.setPlayMusic(false);
-                playerBomberman.stopWaitingRecord(gameManager.getSpawn());
-
+                playerBomberman.stopMusic();
             }
 
         }
