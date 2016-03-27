@@ -1,6 +1,7 @@
 package fr.azuxul.bomberman.player;
 
 import fr.azuxul.bomberman.Bomberman;
+import fr.azuxul.bomberman.GameManager;
 import fr.azuxul.bomberman.Music;
 import fr.azuxul.bomberman.map.CaseMap;
 import fr.azuxul.bomberman.powerup.PowerupTypes;
@@ -12,6 +13,7 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -168,6 +170,30 @@ public class PlayerBomberman extends GamePlayer {
 
         inventory.setItem(8, itemRadiusNbumber);
         inventory.setItem(7, itemBombNumber);
+    }
+
+    public void explode(int radius) {
+
+        GameManager gameManager = Bomberman.getGameManager();
+        Location baseLocation = getPlayerIfOnline().getLocation();
+
+        baseLocation.getWorld().playSound(baseLocation, Sound.EXPLODE, 10.0f, 20.0f);
+
+        int minX = radius * -1;
+
+        for (int x = minX; x <= radius; x++) {
+
+            int minZ = Math.abs(x) - radius;
+            int maxZ = Math.abs(minZ);
+
+            for (int z = minZ; z <= maxZ; z++) {
+                CaseMap explodeCase = gameManager.getMapManager().getCaseAtWorldLocation(baseLocation.clone().add(x, 0, z));
+
+                if (explodeCase != null) {
+                    explodeCase.explodeCase(true, this, 0);
+                }
+            }
+        }
     }
 
     public void stopWaitingRecord(Location spawn) {

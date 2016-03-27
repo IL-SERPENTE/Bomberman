@@ -19,7 +19,8 @@ public enum PowerupTypes {
     RANDOM_FUSE("Random bomb", "random-fuse"),
     HYPER_BOMB("Hyper bomb", "hyper-bomb"),
     SUPER_BOMB("Super bomb", "super-bomb"),
-    SELF_INVULNERABILITY("Self protection", "self-invulnerability");
+    SELF_INVULNERABILITY("Self protection", "self-invulnerability"),
+    EXPLOSION_KILL("Charge nucléaire", "explosion-kill");
 
     private final String name;
     private final int chance;

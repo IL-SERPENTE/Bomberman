@@ -19,7 +19,8 @@
     "random-fuse": 6,
     "hyper-bomb": 7,
     "super-bomb": 5,
-    "self-invulnerability": 4
+    "self-invulnerability": 4,
+    "explosion-kill": 3
   },
   "higher-loc": "world, 27, 71, 27, 0, 0",
   "smaller-loc": "world, -25, 71, -25, 0, 0",

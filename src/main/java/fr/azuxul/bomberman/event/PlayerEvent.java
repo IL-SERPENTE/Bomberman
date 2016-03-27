@@ -216,6 +216,11 @@ public class PlayerEvent implements Listener {
                 killerBomberman.setKills(killerBomberman.getKills() + 1);
             }
 
+            if (playerBomberman.getPowerupTypes() != null && playerBomberman.getPowerupTypes().equals(PowerupTypes.EXPLOSION_KILL)) {
+
+                gameManager.getServer().getScheduler().runTaskLater(gameManager.getPlugin(), () -> playerBomberman.explode(3), 1L);
+            }
+
             playerBomberman.setSpectator();
             playerBomberman.playMusic(Music.DEATH, player.getLocation());
 
