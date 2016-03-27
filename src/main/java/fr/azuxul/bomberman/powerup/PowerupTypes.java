@@ -18,7 +18,8 @@ public enum PowerupTypes {
     AUTO_PLACE("Auto place", "auto-place"),
     RANDOM_FUSE("Random bomb", "random-fuse"),
     HYPER_BOMB("Hyper bomb", "hyper-bomb"),
-    SUPER_BOMB("Super bomb", "super-bomb");
+    SUPER_BOMB("Super bomb", "super-bomb"),
+    SELF_INVULNERABILITY("DEFINE_NAME", "self-invulnerability");
 
     private final String name;
     private final int chance;

@@ -3,6 +3,7 @@ package fr.azuxul.bomberman.event;
 import fr.azuxul.bomberman.GameManager;
 import fr.azuxul.bomberman.Music;
 import fr.azuxul.bomberman.player.PlayerBomberman;
+import fr.azuxul.bomberman.powerup.PowerupTypes;
 import net.samagames.api.games.Status;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -15,6 +16,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -79,6 +81,19 @@ public class PlayerEvent implements Listener {
 
             }
 
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDamageByEntity(EntityDamageByEntityEvent event) {
+
+        if (event.getDamager() != null && event.getDamager() instanceof Player && event.getDamager().equals(event.getEntity())) {
+
+            PlayerBomberman playerBomberman = gameManager.getPlayer(event.getEntity().getUniqueId());
+
+            if (playerBomberman.getPowerupTypes() != null && playerBomberman.getPowerupTypes().equals(PowerupTypes.SELF_INVULNERABILITY)) {
+                event.setCancelled(true);
+            }
         }
     }
 
