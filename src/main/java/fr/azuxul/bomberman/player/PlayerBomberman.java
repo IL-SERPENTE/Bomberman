@@ -8,6 +8,7 @@ import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldEvent;
 import net.samagames.api.games.GamePlayer;
 import net.samagames.tools.scoreboards.ObjectiveSign;
+import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -193,5 +194,9 @@ public class PlayerBomberman extends GamePlayer {
 
     public void setRecordPlayTime(int recordPlayTime) {
         this.recordPlayTime = recordPlayTime;
+    }
+
+    public int getFuseTicks() {
+        return getPowerupTypes() != null && getPowerupTypes().equals(PowerupTypes.RANDOM_FUSE) ? (RandomUtils.nextInt(4) + 1) * 20 : 50;
     }
 }

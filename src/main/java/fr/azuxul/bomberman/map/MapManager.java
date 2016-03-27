@@ -5,7 +5,6 @@ import fr.azuxul.bomberman.entity.Bomb;
 import fr.azuxul.bomberman.player.PlayerBomberman;
 import fr.azuxul.bomberman.powerup.PowerupTypes;
 import net.samagames.tools.Area;
-import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -120,15 +119,17 @@ public class MapManager {
             block.setType(Material.CARPET);
             block.setData((byte) 8);
 
+            Bomb bomb = new Bomb(((CraftWorld) location.getWorld()).getHandle(), location.getX() + 0.5, location.getY(), location.getZ() + 0.5, player.getFuseTicks(), player.getRadius(), player.getPlayerIfOnline());
+
+            caseMap.setBomb(bomb);
+
             gameManager.getServer().getScheduler().runTaskLater(gameManager.getPlugin(), () -> {
 
-                block.setType(Material.AIR);
+                if (caseMap.getBomb() != null && caseMap.getBomb().isAlive() && bomb.isAlive()) {
+                    block.setType(Material.AIR);
 
-                int fuseTicks = player.getPowerupTypes() != null && player.getPowerupTypes().equals(PowerupTypes.RANDOM_FUSE) ? (RandomUtils.nextInt(4) + 1) * 20 : 50;
-                Bomb bomb = new Bomb(((CraftWorld) location.getWorld()).getHandle(), location.getX() + 0.5, location.getY(), location.getZ() + 0.5, fuseTicks, player.getRadius(), player.getPlayerIfOnline());
-
-                caseMap.setBomb(bomb);
-                ((CraftWorld) location.getWorld()).getHandle().addEntity(bomb, CreatureSpawnEvent.SpawnReason.CUSTOM);
+                    ((CraftWorld) location.getWorld()).getHandle().addEntity(bomb, CreatureSpawnEvent.SpawnReason.CUSTOM);
+                }
 
             }, 20L);
 
