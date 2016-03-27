@@ -98,10 +98,9 @@ public class PlayerEvent implements Listener {
 
             Location locTo = event.getTo();
 
-            if (gameManager.getMapManager().getCaseAtWorldLocation(locTo) == null || locTo.getY() <= 0 || locTo.getY() >= 256)
+            if (gameManager.getMapManager().getCaseAtWorldLocation(locTo.getBlockX()  , locTo.getBlockZ()) == null || locTo.getY() <= 0 || locTo.getY() >= 256)
                 player.teleport(gameManager.getSpecSpawn());
-        } else if (!event.getFrom().getBlock().equals(event.getTo().getBlock()) && gameManager.getStatus().equals(Status.IN_GAME))
-            gameManager.getMapManager().movePlayer(player, event.getTo());
+        }
 
     }
 
@@ -137,7 +136,7 @@ public class PlayerEvent implements Listener {
 
                 if (gameManager.getMapManager().spawnBomb(location, playerBomberman)) {
                     event.setCancelled(false);
-                    block.getLocation().add(0, 1, 0).getBlock().setType(Material.BARRIER);
+                    block.getLocation().add(0, 1, 0).getBlock().setType(Material.BARRIER, false);
                     bomb.setAmount(playerBomberman.getBombNumber() - playerBomberman.getPlacedBombs());
                 }
                 player.getInventory().setItem(0, bomb);

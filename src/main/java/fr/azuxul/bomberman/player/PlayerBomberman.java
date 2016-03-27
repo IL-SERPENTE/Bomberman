@@ -31,7 +31,6 @@ public class PlayerBomberman extends GamePlayer {
     private final GameManager gameManager;
     private PowerupTypes powerupTypes;
     private ObjectiveSign objectiveSign;
-    private CaseMap caseMap;
     private int bombNumber;
     private int radius;
     private int placedBombs;
@@ -53,7 +52,6 @@ public class PlayerBomberman extends GamePlayer {
         kills = 0;
         recordPlayTime = -2;
         playMusic = false;
-        caseMap = gameManager.getMapManager().getCaseAtWorldLocation(player.getLocation());
     }
 
     public void update() {
@@ -146,11 +144,8 @@ public class PlayerBomberman extends GamePlayer {
     }
 
     public CaseMap getCaseMap() {
-        return caseMap;
-    }
-
-    public void setCaseMap(CaseMap caseMap) {
-        this.caseMap = caseMap;
+        Location loc = getPlayerIfOnline().getLocation();
+        return gameManager.getMapManager().getCaseAtWorldLocation(loc.getBlockX() , loc.getBlockZ());
     }
 
     public void updateInventory() {
@@ -188,7 +183,7 @@ public class PlayerBomberman extends GamePlayer {
             int maxZ = Math.abs(minZ);
 
             for (int z = minZ; z <= maxZ; z++) {
-                CaseMap explodeCase = gameManager.getMapManager().getCaseAtWorldLocation(baseLocation.clone().add(x, 0, z));
+                CaseMap explodeCase = gameManager.getMapManager().getCaseAtWorldLocation(baseLocation.getBlockX() + x , baseLocation.getBlockZ() + z);
 
                 if (explodeCase != null) {
                     explodeCase.explodeCase(true, this, 0);

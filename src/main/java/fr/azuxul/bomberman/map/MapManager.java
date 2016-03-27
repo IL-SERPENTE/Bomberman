@@ -26,6 +26,9 @@ public class MapManager {
     private final int wight;
     private final GameManager gameManager;
     private final Area area;
+    private final int minBlockX;
+    private final int minBlokcZ;
+
 
     public MapManager(GameManager gameManager, Location smallerLoc, Location higherLoc) {
 
@@ -37,6 +40,8 @@ public class MapManager {
         this.height = area.getSizeZ() + 1;
 
         this.map = new CaseMap[wight][height];
+        this.minBlockX = area.getMin().getBlockX();
+        this.minBlokcZ = area.getMin().getBlockZ();
 
         for (int x = area.getMin().getBlockX(); x <= area.getMax().getBlockX(); x++) {
             for (int z = area.getMin().getBlockZ(); z <= area.getMax().getBlockZ(); z++) {
@@ -55,12 +60,12 @@ public class MapManager {
 
     public int worldLocXToMapLocX(int xWorld) {
 
-        return xWorld - area.getMin().getBlockX();
+        return xWorld - minBlockX;
     }
 
     public int worldLocZToMapLocY(int zWorld) {
 
-        return zWorld - area.getMin().getBlockZ();
+        return zWorld - minBlokcZ;
     }
 
     public int getHeight() {
@@ -71,38 +76,15 @@ public class MapManager {
         return wight;
     }
 
-    public CaseMap getCaseAtWorldLocation(Location location) {
+    public CaseMap getCaseAtWorldLocation(int blockX , int blockZ) {
 
-        CaseMap result = null;
-
-        int x = worldLocXToMapLocX(location.getBlockX());
-        int y = worldLocZToMapLocY(location.getBlockZ());
+        int x = worldLocXToMapLocX(blockX);
+        int y = worldLocZToMapLocY(blockZ);
 
         if (x < wight && x > -1 && y < height && y > -1)
-            result = map[x][y];
-
-        return result;
-    }
-
-    public void movePlayer(Player player, Location locTo) {
-
-        PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
-
-        CaseMap caseMap = playerBomberman.getCaseMap();
-
-        if (caseMap != null)
-            caseMap.getPlayers().remove(playerBomberman);
-
-        caseMap = getCaseAtWorldLocation(locTo);
-
-        if (caseMap != null) {
-            playerBomberman.setCaseMap(caseMap);
-            caseMap.getPlayers().add(playerBomberman);
-
-            if (playerBomberman.getPowerupTypes() != null && playerBomberman.getPowerupTypes().equals(PowerupTypes.AUTO_PLACE) && caseMap.getBomb() == null && playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs())
-                gameManager.getMapManager().spawnBomb(locTo.getBlock().getLocation(), playerBomberman);
-        } else
-            player.kickPlayer(ChatColor.RED + "Sortie de la map !");
+            return map[x][y];
+        else
+            return null;
     }
 
     @SuppressWarnings("deprecation")
@@ -111,13 +93,12 @@ public class MapManager {
         location.setY(gameManager.getBombY());
         Block block = location.getBlock();
 
-        CaseMap caseMap = gameManager.getMapManager().getCaseAtWorldLocation(location);
+        CaseMap caseMap = gameManager.getMapManager().getCaseAtWorldLocation(location.getBlockX() , location.getBlockZ());
 
         if (caseMap != null && (caseMap.getBomb() == null || (caseMap.getBomb() != null && !caseMap.getBomb().isAlive()))) {
             player.setPlacedBombs(player.getPlacedBombs() + 1);
 
-            block.setType(Material.CARPET);
-            block.setData((byte) 8);
+            block.setTypeIdAndData(Material.CARPET.getId(), (byte) 8, false);
 
             Bomb bomb = new Bomb(((CraftWorld) location.getWorld()).getHandle(), location.getX() + 0.5, location.getY(), location.getZ() + 0.5, player.getFuseTicks(), player.getRadius(), player.getPlayerIfOnline());
 
@@ -126,7 +107,7 @@ public class MapManager {
             gameManager.getServer().getScheduler().runTaskLater(gameManager.getPlugin(), () -> {
 
                 if (caseMap.getBomb() != null && caseMap.getBomb().isAlive() && bomb.isAlive()) {
-                    block.setType(Material.AIR);
+                    block.setType(Material.AIR, false);
 
                     ((CraftWorld) location.getWorld()).getHandle().addEntity(bomb, CreatureSpawnEvent.SpawnReason.CUSTOM);
                 }

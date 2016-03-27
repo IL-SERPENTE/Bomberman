@@ -138,7 +138,7 @@ public class CaseMap {
     public void updateInWorld() {
 
         for (int y = 0; y <= 2; y++) {
-            worldLocation.clone().add(0, y, 0).getBlock().setType(block);
+            worldLocation.clone().add(0, y, 0).getBlock().setType(block, false);
         }
     }
 
@@ -149,12 +149,8 @@ public class CaseMap {
 
             Location location = worldLocation.clone().add(0, -1, 0);
 
-            for (Player player : gameManager.getServer().getOnlinePlayers()) {
-
-                player.sendBlockChange(location, Material.STAINED_CLAY, (byte) 14);
-
-                gameManager.getServer().getScheduler().runTaskLaterAsynchronously(gameManager.getPlugin(), () -> player.sendBlockChange(location, Material.STONE, (byte) 0), RandomUtils.nextInt(30) + 30L);
-            }
+            location.getBlock().setTypeIdAndData(Material.STAINED_CLAY.getId(), (byte) 14, false);
+            gameManager.getServer().getScheduler().runTaskLater(gameManager.getPlugin(), () -> location.getBlock().setType(Material.STONE, false), RandomUtils.nextInt(30) + 30L);
         }
     }
 

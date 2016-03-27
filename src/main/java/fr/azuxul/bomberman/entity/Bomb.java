@@ -29,7 +29,6 @@ public class Bomb extends EntityTNTPrimed {
     private static GameManager gameManager;
     private final int radius;
     private final PlayerBomberman owner;
-    private final Location barierLocation;
 
     public Bomb(World world, double x, double y, double z, int fuseTicks, int radius, Player owner) {
         super(world, x, y, z, ((CraftPlayer) owner).getHandle());
@@ -38,7 +37,6 @@ public class Bomb extends EntityTNTPrimed {
         this.fuseTicks = fuseTicks;
         this.radius = radius;
         this.owner = gameManager.getPlayer(owner.getUniqueId());
-        this.barierLocation = new Location(world.getWorld(), x, y + 1, z);
         this.motX = 0;
         this.motY = 0;
         this.motZ = 0;
@@ -78,22 +76,19 @@ public class Bomb extends EntityTNTPrimed {
 
     public void explode() {
 
-        CaseMap caseMap = gameManager.getMapManager().getCaseAtWorldLocation(new Location(getWorld().getWorld(), locX, locY, locZ));
+        CraftWorld craftWorld = getWorld().getWorld();
+        Location baseLocation = new Location(craftWorld, locX, locY, locZ);
+        CaseMap caseMap = gameManager.getMapManager().getCaseAtWorldLocation((int) Math.floor(locX), (int) Math.floor(locZ));
 
         this.owner.setPlacedBombs(this.owner.getPlacedBombs() - 1);
         die();
 
-        if (owner.getPowerupTypes() == null)
-            caseMap.explode(false, false, owner);
-        else if (owner.getPowerupTypes().equals(PowerupTypes.HYPER_BOMB))
-            caseMap.explode(true, false, owner);
-        else if (owner.getPowerupTypes().equals(PowerupTypes.SUPER_BOMB))
-            caseMap.explode(false, true, owner);
-        else
-            caseMap.explode(false, false, owner);
 
-        CraftWorld craftWorld = getWorld().getWorld();
-        craftWorld.playSound(new Location(craftWorld, locX, locY, locZ), Sound.EXPLODE, 10.0f, 20.0f);
+        PowerupTypes powerup = owner.getPowerupTypes();
+        // powerup can be null
+        caseMap.explode(PowerupTypes.HYPER_BOMB.equals(powerup), PowerupTypes.SUPER_BOMB.equals(powerup), owner);
+
+        craftWorld.playSound(baseLocation, Sound.EXPLODE, 10.0f, 20.0f);
 
         Player ownerPlayer = owner.getPlayerIfOnline();
         if (ownerPlayer != null) {
@@ -107,7 +102,7 @@ public class Bomb extends EntityTNTPrimed {
             ownerPlayer.getInventory().setItem(0, bomb);
         }
 
-        barierLocation.getBlock().setType(Material.AIR);
+        baseLocation.add(0, 1, 0).getBlock().setType(Material.AIR , false);
     }
 
     @Override
