@@ -121,7 +121,7 @@ public class PlayerEvent implements Listener {
 
             Location location = block.getLocation();
 
-            if (!location.clone().add(0, -1, 0).getBlock().getType().equals(Material.STONE))
+            if (!location.clone().add(0, -1, 0).getBlock().getType().equals(Material.STONE) && !location.clone().add(0, -1, 0).getBlock().getType().equals(Material.STAINED_CLAY))
                 return;
 
             Player player = event.getPlayer();
