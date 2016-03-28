@@ -100,8 +100,8 @@ public class PlayerEvent implements Listener {
 
             if (gameManager.getMapManager().getCaseAtWorldLocation(locTo.getBlockX()  , locTo.getBlockZ()) == null || locTo.getY() <= 0 || locTo.getY() >= 256)
                 player.teleport(gameManager.getSpecSpawn());
-        }
-
+        } else if (!event.getFrom().getBlock().equals(event.getTo().getBlock()) && gameManager.getStatus().equals(Status.IN_GAME))
+            gameManager.getMapManager().movePlayer(player, event.getTo());
     }
 
     @EventHandler

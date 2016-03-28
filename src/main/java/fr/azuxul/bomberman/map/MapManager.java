@@ -87,6 +87,26 @@ public class MapManager {
             return null;
     }
 
+    public void movePlayer(Player player, Location locTo) {
+
+        PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
+        CaseMap caseMap = playerBomberman.getCaseMap();
+
+        if (caseMap != null)
+            caseMap.getPlayers().remove(playerBomberman);
+
+        caseMap = getCaseAtWorldLocation(locTo.getBlockX(), locTo.getBlockZ());
+
+        if (caseMap != null) {
+            caseMap.getPlayers().add(playerBomberman);
+
+            if (playerBomberman.getPowerupTypes() != null && playerBomberman.getPowerupTypes().equals(PowerupTypes.AUTO_PLACE) && caseMap.getBomb() == null && playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs())
+                gameManager.getMapManager().spawnBomb(locTo.getBlock().getLocation(), playerBomberman);
+
+        } else
+            player.kickPlayer(ChatColor.RED + "Sortie de la map !");
+    }
+
     @SuppressWarnings("deprecation")
     public boolean spawnBomb(Location location, PlayerBomberman player) {
 
