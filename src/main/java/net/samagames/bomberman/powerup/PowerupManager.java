@@ -1,7 +1,7 @@
-package fr.azuxul.bomberman.powerup;
+package net.samagames.bomberman.powerup;
 
-import fr.azuxul.bomberman.entity.Powerup;
 import net.minecraft.server.v1_8_R3.World;
+import net.samagames.bomberman.entity.Powerup;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 

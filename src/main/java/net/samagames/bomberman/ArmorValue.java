@@ -1,4 +1,4 @@
-package fr.azuxul.bomberman;
+package net.samagames.bomberman;
 
 import org.bukkit.Color;
 

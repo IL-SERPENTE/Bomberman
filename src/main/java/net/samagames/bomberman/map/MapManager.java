@@ -1,9 +1,9 @@
-package fr.azuxul.bomberman.map;
+package net.samagames.bomberman.map;
 
-import fr.azuxul.bomberman.GameManager;
-import fr.azuxul.bomberman.entity.Bomb;
-import fr.azuxul.bomberman.player.PlayerBomberman;
-import fr.azuxul.bomberman.powerup.PowerupTypes;
+import net.samagames.bomberman.GameManager;
+import net.samagames.bomberman.entity.Bomb;
+import net.samagames.bomberman.player.PlayerBomberman;
+import net.samagames.bomberman.powerup.PowerupTypes;
 import net.samagames.tools.Area;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

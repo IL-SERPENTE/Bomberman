@@ -1,10 +1,10 @@
-package fr.azuxul.bomberman.entity;
+package net.samagames.bomberman.entity;
 
-import fr.azuxul.bomberman.Bomberman;
-import fr.azuxul.bomberman.GameManager;
-import fr.azuxul.bomberman.NBTTags;
 import net.minecraft.server.v1_8_R3.*;
 import net.samagames.api.games.Status;
+import net.samagames.bomberman.Bomberman;
+import net.samagames.bomberman.GameManager;
+import net.samagames.bomberman.NBTTags;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bukkit.GameMode;

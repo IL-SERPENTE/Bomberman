@@ -1,10 +1,10 @@
-package fr.azuxul.bomberman.event;
+package net.samagames.bomberman.event;
 
-import fr.azuxul.bomberman.GameManager;
-import fr.azuxul.bomberman.Music;
-import fr.azuxul.bomberman.player.PlayerBomberman;
-import fr.azuxul.bomberman.powerup.PowerupTypes;
 import net.samagames.api.games.Status;
+import net.samagames.bomberman.GameManager;
+import net.samagames.bomberman.Music;
+import net.samagames.bomberman.player.PlayerBomberman;
+import net.samagames.bomberman.powerup.PowerupTypes;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;

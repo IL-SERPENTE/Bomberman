@@ -1,14 +1,14 @@
-package fr.azuxul.bomberman;
+package net.samagames.bomberman;
 
 import com.google.gson.JsonObject;
-import fr.azuxul.bomberman.map.MapManager;
-import fr.azuxul.bomberman.player.PlayerBomberman;
-import fr.azuxul.bomberman.powerup.PowerupManager;
-import fr.azuxul.bomberman.scoreboard.ScoreboardBomberman;
-import fr.azuxul.bomberman.timer.TimerBomberman;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Game;
 import net.samagames.api.games.Status;
+import net.samagames.bomberman.map.MapManager;
+import net.samagames.bomberman.player.PlayerBomberman;
+import net.samagames.bomberman.powerup.PowerupManager;
+import net.samagames.bomberman.scoreboard.ScoreboardBomberman;
+import net.samagames.bomberman.timer.TimerBomberman;
 import net.samagames.tools.LocationUtils;
 import net.samagames.tools.RulesBook;
 import org.bukkit.*;

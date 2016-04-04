@@ -1,11 +1,11 @@
-package fr.azuxul.bomberman.timer;
+package net.samagames.bomberman.timer;
 
 import com.google.gson.JsonPrimitive;
-import fr.azuxul.bomberman.GameManager;
-import fr.azuxul.bomberman.Music;
-import fr.azuxul.bomberman.player.PlayerBomberman;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.games.Status;
+import net.samagames.bomberman.GameManager;
+import net.samagames.bomberman.Music;
+import net.samagames.bomberman.player.PlayerBomberman;
 import org.bukkit.Server;
 
 /**

@@ -1,12 +1,12 @@
-package fr.azuxul.bomberman.map;
+package net.samagames.bomberman.map;
 
-import fr.azuxul.bomberman.GameManager;
-import fr.azuxul.bomberman.entity.Bomb;
-import fr.azuxul.bomberman.entity.Powerup;
-import fr.azuxul.bomberman.player.PlayerBomberman;
-import fr.azuxul.bomberman.powerup.BombPowerup;
-import fr.azuxul.bomberman.powerup.BoosterPowerup;
-import fr.azuxul.bomberman.powerup.RadiusPowerup;
+import net.samagames.bomberman.GameManager;
+import net.samagames.bomberman.entity.Bomb;
+import net.samagames.bomberman.entity.Powerup;
+import net.samagames.bomberman.player.PlayerBomberman;
+import net.samagames.bomberman.powerup.BombPowerup;
+import net.samagames.bomberman.powerup.BoosterPowerup;
+import net.samagames.bomberman.powerup.RadiusPowerup;
 import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;

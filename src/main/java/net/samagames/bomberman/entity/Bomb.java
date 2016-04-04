@@ -1,11 +1,11 @@
-package fr.azuxul.bomberman.entity;
+package net.samagames.bomberman.entity;
 
-import fr.azuxul.bomberman.Bomberman;
-import fr.azuxul.bomberman.GameManager;
-import fr.azuxul.bomberman.map.CaseMap;
-import fr.azuxul.bomberman.player.PlayerBomberman;
-import fr.azuxul.bomberman.powerup.PowerupTypes;
 import net.minecraft.server.v1_8_R3.*;
+import net.samagames.bomberman.Bomberman;
+import net.samagames.bomberman.GameManager;
+import net.samagames.bomberman.map.CaseMap;
+import net.samagames.bomberman.player.PlayerBomberman;
+import net.samagames.bomberman.powerup.PowerupTypes;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;

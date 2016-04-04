@@ -1,13 +1,13 @@
-package fr.azuxul.bomberman;
+package net.samagames.bomberman;
 
-import fr.azuxul.bomberman.entity.Bomb;
-import fr.azuxul.bomberman.entity.Powerup;
-import fr.azuxul.bomberman.event.PlayerEvent;
-import fr.azuxul.bomberman.player.PlayerBomberman;
 import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.EntityTypes;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.resourcepacks.IResourceCallback;
+import net.samagames.bomberman.entity.Bomb;
+import net.samagames.bomberman.entity.Powerup;
+import net.samagames.bomberman.event.PlayerEvent;
+import net.samagames.bomberman.player.PlayerBomberman;
 import org.bukkit.Difficulty;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

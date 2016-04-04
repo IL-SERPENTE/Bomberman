@@ -1,8 +1,8 @@
-package fr.azuxul.bomberman.powerup;
+package net.samagames.bomberman.powerup;
 
-import fr.azuxul.bomberman.Bomberman;
-import fr.azuxul.bomberman.GameManager;
-import fr.azuxul.bomberman.player.PlayerBomberman;
+import net.samagames.bomberman.Bomberman;
+import net.samagames.bomberman.GameManager;
+import net.samagames.bomberman.player.PlayerBomberman;
 import net.samagames.tools.Titles;
 import net.samagames.tools.powerups.Powerup;
 import org.bukkit.ChatColor;

@@ -1,4 +1,4 @@
-package fr.azuxul.bomberman;
+package net.samagames.bomberman;
 
 /**
  * Enum of game music

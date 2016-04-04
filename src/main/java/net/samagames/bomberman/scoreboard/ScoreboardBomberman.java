@@ -1,9 +1,9 @@
-package fr.azuxul.bomberman.scoreboard;
+package net.samagames.bomberman.scoreboard;
 
-import fr.azuxul.bomberman.GameManager;
-import fr.azuxul.bomberman.player.PlayerBomberman;
-import fr.azuxul.bomberman.powerup.PowerupTypes;
 import net.samagames.api.games.Status;
+import net.samagames.bomberman.GameManager;
+import net.samagames.bomberman.player.PlayerBomberman;
+import net.samagames.bomberman.powerup.PowerupTypes;
 import net.samagames.tools.chat.ActionBarAPI;
 import net.samagames.tools.scoreboards.ObjectiveSign;
 import org.bukkit.ChatColor;

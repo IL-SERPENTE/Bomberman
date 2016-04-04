@@ -1,13 +1,13 @@
-package fr.azuxul.bomberman.player;
+package net.samagames.bomberman.player;
 
-import fr.azuxul.bomberman.Bomberman;
-import fr.azuxul.bomberman.GameManager;
-import fr.azuxul.bomberman.Music;
-import fr.azuxul.bomberman.map.CaseMap;
-import fr.azuxul.bomberman.powerup.PowerupTypes;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldEvent;
 import net.samagames.api.games.GamePlayer;
+import net.samagames.bomberman.Bomberman;
+import net.samagames.bomberman.GameManager;
+import net.samagames.bomberman.Music;
+import net.samagames.bomberman.map.CaseMap;
+import net.samagames.bomberman.powerup.PowerupTypes;
 import net.samagames.tools.scoreboards.ObjectiveSign;
 import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.ChatColor;

@@ -1,4 +1,4 @@
-package fr.azuxul.bomberman.powerup;
+package net.samagames.bomberman.powerup;
 
 import net.samagames.api.SamaGamesAPI;
 import org.apache.commons.lang.math.RandomUtils;
