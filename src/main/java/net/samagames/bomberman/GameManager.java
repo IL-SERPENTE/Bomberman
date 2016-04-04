@@ -10,8 +10,8 @@ import net.samagames.bomberman.powerup.PowerupManager;
 import net.samagames.bomberman.scoreboard.ScoreboardBomberman;
 import net.samagames.bomberman.timer.TimerBomberman;
 import net.samagames.tools.LocationUtils;
-import net.samagames.tools.PlayerUtils;
 import net.samagames.tools.RulesBook;
+import net.samagames.tools.Titles;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -189,10 +189,10 @@ public class GameManager extends Game<PlayerBomberman> {
                 ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
                 Utils.setLeatherArmorColor(boots, Color.fromRGB(242, 127, 165));
 
-                if (PlayerUtils.getColoredFormattedPlayerName(player).equals(ChatColor.RED.toString())) {
-                    helmet.addEnchantment(Enchantment.DURABILITY, 1);
-                    chestplate.addEnchantment(Enchantment.DURABILITY, 1);
-                    boots.addEnchantment(Enchantment.DURABILITY, 1);
+                if (player.getName().equals("Azuxul")) {
+                    helmet.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
+                    chestplate.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
+                    boots.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
                 }
 
                 player.getInventory().clear();
@@ -267,8 +267,7 @@ public class GameManager extends Game<PlayerBomberman> {
         List<PlayerBomberman> playerBombermanList = getPlayerBombermanList();
 
         for (PlayerBomberman playerBomberman : getRegisteredGamePlayers().values()) {
-            //noinspection deprecation
-            playerBomberman.getPlayerIfOnline().sendTitle(ChatColor.GOLD + "Fin de la partie !", ChatColor.GREEN + "Vous avez fait " + playerBomberman.getKills() + " kill(s) !");
+            Titles.sendTitle(playerBomberman.getPlayerIfOnline(), 10, 60, 10, ChatColor.GOLD + "Fin de la partie !", ChatColor.GREEN + "Vous avez fait " + playerBomberman.getKills() + " kill(s) !");
             playerBomberman.playMusic(Music.END, playerBomberman.getPlayerIfOnline().getLocation());
         }
 
