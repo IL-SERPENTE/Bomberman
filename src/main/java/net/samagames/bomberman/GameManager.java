@@ -10,8 +10,10 @@ import net.samagames.bomberman.powerup.PowerupManager;
 import net.samagames.bomberman.scoreboard.ScoreboardBomberman;
 import net.samagames.bomberman.timer.TimerBomberman;
 import net.samagames.tools.LocationUtils;
+import net.samagames.tools.PlayerUtils;
 import net.samagames.tools.RulesBook;
 import org.bukkit.*;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
@@ -186,6 +188,12 @@ public class GameManager extends Game<PlayerBomberman> {
 
                 ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
                 Utils.setLeatherArmorColor(boots, Color.fromRGB(242, 127, 165));
+
+                if (PlayerUtils.getColoredFormattedPlayerName(player).equals(ChatColor.RED.toString())) {
+                    helmet.addEnchantment(Enchantment.DURABILITY, 1);
+                    chestplate.addEnchantment(Enchantment.DURABILITY, 1);
+                    boots.addEnchantment(Enchantment.DURABILITY, 1);
+                }
 
                 player.getInventory().clear();
                 player.setGameMode(GameMode.ADVENTURE);
