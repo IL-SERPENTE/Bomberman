@@ -6,15 +6,12 @@ import net.samagames.bomberman.GameManager;
 import net.samagames.bomberman.map.CaseMap;
 import net.samagames.bomberman.player.PlayerBomberman;
 import net.samagames.bomberman.powerup.PowerupTypes;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Objects;
 
@@ -85,23 +82,13 @@ public class Bomb extends EntityTNTPrimed {
 
 
         PowerupTypes powerup = owner.getPowerupTypes();
+
         // powerup can be null
         caseMap.explode(PowerupTypes.HYPER_BOMB.equals(powerup), PowerupTypes.SUPER_BOMB.equals(powerup), owner);
 
         craftWorld.playSound(baseLocation, Sound.EXPLODE, 10.0f, 20.0f);
 
-        Player ownerPlayer = owner.getPlayerIfOnline();
-        if (ownerPlayer != null) {
-
-            ItemStack bomb = new ItemStack(Material.CARPET, 1, (short) 8);
-            ItemMeta itemMeta = bomb.getItemMeta();
-            itemMeta.setDisplayName(ChatColor.GOLD + "Bombe");
-            bomb.setItemMeta(itemMeta);
-            bomb.setAmount(owner.getBombNumber() - owner.getPlacedBombs());
-
-            ownerPlayer.getInventory().setItem(0, bomb);
-        }
-
+        this.owner.updateInventory();
         baseLocation.add(0, 1, 0).getBlock().setType(Material.AIR , false);
     }
 

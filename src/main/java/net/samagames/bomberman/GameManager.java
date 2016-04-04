@@ -169,11 +169,6 @@ public class GameManager extends Game<PlayerBomberman> {
         int spawnIndex = 0;
         int armorIndex = 0;
 
-        ItemStack bomb = new ItemStack(Material.CARPET, 1, (short) 8);
-        ItemMeta itemMeta = bomb.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.GOLD + "Bomb");
-        bomb.setItemMeta(itemMeta);
-
         music = Music.GAME;
 
         for (PlayerBomberman playerBomberman : playerBombermanList) {
@@ -193,8 +188,6 @@ public class GameManager extends Game<PlayerBomberman> {
                 Utils.setLeatherArmorColor(boots, Color.fromRGB(242, 127, 165));
 
                 player.getInventory().clear();
-                player.getInventory().addItem(bomb);
-                playerBomberman.updateInventory();
                 player.setGameMode(GameMode.SURVIVAL);
                 player.teleport(getPlayerSpawnList().get(spawnIndex));
                 player.getInventory().setHeldItemSlot(0);
@@ -218,7 +211,7 @@ public class GameManager extends Game<PlayerBomberman> {
                 playerBomberman.stopWaitingRecord(spawn);
                 playerBomberman.playMusic(Music.START, player.getLocation());
                 playerBomberman.setRecordPlayTime(Music.START.getTime() * -1);
-
+                playerBomberman.updateInventory();
             }
         }
 

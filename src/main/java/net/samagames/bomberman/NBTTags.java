@@ -17,7 +17,8 @@ public enum NBTTags {
     CUSTOM_NAME("CustomName"),
     SMALL("Small"),
     AGE("Age"),
-    PICKUP_DELAY("PickupDelay");
+    PICKUP_DELAY("PickupDelay"),
+    CAN_PLACE_ON("CanPlaceOn");
 
     private final String name;
 

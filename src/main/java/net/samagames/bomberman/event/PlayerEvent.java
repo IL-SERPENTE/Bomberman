@@ -5,7 +5,6 @@ import net.samagames.bomberman.GameManager;
 import net.samagames.bomberman.Music;
 import net.samagames.bomberman.player.PlayerBomberman;
 import net.samagames.bomberman.powerup.PowerupTypes;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -26,8 +25,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * PlayerEvents
@@ -127,19 +124,11 @@ public class PlayerEvent implements Listener {
             Player player = event.getPlayer();
             PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
-            if (playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs()) {
+            if (playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs() && gameManager.getMapManager().spawnBomb(location, playerBomberman)) {
 
-                ItemStack bomb = new ItemStack(Material.CARPET, 1, (short) 8);
-                ItemMeta itemMeta = bomb.getItemMeta();
-                itemMeta.setDisplayName(ChatColor.GOLD + "Bombe");
-                bomb.setItemMeta(itemMeta);
-
-                if (gameManager.getMapManager().spawnBomb(location, playerBomberman)) {
-                    event.setCancelled(false);
-                    block.getLocation().add(0, 1, 0).getBlock().setType(Material.BARRIER, false);
-                    bomb.setAmount(playerBomberman.getBombNumber() - playerBomberman.getPlacedBombs());
-                }
-                player.getInventory().setItem(0, bomb);
+                event.setCancelled(false);
+                block.getLocation().add(0, 1, 0).getBlock().setType(Material.BARRIER, false);
+                playerBomberman.updateInventory();
             }
         }
     }

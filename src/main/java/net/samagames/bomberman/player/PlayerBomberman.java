@@ -1,11 +1,11 @@
 package net.samagames.bomberman.player;
 
-import net.minecraft.server.v1_8_R3.BlockPosition;
-import net.minecraft.server.v1_8_R3.PacketPlayOutWorldEvent;
+import net.minecraft.server.v1_8_R3.*;
 import net.samagames.api.games.GamePlayer;
 import net.samagames.bomberman.Bomberman;
 import net.samagames.bomberman.GameManager;
 import net.samagames.bomberman.Music;
+import net.samagames.bomberman.NBTTags;
 import net.samagames.bomberman.map.CaseMap;
 import net.samagames.bomberman.powerup.PowerupTypes;
 import net.samagames.tools.scoreboards.ObjectiveSign;
@@ -15,6 +15,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -150,23 +151,53 @@ public class PlayerBomberman extends GamePlayer {
 
     public void updateInventory() {
 
+        // Generate item for display bombs number
         int itemBombNb = bombNumber > 64 ? 64 : bombNumber;
         ItemStack itemBombNumber = new ItemStack(Material.DIAMOND_BLOCK, itemBombNb);
         ItemMeta itemMeta = itemBombNumber.getItemMeta();
         itemMeta.setDisplayName(ChatColor.RESET.toString() + ChatColor.GREEN + "Nombre de bombes : " + ChatColor.GOLD + bombNumber);
         itemBombNumber.setItemMeta(itemMeta);
 
+        // Generate item for display explosion radius
         int itemRadiusNb = radius > 64 ? 64 : radius;
         ItemStack itemRadiusNbumber = new ItemStack(Material.EMERALD_BLOCK, itemRadiusNb);
         itemMeta = itemRadiusNbumber.getItemMeta();
         itemMeta.setDisplayName(ChatColor.RESET.toString() + ChatColor.GREEN + "Puissance : " + ChatColor.GOLD + itemRadiusNb);
         itemRadiusNbumber.setItemMeta(itemMeta);
 
-        Player player = getPlayerIfOnline();
-        Inventory inventory = player.getInventory();
+        // Generate bomb item
+        ItemStack bomb = new ItemStack(Material.CARPET, 1, (short) 8);
+        itemMeta = bomb.getItemMeta();
+        NBTTagCompound nbtTagCompound;
+        net.minecraft.server.v1_8_R3.ItemStack bombNMS;
 
-        inventory.setItem(8, itemRadiusNbumber);
-        inventory.setItem(7, itemBombNumber);
+        itemMeta.setDisplayName(ChatColor.GOLD + "Bombe");
+        bomb.setItemMeta(itemMeta);
+        bomb.setAmount(getBombNumber() - getPlacedBombs());
+
+        bombNMS = CraftItemStack.asNMSCopy(bomb);
+        nbtTagCompound = bombNMS.getTag() != null ? bombNMS.getTag() : new NBTTagCompound();
+
+        NBTTagList nbtTagList = new NBTTagList();
+
+        nbtTagList.add(new NBTTagString("minecraft:stone"));
+        nbtTagList.add(new NBTTagString("minecraft:stained_hardened_clay"));
+
+        nbtTagCompound.set(NBTTags.CAN_PLACE_ON.getName(), nbtTagList);
+
+        bombNMS.setTag(nbtTagCompound);
+        bomb = CraftItemStack.asBukkitCopy(bombNMS);
+
+        Player player = getPlayerIfOnline();
+
+        if (player != null) {
+            Inventory inventory = player.getInventory();
+
+            inventory.setItem(8, itemRadiusNbumber);
+            inventory.setItem(7, itemBombNumber);
+            inventory.setItem(0, bomb);
+        }
+
     }
 
     public void explode(int radius) {

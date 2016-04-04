@@ -14,7 +14,6 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 public class Utils {
 
     private Utils() {
-
     }
 
     public static void setLeatherArmorColor(ItemStack armor, Color color) {
