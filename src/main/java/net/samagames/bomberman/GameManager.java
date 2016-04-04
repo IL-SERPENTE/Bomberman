@@ -188,7 +188,7 @@ public class GameManager extends Game<PlayerBomberman> {
                 Utils.setLeatherArmorColor(boots, Color.fromRGB(242, 127, 165));
 
                 player.getInventory().clear();
-                player.setGameMode(GameMode.SURVIVAL);
+                player.setGameMode(GameMode.ADVENTURE);
                 player.teleport(getPlayerSpawnList().get(spawnIndex));
                 player.getInventory().setHeldItemSlot(0);
                 player.getInventory().setHelmet(helmet);
