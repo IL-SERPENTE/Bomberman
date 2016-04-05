@@ -38,6 +38,8 @@ public class PlayerBomberman extends GamePlayer {
     private int kills;
     private int recordPlayTime;
     private int autoPlaceTime;
+    private int maxHealth;
+    private int health;
     private float speed;
     private boolean playMusic;
 
@@ -53,6 +55,44 @@ public class PlayerBomberman extends GamePlayer {
         kills = 0;
         recordPlayTime = -2;
         playMusic = false;
+    }
+
+    public void updateHealth() {
+
+        Player player = getPlayerIfOnline();
+
+        if (player != null) {
+
+            if (maxHealth > 0) {
+                player.setMaxHealth(maxHealth * 2.0d);
+                player.setHealth(health * 2.0d);
+            } else {
+                player.resetMaxHealth();
+                player.setHealth(player.getMaxHealth());
+            }
+        }
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+
+        if (health > maxHealth)
+            this.health = maxHealth;
+        else
+            this.health = health;
+
+        updateHealth();
     }
 
     public void update() {

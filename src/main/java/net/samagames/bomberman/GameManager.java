@@ -168,6 +168,9 @@ public class GameManager extends Game<PlayerBomberman> {
         List<ArmorValue> armorValues = Arrays.asList(ArmorValue.values());
         Collections.shuffle(getPlayerSpawnList());
         Collections.shuffle(armorValues);
+        JsonObject jsonPlayer = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs().get("players").getAsJsonObject();
+        final int maxHealth = jsonPlayer.get("max-health").getAsInt();
+        final int health = jsonPlayer.get("start-health").getAsInt();
         int spawnIndex = 0;
         int armorIndex = 0;
 
@@ -219,6 +222,8 @@ public class GameManager extends Game<PlayerBomberman> {
                 playerBomberman.stopWaitingRecord(spawn);
                 playerBomberman.playMusic(Music.START, player.getLocation());
                 playerBomberman.setRecordPlayTime(Music.START.getTime() * -1);
+                playerBomberman.setMaxHealth(maxHealth);
+                playerBomberman.setHealth(health);
                 playerBomberman.updateInventory();
             }
         }

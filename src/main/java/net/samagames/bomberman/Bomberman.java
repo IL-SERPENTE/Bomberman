@@ -100,9 +100,10 @@ public class Bomberman extends JavaPlugin {
         world.setPVP(true); // Enable pvp for damage player
         world.setSpawnLocation(spawn.getBlockX(), spawn.getBlockY() + 3, spawn.getBlockZ()); // Set spawn location
         world.setDifficulty(Difficulty.PEACEFUL); // Set difficulty
-        world.setGameRuleValue("doMobSpawning", "false"); // Set doMobSpawning game rule
-        world.setGameRuleValue("reducedDebugInfo", "true"); // Reduce debug info (Mask location)
-        world.setGameRuleValue("keepInventory", "true"); // Set player keep inventory
+        world.setGameRuleValue("naturalRegeneration", String.valueOf(false)); // Disable naturalRegeneration
+        world.setGameRuleValue("doMobSpawning", String.valueOf(false)); // Set doMobSpawning game rule
+        world.setGameRuleValue("reducedDebugInfo", String.valueOf(true)); // Reduce debug info (Mask location)
+        world.setGameRuleValue("keepInventory", String.valueOf(true)); // Set player keep inventory
         world.setStorm(false); // Clear storm
         world.setThundering(false); // Clear weather
         world.setThunderDuration(0); // Clear weather

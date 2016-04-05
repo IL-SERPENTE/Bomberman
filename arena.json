@@ -23,6 +23,10 @@
     "explosion-kill": 3,
     "bomb-activator": 3
   },
+  "players": {
+    "max-health": 3,
+    "start-health": 1
+  },
   "higher-loc": "world, 27, 71, 27, 0, 0",
   "smaller-loc": "world, -25, 71, -25, 0, 0",
   "timer": 8
