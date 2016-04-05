@@ -63,9 +63,14 @@ public class PlayerBomberman extends GamePlayer {
 
         if (player != null) {
 
-            if (maxHealth > 0) {
+            if (maxHealth > 0 && !isSpectator()) {
+
+                int displayHealth = health * 2;
+
                 player.setMaxHealth(maxHealth * 2.0d);
-                player.setHealth(health * 2.0d);
+
+                if (displayHealth != (int) player.getHealth())
+                    player.setHealth(displayHealth < 0 ? 0 : displayHealth);
             } else {
                 player.resetMaxHealth();
                 player.setHealth(player.getMaxHealth());

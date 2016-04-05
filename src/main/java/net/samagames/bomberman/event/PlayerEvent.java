@@ -5,6 +5,7 @@ import net.samagames.bomberman.GameManager;
 import net.samagames.bomberman.Music;
 import net.samagames.bomberman.player.PlayerBomberman;
 import net.samagames.bomberman.powerup.PowerupTypes;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -191,11 +192,23 @@ public class PlayerEvent implements Listener {
                 gameManager.getServer().getScheduler().runTaskLater(gameManager.getPlugin(), () -> playerBomberman.explode(3), 1L);
             }
 
-            playerBomberman.setSpectator();
-            playerBomberman.playMusic(Music.DEATH, player.getLocation());
+            final int newHealth = playerBomberman.getHealth() - 1;
 
-            if (gameManager.getConnectedPlayers() <= 1)
-                gameManager.endGame();
+            if (newHealth > 0) {
+
+                playerBomberman.setHealth(newHealth);
+                player.spigot().respawn();
+                player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.RED + ChatColor.BOLD + "Il vous reste " + newHealth + " vie(s) !");
+
+            } else {
+                playerBomberman.setHealth(0);
+                player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.RED + "Vous etes mort: vous n'avez plus de vies !");
+                playerBomberman.setSpectator();
+                playerBomberman.playMusic(Music.DEATH, player.getLocation());
+
+                if (gameManager.getConnectedPlayers() <= 1)
+                    gameManager.endGame();
+            }
         }
     }
 

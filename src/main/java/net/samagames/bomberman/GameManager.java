@@ -201,6 +201,7 @@ public class GameManager extends Game<PlayerBomberman> {
                 player.getInventory().clear();
                 player.setGameMode(GameMode.ADVENTURE);
                 player.teleport(getPlayerSpawnList().get(spawnIndex));
+                player.setBedSpawnLocation(getPlayerSpawnList().get(spawnIndex), true);
                 player.getInventory().setHeldItemSlot(0);
                 player.getInventory().setHelmet(helmet);
                 player.getInventory().setChestplate(chestplate);

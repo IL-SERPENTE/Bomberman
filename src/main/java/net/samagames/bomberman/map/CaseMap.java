@@ -135,7 +135,7 @@ public class CaseMap {
         }
     }
 
-    public void updateInWorld() {
+    private void updateInWorld() {
 
         for (int y = 0; y <= 2; y++) {
             worldLocation.clone().add(0, y, 0).getBlock().setType(block, false);
