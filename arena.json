@@ -22,7 +22,8 @@
     "self-invulnerability": 4,
     "explosion-kill": 3,
     "bomb-activator": 3,
-    "destructor": 3
+    "destructor": 3,
+    "bomb-protection": 2
   },
   "players": {
     "max-health": 3,

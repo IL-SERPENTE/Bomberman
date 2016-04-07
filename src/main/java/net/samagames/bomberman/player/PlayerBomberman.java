@@ -240,6 +240,50 @@ public class PlayerBomberman extends GamePlayer {
 
     }
 
+    public boolean die() {
+
+        final int newHealth = getHealth() - 1;
+        Player player = getPlayerIfOnline();
+
+        if(player == null) {
+            return false;
+        }
+
+        if(powerupTypes != null) {
+            switch (powerupTypes) {
+                case BOMB_PROTECTION:
+
+                    updateHealth();
+                    player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + ChatColor.RED + " Vous venez de perdre votre powerup Seconde vie !");
+                    powerupTypes = null;
+                    return false;
+                case EXPLOSION_KILL:
+
+                    gameManager.getServer().getScheduler().runTaskLater(gameManager.getPlugin(), () -> explode(3), 1L);
+                    break;
+                default:
+            }
+        }
+
+        if (newHealth > 0) {
+
+            setHealth(newHealth);
+            player.spigot().respawn();
+            player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.RED + ChatColor.BOLD + "Il vous reste " + newHealth + " vie(s) !");
+
+        } else {
+            setHealth(0);
+            player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.RED + "Vous etes mort: vous n'avez plus de vies !");
+            setSpectator();
+            playMusic(Music.DEATH, player.getLocation());
+
+            if (gameManager.getConnectedPlayers() <= 1)
+                gameManager.endGame();
+        }
+
+        return true;
+    }
+
     public void explode(int radius) {
 
         Location baseLocation = getPlayerIfOnline().getLocation();

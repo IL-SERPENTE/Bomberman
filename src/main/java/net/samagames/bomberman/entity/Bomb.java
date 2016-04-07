@@ -66,9 +66,6 @@ public class Bomb extends EntityTNTPrimed {
     public void t_() {
 
         if (this.fuseTicks-- <= 0 && isAlive()) {
-            if (!this.world.isClientSide) {
-                this.explode();
-            }
 
             this.die();
         } else {
@@ -90,7 +87,7 @@ public class Bomb extends EntityTNTPrimed {
 
         CraftWorld craftWorld = getWorld().getWorld();
         Location baseLocation = new Location(craftWorld, locX, locY, locZ);
-        CaseMap caseMap = gameManager.getMapManager().getCaseAtWorldLocation((int) Math.floor(locX), (int) Math.floor(locZ));
+        CaseMap caseMap = gameManager.getMapManager().getCaseAtWorldLocation(baseLocation.getBlockX(), baseLocation.getBlockZ());
 
         super.die();
 

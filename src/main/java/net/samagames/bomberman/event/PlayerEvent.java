@@ -170,6 +170,12 @@ public class PlayerEvent implements Listener {
             Player player = event.getEntity();
             PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
+            if(playerBomberman == null || !playerBomberman.die()) {
+
+                event.setDeathMessage("");
+                return;
+            }
+
             Player killer = player.getKiller();
             final String deathMessageBase = gameManager.getCoherenceMachine().getGameTag() + " " + player.getName();
 
@@ -185,29 +191,6 @@ public class PlayerEvent implements Listener {
 
                 killerBomberman.addCoins(5, "Meurtre de " + player.getName());
                 killerBomberman.setKills(killerBomberman.getKills() + 1);
-            }
-
-            if (playerBomberman.getPowerupTypes() != null && playerBomberman.getPowerupTypes().equals(PowerupTypes.EXPLOSION_KILL)) {
-
-                gameManager.getServer().getScheduler().runTaskLater(gameManager.getPlugin(), () -> playerBomberman.explode(3), 1L);
-            }
-
-            final int newHealth = playerBomberman.getHealth() - 1;
-
-            if (newHealth > 0) {
-
-                playerBomberman.setHealth(newHealth);
-                player.spigot().respawn();
-                player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.RED + ChatColor.BOLD + "Il vous reste " + newHealth + " vie(s) !");
-
-            } else {
-                playerBomberman.setHealth(0);
-                player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.RED + "Vous etes mort: vous n'avez plus de vies !");
-                playerBomberman.setSpectator();
-                playerBomberman.playMusic(Music.DEATH, player.getLocation());
-
-                if (gameManager.getConnectedPlayers() <= 1)
-                    gameManager.endGame();
             }
         }
     }
