@@ -21,7 +21,8 @@ public enum PowerupTypes {
     SUPER_BOMB("Super bomb", "super-bomb"),
     SELF_INVULNERABILITY("Self protection", "self-invulnerability"),
     EXPLOSION_KILL("Charge nucléaire", "explosion-kill"),
-    BOMB_ACTIVATOR("Détonateur", "bomb-activator");
+    BOMB_ACTIVATOR("Détonateur", "bomb-activator"),
+    DESTRUCTOR("Destructeur", "destructor", 5);
 
     private final String name;
     private final int chance;

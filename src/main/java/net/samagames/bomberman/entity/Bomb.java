@@ -49,9 +49,14 @@ public class Bomb extends EntityTNTPrimed {
 
             PlayerBomberman playerBomberman = gameManager.getPlayer(damager.getUniqueID());
 
-            if (owner.equals(playerBomberman) && owner.getPowerupTypes() != null && owner.getPowerupTypes().equals(PowerupTypes.BOMB_ACTIVATOR)) {
+            if (playerBomberman != null && owner.getPowerupTypes() != null) {
+                if (owner.equals(playerBomberman) && owner.getPowerupTypes().equals(PowerupTypes.BOMB_ACTIVATOR)) {
 
-                explode();
+                    explode();
+                } else if (owner.getPowerupTypes().equals(PowerupTypes.DESTRUCTOR)) {
+
+                    die(false);
+                }
             }
         }
         return false;
@@ -73,23 +78,36 @@ public class Bomb extends EntityTNTPrimed {
 
     public void explode() {
 
+        die(true);
+    }
+
+    @Override
+    public void die() {
+        die(true);
+    }
+
+    public void die(boolean explosionDie) {
+
         CraftWorld craftWorld = getWorld().getWorld();
         Location baseLocation = new Location(craftWorld, locX, locY, locZ);
         CaseMap caseMap = gameManager.getMapManager().getCaseAtWorldLocation((int) Math.floor(locX), (int) Math.floor(locZ));
 
+        super.die();
+
+        if (explosionDie) {
+            PowerupTypes powerup = owner.getPowerupTypes();
+
+            // powerup can be null
+            caseMap.explode(PowerupTypes.HYPER_BOMB.equals(powerup), PowerupTypes.SUPER_BOMB.equals(powerup), owner);
+
+            craftWorld.playSound(baseLocation, Sound.EXPLODE, 10.0f, 20.0f);
+        } else
+            caseMap.setBomb(null);
+
         this.owner.setPlacedBombs(this.owner.getPlacedBombs() - 1);
-        die();
-
-
-        PowerupTypes powerup = owner.getPowerupTypes();
-
-        // powerup can be null
-        caseMap.explode(PowerupTypes.HYPER_BOMB.equals(powerup), PowerupTypes.SUPER_BOMB.equals(powerup), owner);
-
-        craftWorld.playSound(baseLocation, Sound.EXPLODE, 10.0f, 20.0f);
-
         this.owner.updateInventory();
-        baseLocation.add(0, 1, 0).getBlock().setType(Material.AIR , false);
+
+        baseLocation.add(0, 1, 0).getBlock().setType(Material.AIR, false);
     }
 
     @Override
