@@ -37,7 +37,7 @@ public class PlayerBomberman extends GamePlayer {
     private int placedBombs;
     private int kills;
     private int recordPlayTime;
-    private int autoPlaceTime;
+    private int powerupDuration;
     private int maxHealth;
     private int health;
     private float speed;
@@ -49,7 +49,7 @@ public class PlayerBomberman extends GamePlayer {
         powerupTypes = null;
         objectiveSign = null;
         bombNumber = 1;
-        autoPlaceTime = 0;
+        powerupDuration = 0;
         radius = 2;
         speed = 0.2f;
         kills = 0;
@@ -102,7 +102,7 @@ public class PlayerBomberman extends GamePlayer {
 
     public void update() {
 
-        if (autoPlaceTime > 0 && --autoPlaceTime <= 0) {
+        if (powerupTypes != null && powerupTypes.getDuration() > 0 && --powerupDuration <= 0) {
 
             powerupTypes = null;
         }
@@ -155,12 +155,7 @@ public class PlayerBomberman extends GamePlayer {
     public void setPowerup(PowerupTypes powerupTypes) {
 
         this.powerupTypes = powerupTypes;
-
-        if (powerupTypes.equals(PowerupTypes.AUTO_PLACE)) {
-            autoPlaceTime = 5;
-        } else {
-            autoPlaceTime = 0;
-        }
+        this.powerupDuration = powerupTypes.getDuration();
     }
 
     public int getBombNumber() {

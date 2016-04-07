@@ -15,7 +15,7 @@ public enum PowerupTypes {
 
     SPEED("Speed", "speed"),
     SLOWNESS("Lenteur", "slowness"),
-    AUTO_PLACE("Auto place", "auto-place"),
+    AUTO_PLACE("Auto place", "auto-place", 5),
     RANDOM_FUSE("Random bomb", "random-fuse"),
     HYPER_BOMB("Hyper bomb", "hyper-bomb"),
     SUPER_BOMB("Super bomb", "super-bomb"),
@@ -25,11 +25,20 @@ public enum PowerupTypes {
 
     private final String name;
     private final int chance;
+    private final int duration;
 
     PowerupTypes(String name, String jsonName) {
 
         this.name = name;
         this.chance = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs().get("booster-chance").getAsJsonObject().get(jsonName).getAsInt();
+        this.duration = -1;
+    }
+
+    PowerupTypes(String name, String jsonName, int duration) {
+
+        this.name = name;
+        this.chance = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs().get("booster-chance").getAsJsonObject().get(jsonName).getAsInt();
+        this.duration = duration;
     }
 
     @Nonnull
@@ -54,6 +63,10 @@ public enum PowerupTypes {
         }
 
         return values[index];
+    }
+
+    public int getDuration() {
+        return duration;
     }
 
     public String getName() {
