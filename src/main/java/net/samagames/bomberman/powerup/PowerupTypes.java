@@ -27,7 +27,8 @@ public enum PowerupTypes {
     DESTRUCTOR("Destructeur", "destructor", 5, true),
     BOMB_PROTECTION("Seconde vie", "bomb-protection"),
     BLINDNESS("Jet d\'encre", "blindness", true),
-    SWAP("Swap", "swap", true);
+    SWAP("Swap", "swap", true),
+    TRANSPARENCY_WALL("Transparence", "transparency-wall", true);
 
     public static final String JSON_POWERUP_CHANCE = "booster-chance";
 
@@ -38,26 +39,17 @@ public enum PowerupTypes {
 
     PowerupTypes(String name, String jsonName) {
 
-        this.name = name;
-        this.chance = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs().get(JSON_POWERUP_CHANCE).getAsJsonObject().get(jsonName).getAsInt();
-        this.duration = -1;
-        this.special = false;
+        this(name, jsonName, -1, false);
     }
 
     PowerupTypes(String name, String jsonName, boolean special) {
 
-        this.name = name;
-        this.chance = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs().get(JSON_POWERUP_CHANCE).getAsJsonObject().get(jsonName).getAsInt();
-        this.duration = -1;
-        this.special = special;
+        this(name, jsonName, -1, special);
     }
 
     PowerupTypes(String name, String jsonName, int duration) {
 
-        this.name = name;
-        this.chance = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs().get(JSON_POWERUP_CHANCE).getAsJsonObject().get(jsonName).getAsInt();
-        this.duration = duration;
-        this.special = false;
+        this(name, jsonName, duration, false);
     }
 
     PowerupTypes(String name, String jsonName, int duration, boolean special) {
@@ -96,7 +88,7 @@ public enum PowerupTypes {
                 index++;
         }
 
-        return values[index];
+        return powerups.get(index);
     }
 
     public boolean isSpecial() {

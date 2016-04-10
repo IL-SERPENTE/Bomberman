@@ -6,6 +6,7 @@ import net.samagames.bomberman.entity.Powerup;
 import net.samagames.bomberman.player.PlayerBomberman;
 import net.samagames.bomberman.powerup.BombPowerup;
 import net.samagames.bomberman.powerup.BoosterPowerup;
+import net.samagames.bomberman.powerup.CadeauPowerup;
 import net.samagames.bomberman.powerup.RadiusPowerup;
 import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Location;
@@ -168,6 +169,9 @@ public class CaseMap {
 
         else if (random <= 650)
             powerupToSpawn = new BombPowerup();
+
+        else if (random <= 700)
+            powerupToSpawn = new CadeauPowerup();
 
         if (powerupToSpawn != null)
             powerup = gameManager.getPowerupManager().spawnPowerup(powerupToSpawn, locationPowerup);

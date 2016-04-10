@@ -40,7 +40,7 @@ public class CadeauPowerup implements Powerup {
 
                 Player p = playerBomberman1.getPlayerIfOnline();
 
-                if(p != null)
+                if (p != null && !p.equals(player))
                     p.addPotionEffect(effect, true);
             });
 
