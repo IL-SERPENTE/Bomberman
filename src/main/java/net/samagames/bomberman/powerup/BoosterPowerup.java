@@ -23,7 +23,7 @@ public class BoosterPowerup implements Powerup {
 
     public BoosterPowerup() {
 
-        this.type = PowerupTypes.getRandomPowerupType();
+        this.type = PowerupTypes.getRandomPowerupType(false);
         this.gameManager = Bomberman.getGameManager();
     }
 

@@ -4,6 +4,8 @@ import net.samagames.api.SamaGamesAPI;
 import org.apache.commons.lang.math.RandomUtils;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Enum of powerups types
@@ -25,37 +27,65 @@ public enum PowerupTypes {
     DESTRUCTOR("Destructeur", "destructor", 5),
     BOMB_PROTECTION("Seconde vie", "bomb-protection");
 
+    public static final String JSON_POWERUP_CHANCE = "booster-chance";
+
     private final String name;
     private final int chance;
     private final int duration;
+    private final boolean special;
 
     PowerupTypes(String name, String jsonName) {
 
         this.name = name;
-        this.chance = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs().get("booster-chance").getAsJsonObject().get(jsonName).getAsInt();
+        this.chance = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs().get(JSON_POWERUP_CHANCE).getAsJsonObject().get(jsonName).getAsInt();
         this.duration = -1;
+        this.special = false;
+    }
+
+    PowerupTypes(String name, String jsonName, boolean special) {
+
+        this.name = name;
+        this.chance = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs().get(JSON_POWERUP_CHANCE).getAsJsonObject().get(jsonName).getAsInt();
+        this.duration = -1;
+        this.special = special;
     }
 
     PowerupTypes(String name, String jsonName, int duration) {
 
         this.name = name;
-        this.chance = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs().get("booster-chance").getAsJsonObject().get(jsonName).getAsInt();
+        this.chance = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs().get(JSON_POWERUP_CHANCE).getAsJsonObject().get(jsonName).getAsInt();
         this.duration = duration;
+        this.special = false;
+    }
+
+    PowerupTypes(String name, String jsonName, int duration, boolean special) {
+
+        this.name = name;
+        this.chance = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs().get(JSON_POWERUP_CHANCE).getAsJsonObject().get(jsonName).getAsInt();
+        this.duration = duration;
+        this.special = special;
     }
 
     @Nonnull
-    public static PowerupTypes getRandomPowerupType() {
+    public static PowerupTypes getRandomPowerupType(boolean special) {
 
         PowerupTypes[] values = values();
         int chanceTotal = 0;
 
-        for (PowerupTypes powerupTypes : values)
-            chanceTotal += powerupTypes.chance;
+        List<PowerupTypes> powerups = new ArrayList<>();
+
+        for (PowerupTypes powerupTypes : values) {
+            if (powerupTypes.isSpecial() == special) {
+                chanceTotal += powerupTypes.chance;
+                powerups.add(powerupTypes);
+            }
+        }
 
         int random = RandomUtils.nextInt(chanceTotal);
         int index = 0;
 
-        for (PowerupTypes powerupTypes : values) {
+        for (PowerupTypes powerupTypes : powerups) {
+
             random = random - powerupTypes.chance;
 
             if (random <= 0)
@@ -65,6 +95,10 @@ public enum PowerupTypes {
         }
 
         return values[index];
+    }
+
+    public boolean isSpecial() {
+        return special;
     }
 
     public int getDuration() {
