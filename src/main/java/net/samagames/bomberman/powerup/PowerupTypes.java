@@ -24,8 +24,10 @@ public enum PowerupTypes {
     SELF_INVULNERABILITY("Self protection", "self-invulnerability"),
     EXPLOSION_KILL("Charge nucléaire", "explosion-kill"),
     BOMB_ACTIVATOR("Détonateur", "bomb-activator"),
-    DESTRUCTOR("Destructeur", "destructor", 5),
-    BOMB_PROTECTION("Seconde vie", "bomb-protection");
+    DESTRUCTOR("Destructeur", "destructor", 5, true),
+    BOMB_PROTECTION("Seconde vie", "bomb-protection"),
+    BLINDNESS("Jet d\'encre", "blindness", true),
+    SWAP("Swap", "swap", true);
 
     public static final String JSON_POWERUP_CHANCE = "booster-chance";
 

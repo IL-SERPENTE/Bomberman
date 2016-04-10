@@ -21,6 +21,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Player for Bomberman plugin
  *
@@ -240,6 +244,33 @@ public class PlayerBomberman extends GamePlayer {
 
     }
 
+    public void swap() {
+
+        Player player = getPlayerIfOnline();
+        PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
+        Collection<PlayerBomberman> playerBombermanCollection = gameManager.getInGamePlayers().values();
+
+        List<PlayerBomberman> swappablePlayers = playerBombermanCollection.stream().filter(playerFilter -> !playerFilter.equals(playerBomberman) && playerFilter.getPlayerIfOnline() != null).collect(Collectors.toList());
+
+        if (swappablePlayers.isEmpty()) {
+            player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.RED + "Il n'y pas de joueur avec qui swap !");
+        } else {
+
+            PlayerBomberman playerSwapBomberman = swappablePlayers.get(RandomUtils.nextInt(swappablePlayers.size())); // Get random player
+
+            Player playerSwap = playerSwapBomberman.getPlayerIfOnline();
+
+            Location locationOfPlayerSwap = playerSwap.getLocation();
+            Location locationOfPlayer = player.getLocation();
+
+            player.teleport(locationOfPlayerSwap);
+            playerSwap.teleport(locationOfPlayer);
+
+            playerSwap.sendMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.GREEN + "Vous avez été swap avec un autre joueur");
+            player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.GREEN + "Vous avez été swap avec un autre joueur");
+        }
+    }
+
     public boolean die() {
 
         final int newHealth = getHealth() - 1;
@@ -249,20 +280,8 @@ public class PlayerBomberman extends GamePlayer {
             return false;
         }
 
-        if(powerupTypes != null) {
-            switch (powerupTypes) {
-                case BOMB_PROTECTION:
-
-                    updateHealth();
-                    player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + ChatColor.RED + " Vous venez de perdre votre powerup Seconde vie !");
-                    powerupTypes = null;
-                    return false;
-                case EXPLOSION_KILL:
-
-                    gameManager.getServer().getScheduler().runTaskLater(gameManager.getPlugin(), () -> explode(3), 1L);
-                    break;
-                default:
-            }
+        if(powerupTypes != null && powerupTypes.equals(PowerupTypes.EXPLOSION_KILL)) {
+            gameManager.getServer().getScheduler().runTaskLater(gameManager.getPlugin(), () -> explode(3), 1L);
         }
 
         if (newHealth > 0) {

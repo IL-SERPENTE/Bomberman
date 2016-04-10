@@ -8,6 +8,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 /**
  * Powerup cadeau
@@ -30,7 +32,23 @@ public class CadeauPowerup implements Powerup {
 
         PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
-        playerBomberman.setPowerup(type);
+        if(type.equals(PowerupTypes.BLINDNESS)) {
+
+            PotionEffect effect = new PotionEffect(PotionEffectType.BLINDNESS, 60, 1);
+
+            gameManager.getInGamePlayers().values().forEach(playerBomberman1 -> {
+
+                Player p = playerBomberman1.getPlayerIfOnline();
+
+                if(p != null)
+                    p.addPotionEffect(effect, true);
+            });
+
+        } else if(type.equals(PowerupTypes.SWAP)) {
+            playerBomberman.swap();
+        } else
+            playerBomberman.setPowerup(type);
+
         gameManager.getServer().broadcastMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.GREEN + player.getName() + ChatColor.GOLD + " vient de recuperer un cadeau");
     }
 

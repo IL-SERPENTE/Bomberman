@@ -68,12 +68,17 @@ public class PlayerEvent implements Listener {
     @EventHandler
     public void onPlayerDamageByEntity(EntityDamageByEntityEvent event) {
 
-        if (event.getDamager() != null && event.getDamager() instanceof Player && event.getDamager().equals(event.getEntity())) {
+        if (event.getDamager() != null && event.getDamager() instanceof Player) {
 
             PlayerBomberman playerBomberman = gameManager.getPlayer(event.getEntity().getUniqueId());
 
-            if (playerBomberman.getPowerupTypes() != null && playerBomberman.getPowerupTypes().equals(PowerupTypes.SELF_INVULNERABILITY)) {
-                event.setCancelled(true);
+            if(playerBomberman.getPowerupTypes() != null) {
+                if (playerBomberman.getPowerupTypes().equals(PowerupTypes.SELF_INVULNERABILITY) && event.getDamager().equals(event.getEntity())) {
+                    event.setCancelled(true);
+                } else if(playerBomberman.getPowerupTypes().equals(PowerupTypes.BOMB_PROTECTION)) {
+                    event.getEntity().sendMessage(gameManager.getCoherenceMachine().getGameTag() + ChatColor.RED + " Vous venez de perdre votre powerup Seconde vie !");
+                    event.setCancelled(true);
+                }
             }
         }
     }
