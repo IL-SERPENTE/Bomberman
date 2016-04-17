@@ -51,7 +51,7 @@ public class CommandSpawnPowerup implements CommandExecutor {
         return false;
     }
 
-    private Powerup getPowerupFormString(String powerupType) {
+    private static Powerup getPowerupFormString(String powerupType) {
 
         Powerup type;
 

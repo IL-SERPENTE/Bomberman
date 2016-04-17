@@ -192,7 +192,7 @@ public class GameManager extends Game<PlayerBomberman> {
                 ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
                 Utils.setLeatherArmorColor(boots, Color.fromRGB(242, 127, 165));
 
-                if (player.getName().equals("Azuxul")) {
+                if ("Azuxul".equals(player.getName())) {
                     helmet.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
                     chestplate.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
                     boots.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
