@@ -29,7 +29,8 @@ public enum PowerupTypes {
     BLINDNESS("Jet d\'encre", "blindness", true),
     SWAP("Swap", "swap", true),
     NAUSEA("Nausée", "nausea", true),
-    WALL_BUILDER("Constructeur", "wall-builder", 8, true);
+    WALL_BUILDER("Constructeur", "wall-builder", 8, true),
+    FIRE("Incendie", "fire", true);
 
     public static final String JSON_POWERUP_CHANCE = "booster-chance";
 

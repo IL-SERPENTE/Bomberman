@@ -115,6 +115,11 @@ public class Powerup extends EntityArmorStand {
     }
 
     @Override
+    public boolean isBurning() {
+        return false;
+    }
+
+    @Override
     public void t_() {
 
         if (++dispawnTicks >= 600) // 30 seconds

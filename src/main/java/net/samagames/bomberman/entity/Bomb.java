@@ -52,7 +52,7 @@ public class Bomb extends EntityTNTPrimed {
             if (playerBomberman != null && owner.getPowerupTypes() != null) {
                 if (owner.equals(playerBomberman) && owner.getPowerupTypes().equals(PowerupTypes.BOMB_ACTIVATOR)) {
 
-                    explode();
+                    explodeBomb();
                 } else if (owner.getPowerupTypes().equals(PowerupTypes.DESTRUCTOR)) {
 
                     die(false);
@@ -73,7 +73,7 @@ public class Bomb extends EntityTNTPrimed {
         }
     }
 
-    public void explode() {
+    public void explodeBomb() {
 
         die(true);
     }
@@ -81,6 +81,11 @@ public class Bomb extends EntityTNTPrimed {
     @Override
     public void die() {
         die(true);
+    }
+
+    @Override
+    public boolean isBurning() {
+        return false;
     }
 
     public void die(boolean explosionDie) {

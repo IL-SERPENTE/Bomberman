@@ -65,6 +65,11 @@ public class PlayerBomberman extends GamePlayer {
         playMusic = false;
     }
 
+    public boolean hasPowerup(PowerupTypes powerup) {
+
+        return powerup.equals(powerupTypes);
+    }
+
     public List<Bomb> getAliveBombs() {
         return aliveBombs;
     }
@@ -313,8 +318,8 @@ public class PlayerBomberman extends GamePlayer {
             setSpectator();
             playMusic(Music.DEATH, player.getLocation());
 
-            /*if (gameManager.getConnectedPlayers() <= 1)
-                gameManager.endGame();*/
+            if (gameManager.getConnectedPlayers() <= 1)
+                gameManager.endGame();
         }
 
         player.getLocation().add(0, 5, 0).getBlock().setType(Material.BEDROCK);

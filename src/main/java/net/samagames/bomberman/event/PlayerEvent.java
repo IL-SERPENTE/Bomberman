@@ -73,7 +73,7 @@ public class PlayerEvent implements Listener {
 
                 if (PowerupTypes.BOMB_ACTIVATOR.equals(powerupTypes)) {
 
-                    playerBomberman.getAliveBombs().forEach(Bomb::explode);
+                    playerBomberman.getAliveBombs().forEach(Bomb::explodeBomb);
                     playerBomberman.getAliveBombs().clear();
                 }
             }

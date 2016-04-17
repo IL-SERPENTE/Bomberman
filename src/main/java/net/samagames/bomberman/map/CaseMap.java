@@ -4,10 +4,7 @@ import net.samagames.bomberman.GameManager;
 import net.samagames.bomberman.entity.Bomb;
 import net.samagames.bomberman.entity.Powerup;
 import net.samagames.bomberman.player.PlayerBomberman;
-import net.samagames.bomberman.powerup.BombPowerup;
-import net.samagames.bomberman.powerup.BoosterPowerup;
-import net.samagames.bomberman.powerup.CadeauPowerup;
-import net.samagames.bomberman.powerup.RadiusPowerup;
+import net.samagames.bomberman.powerup.*;
 import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -101,10 +98,16 @@ public class CaseMap {
                 spawnPowerup(worldLocation);
             }
 
-        if (block.equals(Material.AIR))
-            displayExplosion(indexRadius);
-
         updateInWorld();
+
+        if (block.equals(Material.AIR)) {
+
+            if (source.hasPowerup(PowerupTypes.FIRE)) {
+                worldLocation.getBlock().setType(Material.FIRE);
+            }
+
+            displayExplosion(indexRadius);
+        }
 
         return blockExplode;
     }
@@ -129,7 +132,7 @@ public class CaseMap {
         }
 
         if (bomb != null && bomb.isAlive()) {
-            bomb.explode();
+            bomb.explodeBomb();
             bomb = null;
         }
 

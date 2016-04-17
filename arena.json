@@ -27,7 +27,8 @@
     "blindness": 1,
     "swap": 1,
     "nausea": 1,
-    "wall-builder": 1
+    "wall-builder": 1,
+    "fire": 1
   },
   "players": {
     "max-health": 3,
