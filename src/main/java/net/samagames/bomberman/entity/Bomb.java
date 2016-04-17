@@ -101,6 +101,7 @@ public class Bomb extends EntityTNTPrimed {
         } else
             caseMap.setBomb(null);
 
+        this.owner.getAliveBombs().remove(this);
         this.owner.setPlacedBombs(this.owner.getPlacedBombs() - 1);
         this.owner.updateInventory();
 

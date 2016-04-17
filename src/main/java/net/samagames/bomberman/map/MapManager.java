@@ -103,8 +103,22 @@ public class MapManager {
             if (playerBomberman.getPowerupTypes() != null && playerBomberman.getPowerupTypes().equals(PowerupTypes.AUTO_PLACE) && caseMap.getBomb() == null && playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs())
                 gameManager.getMapManager().spawnBomb(locTo.getBlock().getLocation(), playerBomberman);
 
+            caseMap.getWorldLocation().clone().add(0, 5, 0).getBlock().setType(Material.BEACON);
         } else
             player.kickPlayer(ChatColor.RED + "Sortie de la map !");
+    }
+
+    public void spawnWall(Location location, PlayerBomberman player) {
+
+        location.setY(gameManager.getBombY());
+
+        CaseMap caseMap = gameManager.getMapManager().getCaseAtWorldLocation(location.getBlockX(), location.getBlockZ());
+
+        if (caseMap != null && caseMap.isEmpty()) {
+
+            caseMap.spawnWall();
+            player.setPlacedBombs(player.getPlacedBombs() + 1);
+        }
     }
 
     @SuppressWarnings("deprecation")
@@ -115,7 +129,7 @@ public class MapManager {
 
         CaseMap caseMap = gameManager.getMapManager().getCaseAtWorldLocation(location.getBlockX() , location.getBlockZ());
 
-        if (caseMap != null && (caseMap.getBomb() == null || (caseMap.getBomb() != null && !caseMap.getBomb().isAlive()))) {
+        if (caseMap != null && (caseMap.getBomb() == null || !caseMap.getBomb().isAlive())) {
             player.setPlacedBombs(player.getPlacedBombs() + 1);
 
             block.setTypeIdAndData(Material.CARPET.getId(), (byte) 8, false);
@@ -123,6 +137,7 @@ public class MapManager {
             Bomb bomb = new Bomb(((CraftWorld) location.getWorld()).getHandle(), location.getX() + 0.5, location.getY(), location.getZ() + 0.5, player.getFuseTicks(), player.getRadius(), player.getPlayerIfOnline());
 
             caseMap.setBomb(bomb);
+            player.getAliveBombs().add(bomb);
 
             gameManager.getServer().getScheduler().runTaskLater(gameManager.getPlugin(), () -> {
 

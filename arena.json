@@ -26,7 +26,8 @@
     "bomb-protection": 2,
     "blindness": 1,
     "swap": 1,
-    "transparency-wall": 1
+    "nausea": 1,
+    "wall-builder": 1
   },
   "players": {
     "max-health": 3,

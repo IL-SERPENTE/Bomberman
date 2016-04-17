@@ -28,7 +28,8 @@ public enum PowerupTypes {
     BOMB_PROTECTION("Seconde vie", "bomb-protection"),
     BLINDNESS("Jet d\'encre", "blindness", true),
     SWAP("Swap", "swap", true),
-    TRANSPARENCY_WALL("Transparence", "transparency-wall", true);
+    NAUSEA("Nausée", "nausea", true),
+    WALL_BUILDER("Constructeur", "wall-builder", 8, true);
 
     public static final String JSON_POWERUP_CHANCE = "booster-chance";
 
@@ -75,14 +76,14 @@ public enum PowerupTypes {
             }
         }
 
-        int random = RandomUtils.nextInt(chanceTotal);
+        int random = RandomUtils.nextInt(chanceTotal * 10);
         int index = 0;
 
         for (PowerupTypes powerupTypes : powerups) {
 
-            random = random - powerupTypes.chance;
+            random = random - powerupTypes.chance * 10;
 
-            if (random <= 0)
+            if (random < 0)
                 break;
             else
                 index++;

@@ -32,9 +32,21 @@ public class CadeauPowerup implements Powerup {
 
         PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
-        if(type.equals(PowerupTypes.BLINDNESS)) {
+        if (type.equals(PowerupTypes.BLINDNESS) || type.equals(PowerupTypes.NAUSEA)) {
 
-            PotionEffect effect = new PotionEffect(PotionEffectType.BLINDNESS, 60, 1);
+            final PotionEffect effect;
+
+            if (type.equals(PowerupTypes.BLINDNESS)) {
+
+                effect = new PotionEffect(PotionEffectType.BLINDNESS, 60, 1);
+                gameManager.getServer().broadcastMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.GOLD + player.getName() + ChatColor.DARK_GRAY + " vient de lancer de l'encre !");
+            } else if (type.equals(PowerupTypes.NAUSEA)) {
+
+                effect = new PotionEffect(PotionEffectType.CONFUSION, 60, 1);
+                gameManager.getServer().broadcastMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.GOLD + player.getName() + ChatColor.DARK_GREEN + " a déclancher de la nausée !");
+            } else {
+                effect = null;
+            }
 
             gameManager.getInGamePlayers().values().forEach(playerBomberman1 -> {
 

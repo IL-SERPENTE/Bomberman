@@ -6,6 +6,7 @@ import net.samagames.bomberman.Bomberman;
 import net.samagames.bomberman.GameManager;
 import net.samagames.bomberman.Music;
 import net.samagames.bomberman.NBTTags;
+import net.samagames.bomberman.entity.Bomb;
 import net.samagames.bomberman.map.CaseMap;
 import net.samagames.bomberman.powerup.PowerupTypes;
 import net.samagames.tools.scoreboards.ObjectiveSign;
@@ -21,6 +22,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,6 +38,7 @@ public class PlayerBomberman extends GamePlayer {
     private final GameManager gameManager;
     private PowerupTypes powerupTypes;
     private ObjectiveSign objectiveSign;
+    private List<Bomb> aliveBombs;
     private int bombNumber;
     private int radius;
     private int placedBombs;
@@ -50,6 +53,7 @@ public class PlayerBomberman extends GamePlayer {
     public PlayerBomberman(Player player) {
         super(player);
         gameManager = Bomberman.getGameManager();
+        aliveBombs = new ArrayList<>();
         powerupTypes = null;
         objectiveSign = null;
         bombNumber = 1;
@@ -59,6 +63,10 @@ public class PlayerBomberman extends GamePlayer {
         kills = 0;
         recordPlayTime = -2;
         playMusic = false;
+    }
+
+    public List<Bomb> getAliveBombs() {
+        return aliveBombs;
     }
 
     public void updateHealth() {
@@ -108,7 +116,13 @@ public class PlayerBomberman extends GamePlayer {
 
         if (powerupTypes != null && powerupTypes.getDuration() > 0 && --powerupDuration <= 0) {
 
+
+            if (powerupTypes.equals(PowerupTypes.WALL_BUILDER)) {
+                placedBombs = 0;
+            }
+
             powerupTypes = null;
+            updateInventory();
         }
     }
 
@@ -160,6 +174,7 @@ public class PlayerBomberman extends GamePlayer {
 
         this.powerupTypes = powerupTypes;
         this.powerupDuration = powerupTypes.getDuration();
+        this.updateInventory();
     }
 
     public int getBombNumber() {
@@ -209,18 +224,20 @@ public class PlayerBomberman extends GamePlayer {
         itemMeta.setDisplayName(ChatColor.RESET.toString() + ChatColor.GREEN + "Puissance : " + ChatColor.GOLD + itemRadiusNb);
         itemRadiusNbumber.setItemMeta(itemMeta);
 
-        // Generate bomb item
-        ItemStack bomb = new ItemStack(Material.CARPET, 1, (short) 8);
-        itemMeta = bomb.getItemMeta();
+        // Generate main item
+        boolean bomb = PowerupTypes.WALL_BUILDER.equals(powerupTypes);
+
+        ItemStack mainItem = new ItemStack(bomb ? Material.BRICK : Material.CARPET, 1, (short) (bomb ? 0 : 8));
+        itemMeta = mainItem.getItemMeta();
         NBTTagCompound nbtTagCompound;
-        net.minecraft.server.v1_8_R3.ItemStack bombNMS;
+        net.minecraft.server.v1_8_R3.ItemStack mainItemNMS;
 
-        itemMeta.setDisplayName(ChatColor.GOLD + "Bombe");
-        bomb.setItemMeta(itemMeta);
-        bomb.setAmount(getBombNumber() - getPlacedBombs());
+        itemMeta.setDisplayName(bomb ? ChatColor.GOLD + "Constructeur" : ChatColor.GOLD + "Bombe");
+        mainItem.setItemMeta(itemMeta);
+        mainItem.setAmount(getBombNumber() - getPlacedBombs());
 
-        bombNMS = CraftItemStack.asNMSCopy(bomb);
-        nbtTagCompound = bombNMS.getTag() != null ? bombNMS.getTag() : new NBTTagCompound();
+        mainItemNMS = CraftItemStack.asNMSCopy(mainItem);
+        nbtTagCompound = mainItemNMS.getTag() != null ? mainItemNMS.getTag() : new NBTTagCompound();
 
         NBTTagList nbtTagList = new NBTTagList();
 
@@ -229,8 +246,8 @@ public class PlayerBomberman extends GamePlayer {
 
         nbtTagCompound.set(NBTTags.CAN_PLACE_ON.getName(), nbtTagList);
 
-        bombNMS.setTag(nbtTagCompound);
-        bomb = CraftItemStack.asBukkitCopy(bombNMS);
+        mainItemNMS.setTag(nbtTagCompound);
+        mainItem = CraftItemStack.asBukkitCopy(mainItemNMS);
 
         Player player = getPlayerIfOnline();
 
@@ -239,7 +256,7 @@ public class PlayerBomberman extends GamePlayer {
 
             inventory.setItem(8, itemRadiusNbumber);
             inventory.setItem(7, itemBombNumber);
-            inventory.setItem(0, bomb);
+            inventory.setItem(0, mainItem);
         }
 
     }
@@ -296,9 +313,11 @@ public class PlayerBomberman extends GamePlayer {
             setSpectator();
             playMusic(Music.DEATH, player.getLocation());
 
-            if (gameManager.getConnectedPlayers() <= 1)
-                gameManager.endGame();
+            /*if (gameManager.getConnectedPlayers() <= 1)
+                gameManager.endGame();*/
         }
+
+        player.getLocation().add(0, 5, 0).getBlock().setType(Material.BEDROCK);
 
         return true;
     }

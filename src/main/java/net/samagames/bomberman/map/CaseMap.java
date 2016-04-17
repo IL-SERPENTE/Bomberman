@@ -109,6 +109,18 @@ public class CaseMap {
         return blockExplode;
     }
 
+    public void spawnWall() {
+
+        block = Material.DIRT;
+
+        if (powerup != null && powerup.isAlive()) {
+            powerup.die();
+            powerup = null;
+        }
+
+        updateInWorld();
+    }
+
     private void killEntitys(PlayerBomberman source) {
 
         if (powerup != null && powerup.isAlive()) {
@@ -126,6 +138,8 @@ public class CaseMap {
             for (PlayerBomberman player : players) {
                 Player p = player.getPlayerIfOnline();
                 Player pSource = source.getPlayerIfOnline();
+
+                this.getWorldLocation().add(0, 7, 0).getBlock().setType(Material.TNT);
 
                 if (p != null && pSource != null) {
                     p.damage(777.77D, pSource);
@@ -175,6 +189,11 @@ public class CaseMap {
 
         if (powerupToSpawn != null)
             powerup = gameManager.getPowerupManager().spawnPowerup(powerupToSpawn, locationPowerup);
+    }
+
+    public boolean isEmpty() {
+
+        return players.isEmpty() && (powerup == null || !powerup.isAlive()) && block.equals(Material.AIR);
     }
 
     public Location getWorldLocation() {

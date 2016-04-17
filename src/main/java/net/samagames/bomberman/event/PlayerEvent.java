@@ -2,7 +2,7 @@ package net.samagames.bomberman.event;
 
 import net.samagames.api.games.Status;
 import net.samagames.bomberman.GameManager;
-import net.samagames.bomberman.Music;
+import net.samagames.bomberman.entity.Bomb;
 import net.samagames.bomberman.player.PlayerBomberman;
 import net.samagames.bomberman.powerup.PowerupTypes;
 import org.bukkit.ChatColor;
@@ -21,10 +21,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
 /**
@@ -66,16 +63,36 @@ public class PlayerEvent implements Listener {
     }
 
     @EventHandler
+    public void onPlayerSneak(PlayerToggleSneakEvent event) {
+
+        if (event.isSneaking()) {
+            PlayerBomberman playerBomberman = gameManager.getPlayer(event.getPlayer().getUniqueId());
+
+            if (playerBomberman != null) {
+                PowerupTypes powerupTypes = playerBomberman.getPowerupTypes();
+
+                if (PowerupTypes.BOMB_ACTIVATOR.equals(powerupTypes)) {
+
+                    playerBomberman.getAliveBombs().forEach(Bomb::explode);
+                    playerBomberman.getAliveBombs().clear();
+                }
+            }
+        }
+    }
+
+    @EventHandler
     public void onPlayerDamageByEntity(EntityDamageByEntityEvent event) {
 
         if (event.getDamager() != null && event.getDamager() instanceof Player) {
 
             PlayerBomberman playerBomberman = gameManager.getPlayer(event.getEntity().getUniqueId());
 
-            if(playerBomberman.getPowerupTypes() != null) {
-                if (playerBomberman.getPowerupTypes().equals(PowerupTypes.SELF_INVULNERABILITY) && event.getDamager().equals(event.getEntity())) {
+            if (playerBomberman != null) {
+                PowerupTypes powerupTypes = playerBomberman.getPowerupTypes();
+
+                if (PowerupTypes.SELF_INVULNERABILITY.equals(powerupTypes) && event.getDamager().equals(event.getEntity())) {
                     event.setCancelled(true);
-                } else if(playerBomberman.getPowerupTypes().equals(PowerupTypes.BOMB_PROTECTION)) {
+                } else if (PowerupTypes.BOMB_PROTECTION.equals(powerupTypes)) {
                     event.getEntity().sendMessage(gameManager.getCoherenceMachine().getGameTag() + ChatColor.RED + " Vous venez de perdre votre powerup Seconde vie !");
                     event.setCancelled(true);
                 }
@@ -101,7 +118,7 @@ public class PlayerEvent implements Listener {
 
             Location locTo = event.getTo();
 
-            if (gameManager.getMapManager().getCaseAtWorldLocation(locTo.getBlockX()  , locTo.getBlockZ()) == null || locTo.getY() <= 0 || locTo.getY() >= 256)
+            if (gameManager.getMapManager().getCaseAtWorldLocation(locTo.getBlockX(), locTo.getBlockZ()) == null || locTo.getY() <= 0 || locTo.getY() >= 256)
                 player.teleport(gameManager.getSpecSpawn());
         } else if (!event.getFrom().getBlock().equals(event.getTo().getBlock()) && gameManager.getStatus().equals(Status.IN_GAME))
             gameManager.getMapManager().movePlayer(player, event.getTo());
@@ -119,7 +136,7 @@ public class PlayerEvent implements Listener {
 
         event.setCancelled(true);
 
-        if (block.getType().equals(Material.CARPET) && block.getData() == 8 && gameManager.getStatus().equals(Status.IN_GAME)) {
+        if (gameManager.getStatus().equals(Status.IN_GAME)) {
 
             Location location = block.getLocation();
 
@@ -129,11 +146,17 @@ public class PlayerEvent implements Listener {
             Player player = event.getPlayer();
             PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
-            if (playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs() && gameManager.getMapManager().spawnBomb(location, playerBomberman)) {
+            if (playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs()) {
+                if (block.getType().equals(Material.CARPET) && block.getData() == 8 && gameManager.getMapManager().spawnBomb(location, playerBomberman)) {
 
-                event.setCancelled(false);
-                block.getLocation().add(0, 1, 0).getBlock().setType(Material.BARRIER, false);
-                playerBomberman.updateInventory();
+                    event.setCancelled(false);
+                    block.getLocation().add(0, 1, 0).getBlock().setType(Material.BARRIER, false);
+                    playerBomberman.updateInventory();
+
+                } else if (block.getType().equals(Material.BRICK)) {
+
+                    gameManager.getMapManager().spawnWall(location, playerBomberman);
+                }
             }
         }
     }
