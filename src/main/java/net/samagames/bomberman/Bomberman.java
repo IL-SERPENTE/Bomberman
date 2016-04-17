@@ -4,6 +4,7 @@ import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.EntityTypes;
 import net.samagames.api.SamaGamesAPI;
 import net.samagames.api.resourcepacks.IResourceCallback;
+import net.samagames.bomberman.commands.CommandSpawnPowerup;
 import net.samagames.bomberman.entity.Bomb;
 import net.samagames.bomberman.entity.Powerup;
 import net.samagames.bomberman.event.PlayerEvent;
@@ -79,6 +80,9 @@ public class Bomberman extends JavaPlugin {
 
         // Register events
         getServer().getPluginManager().registerEvents(new PlayerEvent(gameManager), this);
+
+        // Register command
+        getServer().getPluginCommand("spawnpowerup").setExecutor(new CommandSpawnPowerup(gameManager));
 
         // Register timer
         getServer().getScheduler().runTaskTimerAsynchronously(this, gameManager.getTimer(), 0L, 20L);
