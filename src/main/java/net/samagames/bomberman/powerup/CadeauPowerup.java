@@ -4,10 +4,16 @@ import net.samagames.bomberman.Bomberman;
 import net.samagames.bomberman.GameManager;
 import net.samagames.bomberman.player.PlayerBomberman;
 import net.samagames.tools.powerups.Powerup;
+import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -58,6 +64,21 @@ public class CadeauPowerup implements Powerup {
 
         } else if(type.equals(PowerupTypes.SWAP)) {
             playerBomberman.swap();
+        } else if (type.equals(PowerupTypes.FIREWORKS)) {
+
+            for (int i = 2; i >= 0; i--) {
+
+                Firework firework = (Firework) player.getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
+                FireworkMeta fireworkMeta = firework.getFireworkMeta();
+
+                FireworkEffect effect = FireworkEffect.builder().with(FireworkEffect.Type.values()[RandomUtils.nextInt(FireworkEffect.Type.values().length)]).trail(true).flicker(true).withColor(Color.ORANGE, Color.RED).withFade(Color.BLUE, Color.GREEN).build();
+
+                fireworkMeta.addEffect(effect);
+                fireworkMeta.setPower(i);
+
+                firework.setFireworkMeta(fireworkMeta);
+            }
+
         } else
             playerBomberman.setPowerup(type);
 

@@ -28,7 +28,8 @@
     "swap": 1,
     "nausea": 1,
     "wall-builder": 1,
-    "fire": 1
+    "fire": 1,
+    "fireworks": 1
   },
   "players": {
     "max-health": 3,
