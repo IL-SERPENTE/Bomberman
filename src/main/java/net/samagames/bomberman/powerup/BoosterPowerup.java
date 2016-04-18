@@ -8,6 +8,7 @@ import net.samagames.tools.powerups.Powerup;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -45,8 +46,11 @@ public class BoosterPowerup implements Powerup {
                 gameManager.getMapManager().getCaseAtWorldLocation(cat.getLocation().getBlockX() , cat.getLocation().getBlockZ()).explode(true , false , playerBomberman);
                 cat.remove();
             } , PowerupTypes.CAT.getDuration());
-        }
-        else {
+        } else if (type.equals(PowerupTypes.ENDERMITE_SPAWN)) {
+            for (int i = 0; i <= 3; i++) {
+                player.getWorld().spawnEntity(player.getLocation(), EntityType.ENDERMITE);
+            }
+        } else {
             if (type.equals(PowerupTypes.AUTO_PLACE)) {
                 Titles.sendTitle(player, 10, 60, 10, ChatColor.RED + "\u26A0 Malus \\\"AutoPlace\\\" activé ! \u26A0", ChatColor.GOLD + "Il place automatiquement des bombs sous vos pieds");
             }
