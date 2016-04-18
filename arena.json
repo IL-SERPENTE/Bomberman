@@ -30,7 +30,8 @@
     "wall-builder": 1,
     "fire": 1,
     "fireworks": 1,
-    "invulnerability": 1
+    "invulnerability": 1,
+    "freezer": 2
   },
   "players": {
     "max-health": 3,

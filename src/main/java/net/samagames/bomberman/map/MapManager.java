@@ -100,10 +100,31 @@ public class MapManager {
         if (caseMap != null) {
             caseMap.getPlayers().add(playerBomberman);
 
-            if (playerBomberman.getPowerupTypes() != null && playerBomberman.getPowerupTypes().equals(PowerupTypes.AUTO_PLACE) && caseMap.getBomb() == null && playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs())
+            if (playerBomberman.hasPowerup(PowerupTypes.AUTO_PLACE) && caseMap.getBomb() == null && playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs())
                 gameManager.getMapManager().spawnBomb(locTo.getBlock().getLocation(), playerBomberman);
+            else if (playerBomberman.hasPowerup(PowerupTypes.FREEZER))
+                freezeBombs(2);
         } else
             player.kickPlayer(ChatColor.RED + "Sortie de la map !");
+    }
+
+    private void freezeBombs(int radius) {
+
+        int minX = radius * -1;
+
+        for (int x = minX; x <= radius; x++) {
+
+            int minZ = Math.abs(x) - radius;
+            int maxZ = Math.abs(minZ);
+
+            for (int y = minZ; y <= maxZ; y++) {
+                Bomb bomb = getCaseAtWorldLocation(x, y).getBomb();
+
+                if (bomb != null) {
+                    bomb.setExplodeTicks(bomb.getExplodeTicks() + 4);
+                }
+            }
+        }
     }
 
     public void spawnWall(Location location, PlayerBomberman player) {

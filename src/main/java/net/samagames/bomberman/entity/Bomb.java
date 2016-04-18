@@ -26,18 +26,27 @@ public class Bomb extends EntityTNTPrimed {
     private static GameManager gameManager;
     private final int radius;
     private final PlayerBomberman owner;
+    private int explodeTicks;
 
     public Bomb(World world, double x, double y, double z, int fuseTicks, int radius, Player owner) {
         super(world, x, y, z, ((CraftPlayer) owner).getHandle());
 
         gameManager = Bomberman.getGameManager();
-        this.fuseTicks = fuseTicks;
+        this.explodeTicks = fuseTicks;
         this.radius = radius;
         this.owner = gameManager.getPlayer(owner.getUniqueId());
         this.motX = 0;
         this.motY = 0;
         this.motZ = 0;
         this.velocityChanged = true;
+    }
+
+    public int getExplodeTicks() {
+        return explodeTicks;
+    }
+
+    public void setExplodeTicks(int explodeTicks) {
+        this.explodeTicks = explodeTicks;
     }
 
     @Override
@@ -65,7 +74,7 @@ public class Bomb extends EntityTNTPrimed {
     @Override
     public void t_() {
 
-        if (this.fuseTicks-- <= 0 && isAlive()) {
+        if (this.explodeTicks-- <= 0 && isAlive()) {
 
             this.die();
         } else {
