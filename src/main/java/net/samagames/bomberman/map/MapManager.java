@@ -102,8 +102,6 @@ public class MapManager {
 
             if (playerBomberman.getPowerupTypes() != null && playerBomberman.getPowerupTypes().equals(PowerupTypes.AUTO_PLACE) && caseMap.getBomb() == null && playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs())
                 gameManager.getMapManager().spawnBomb(locTo.getBlock().getLocation(), playerBomberman);
-
-            caseMap.getWorldLocation().clone().add(0, 5, 0).getBlock().setType(Material.BEACON);
         } else
             player.kickPlayer(ChatColor.RED + "Sortie de la map !");
     }

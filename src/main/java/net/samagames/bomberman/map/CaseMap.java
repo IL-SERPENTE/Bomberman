@@ -142,8 +142,6 @@ public class CaseMap {
                 Player p = player.getPlayerIfOnline();
                 Player pSource = source.getPlayerIfOnline();
 
-                this.getWorldLocation().add(0, 7, 0).getBlock().setType(Material.TNT);
-
                 if (p != null && pSource != null) {
                     p.damage(777.77D, pSource);
                 }

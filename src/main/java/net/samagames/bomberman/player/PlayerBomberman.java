@@ -322,8 +322,6 @@ public class PlayerBomberman extends GamePlayer {
                 gameManager.endGame();
         }
 
-        player.getLocation().add(0, 5, 0).getBlock().setType(Material.BEDROCK);
-
         return true;
     }
 
