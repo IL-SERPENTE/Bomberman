@@ -5,8 +5,10 @@ import net.samagames.bomberman.GameManager;
 import net.samagames.bomberman.player.PlayerBomberman;
 import net.samagames.tools.Titles;
 import net.samagames.tools.powerups.Powerup;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -36,6 +38,14 @@ public class BoosterPowerup implements Powerup {
             playerBomberman.setSpeed(playerBomberman.getSpeed() + 0.1f);
         else if (type.equals(PowerupTypes.SLOWNESS))
             playerBomberman.setSpeed(playerBomberman.getSpeed() - 0.1f);
+        else if (type.equals(PowerupTypes.CAT)){
+            Ocelot cat = player.getWorld().spawn(player.getLocation() , Ocelot.class);
+            cat.setCatType(Ocelot.Type.RED_CAT);
+            Bukkit.getScheduler().runTaskLater(gameManager.getPlugin() , () -> {
+                gameManager.getMapManager().getCaseAtWorldLocation(cat.getLocation().getBlockX() , cat.getLocation().getBlockZ()).explode(true , false , playerBomberman);
+                cat.remove();
+            } , PowerupTypes.CAT.getDuration());
+        }
         else {
             if (type.equals(PowerupTypes.AUTO_PLACE)) {
                 Titles.sendTitle(player, 10, 60, 10, ChatColor.RED + "\u26A0 Malus \\\"AutoPlace\\\" activé ! \u26A0", ChatColor.GOLD + "Il place automatiquement des bombs sous vos pieds");

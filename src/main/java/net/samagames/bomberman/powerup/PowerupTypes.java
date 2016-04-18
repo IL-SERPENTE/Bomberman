@@ -33,7 +33,8 @@ public enum PowerupTypes {
     FIRE("Incendie", "fire", true),
     FIREWORKS("Festivité", "fireworks", true),
     INVULNERABILITY("Invincibilité", "invulnerability", 13),
-    FREEZER("Freezer", "freezer", 4);
+    FREEZER("Freezer", "freezer", 4),
+    CAT("Chat piégé" , "cat" , 7);
 
     public static final String JSON_POWERUP_CHANCE = "booster-chance";
 
