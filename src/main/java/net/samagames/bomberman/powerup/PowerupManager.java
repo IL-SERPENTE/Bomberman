@@ -1,9 +1,9 @@
 package net.samagames.bomberman.powerup;
 
-import net.minecraft.server.v1_8_R3.World;
+import net.minecraft.server.v1_9_R1.World;
 import net.samagames.bomberman.entity.Powerup;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
 
 import java.util.ArrayList;
 import java.util.List;

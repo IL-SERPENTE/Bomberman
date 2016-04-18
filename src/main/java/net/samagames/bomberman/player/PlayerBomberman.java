@@ -1,6 +1,6 @@
 package net.samagames.bomberman.player;
 
-import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.server.v1_9_R1.*;
 import net.samagames.api.games.GamePlayer;
 import net.samagames.bomberman.Bomberman;
 import net.samagames.bomberman.GameManager;
@@ -15,8 +15,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_9_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -235,7 +235,7 @@ public class PlayerBomberman extends GamePlayer {
         ItemStack mainItem = new ItemStack(bomb ? Material.BRICK : Material.CARPET, 1, (short) (bomb ? 0 : 8));
         itemMeta = mainItem.getItemMeta();
         NBTTagCompound nbtTagCompound;
-        net.minecraft.server.v1_8_R3.ItemStack mainItemNMS;
+        net.minecraft.server.v1_9_R1.ItemStack mainItemNMS;
 
         itemMeta.setDisplayName(bomb ? ChatColor.GOLD + "Constructeur" : ChatColor.GOLD + "Bombe");
         mainItem.setItemMeta(itemMeta);
@@ -329,7 +329,7 @@ public class PlayerBomberman extends GamePlayer {
 
         Location baseLocation = getPlayerIfOnline().getLocation();
 
-        baseLocation.getWorld().playSound(baseLocation, Sound.EXPLODE, 10.0f, 20.0f);
+        baseLocation.getWorld().playSound(baseLocation, Sound.ENTITY_GENERIC_EXPLODE, 10.0f, 20.0f);
 
         int minX = radius * -1;
 

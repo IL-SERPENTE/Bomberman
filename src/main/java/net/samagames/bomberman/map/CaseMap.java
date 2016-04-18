@@ -132,7 +132,7 @@ public class CaseMap {
         }
 
         if (bomb != null && bomb.isAlive()) {
-            bomb.explodeBomb();
+            bomb.explodeBomb(true);
             bomb = null;
         }
 

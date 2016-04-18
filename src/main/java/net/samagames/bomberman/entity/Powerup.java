@@ -1,6 +1,6 @@
 package net.samagames.bomberman.entity;
 
-import net.minecraft.server.v1_8_R3.*;
+import net.minecraft.server.v1_9_R1.*;
 import net.samagames.api.games.Status;
 import net.samagames.bomberman.Bomberman;
 import net.samagames.bomberman.GameManager;
@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_9_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 
@@ -120,7 +120,7 @@ public class Powerup extends EntityArmorStand {
     }
 
     @Override
-    public void t_() {
+    public void m() {
 
         if (++dispawnTicks >= 600) // 30 seconds
             this.die();
@@ -143,7 +143,7 @@ public class Powerup extends EntityArmorStand {
         // If IN_GAME, player game mode is not to spectator, powerup is alive and distance at powerup is <= 1.5
         if (status.equals(Status.IN_GAME) && isValidPlayer(player) && this.isAlive() && distanceSquaredAtPowerup <= 1.44) {
             for (int i = 0; i <= 20; i++)
-                player.playSound(playerLocation, Sound.NOTE_PIANO, 20.0f, 1.8f);
+                player.playSound(playerLocation, Sound.BLOCK_NOTE_BASEDRUM, 20.0f, 1.8f);
             powerupType.onPickup(player);
             die();
         }
