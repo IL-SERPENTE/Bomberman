@@ -32,7 +32,8 @@
     "fireworks": 1,
     "invulnerability": 1,
     "freezer": 2,
-    "endermite-spawn": 1
+    "endermite-spawn": 1,
+    "invisibility": 3
   },
   "players": {
     "max-health": 3,

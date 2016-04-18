@@ -21,6 +21,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -121,6 +123,8 @@ public class PlayerBomberman extends GamePlayer {
 
         if (powerupTypes != null && powerupTypes.getDuration() > 0 && --powerupDuration <= 0) {
 
+            if (hasPowerup(PowerupTypes.INVISIBILITY))
+                getPlayerIfOnline().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 30, 1), true);
 
             if (powerupTypes.equals(PowerupTypes.WALL_BUILDER)) {
                 placedBombs = 0;
