@@ -106,10 +106,8 @@ public class Bomb extends EntityTNTPrimed {
         super.die();
 
         if (explosionDie) {
-            Powerups powerup = owner.getPowerups();
 
-            // powerup can be null
-            caseMap.explode(Powerups.HYPER_BOMB.equals(powerup), Powerups.SUPER_BOMB.equals(powerup), owner);
+            caseMap.explode(owner.hasPowerup(Powerups.HYPER_BOMB), owner.hasPowerup(Powerups.SUPER_BOMB), owner);
 
             craftWorld.playSound(baseLocation, Sound.ENTITY_GENERIC_EXPLODE, 10.0f, 20.0f);
         } else

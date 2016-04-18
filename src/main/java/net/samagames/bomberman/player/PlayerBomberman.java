@@ -132,7 +132,7 @@ public class PlayerBomberman extends GamePlayer {
             if (hasPowerup(Powerups.INVISIBILITY))
                 getPlayerIfOnline().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 30, 1), true);
 
-            if (powerups.equals(Powerups.WALL_BUILDER)) {
+            if (hasPowerup(Powerups.WALL_BUILDER)) {
                 placedBombs = 0;
             }
 
@@ -240,7 +240,7 @@ public class PlayerBomberman extends GamePlayer {
         itemRadiusNbumber.setItemMeta(itemMeta);
 
         // Generate main item
-        boolean bomb = Powerups.WALL_BUILDER.equals(powerups);
+        boolean bomb = hasPowerup(Powerups.WALL_BUILDER);
 
         ItemStack mainItem = new ItemStack(bomb ? Material.BRICK : Material.CARPET, 1, (short) (bomb ? 0 : 8));
         itemMeta = mainItem.getItemMeta();
@@ -312,7 +312,7 @@ public class PlayerBomberman extends GamePlayer {
             return false;
         }
 
-        if(powerups != null && powerups.equals(Powerups.EXPLOSION_KILL)) {
+        if (powerups != null && hasPowerup(Powerups.EXPLOSION_KILL)) {
             gameManager.getServer().getScheduler().runTaskLater(gameManager.getPlugin(), () -> explode(3), 1L);
         }
 
@@ -419,6 +419,6 @@ public class PlayerBomberman extends GamePlayer {
     }
 
     public int getFuseTicks() {
-        return getPowerups() != null && getPowerups().equals(Powerups.RANDOM_FUSE) ? (RandomUtils.nextInt(4) + 1) * 20 : 50;
+        return hasPowerup(Powerups.RANDOM_FUSE) ? (RandomUtils.nextInt(4) + 1) * 20 : 50;
     }
 }
