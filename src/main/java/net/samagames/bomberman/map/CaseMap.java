@@ -142,7 +142,7 @@ public class CaseMap {
                 Player p = player.getPlayerIfOnline();
                 Player pSource = source.getPlayerIfOnline();
 
-                if (p != null && pSource != null) {
+                if (p != null && pSource != null && !player.hasPowerup(PowerupTypes.INVULNERABILITY)) {
                     p.damage(777.77D, pSource);
                 }
             }

@@ -31,7 +31,8 @@ public enum PowerupTypes {
     NAUSEA("Nausée", "nausea", true),
     WALL_BUILDER("Constructeur", "wall-builder", 8, true),
     FIRE("Incendie", "fire", true),
-    FIREWORKS("Festivité", "fireworks", true);
+    FIREWORKS("Festivité", "fireworks", true),
+    INVULNERABILITY("Invincibilité", "invulnerability", 13);
 
     public static final String JSON_POWERUP_CHANCE = "booster-chance";
 
