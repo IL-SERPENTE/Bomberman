@@ -104,6 +104,7 @@ public class CaseMap {
 
             if (source.hasPowerup(PowerupTypes.FIRE)) {
                 worldLocation.getBlock().setType(Material.FIRE);
+                gameManager.getServer().getScheduler().runTaskLater(gameManager.getPlugin(), () -> worldLocation.getBlock().setType(Material.AIR), 60L);
             }
 
             displayExplosion(indexRadius);

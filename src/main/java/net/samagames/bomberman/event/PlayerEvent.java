@@ -214,7 +214,7 @@ public class PlayerEvent implements Listener {
             final String deathMessageBase = gameManager.getCoherenceMachine().getGameTag() + " " + player.getName();
 
             if (killer == null)
-                event.setDeathMessage(deathMessageBase + " vient d'exploser");
+                event.setDeathMessage(deathMessageBase + " vient de bruler");
             else if (killer.equals(player))
                 event.setDeathMessage(deathMessageBase + " vient de se faire exploser");
             else {
@@ -232,6 +232,9 @@ public class PlayerEvent implements Listener {
     @EventHandler
     public void onPlayerDamage(EntityDamageEvent event) {
 
+        if (event.getCause().equals(EntityDamageEvent.DamageCause.FIRE)) {
+            ((Player) event.getEntity()).damage(777.77, null);
+        }
         if ((int) (event.getDamage() - 777.77) != 0 || !gameManager.getStatus().equals(Status.IN_GAME)) {
             event.setCancelled(true);
         }
