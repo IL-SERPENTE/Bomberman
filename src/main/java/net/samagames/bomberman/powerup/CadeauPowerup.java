@@ -2,6 +2,8 @@ package net.samagames.bomberman.powerup;
 
 import net.samagames.bomberman.Bomberman;
 import net.samagames.bomberman.GameManager;
+import net.samagames.bomberman.Utils;
+import net.samagames.bomberman.map.CaseMap;
 import net.samagames.bomberman.player.PlayerBomberman;
 import net.samagames.tools.powerups.Powerup;
 import org.apache.commons.lang.math.RandomUtils;
@@ -14,6 +16,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Powerup cadeau
@@ -43,7 +49,25 @@ public class CadeauPowerup implements Powerup {
                 gameManager.getMapManager().getCaseAtWorldLocation(cat.getLocation().getBlockX() , cat.getLocation().getBlockZ()).explode(true , false , playerBomberman);
                 cat.remove();
             } , Powerups.CAT.getDuration());
-        } else if (type.equals(Powerups.ENDERMITE_SPAWN)) {
+        }else if(type.equals(Powerups.WALL_INVISIBILITY)){
+            Map<Vector , Material> toChange = new HashMap<>();
+
+            for(int x = 0 ; x < gameManager.getMapManager().getWight() ; x++){
+                for(int z = 0 ; z < gameManager.getMapManager().getHeight() ; z++){
+                    CaseMap caseMap = gameManager.getMapManager().getMap()[x][z];
+                    if(caseMap.getBlock() == Material.DIRT){
+                        toChange.put(caseMap.getWorldLocation().clone().add(0 , 1 , 0).toVector() , Material.AIR);
+                        toChange.put(caseMap.getWorldLocation().clone().add(0 , 2 , 0).toVector() , Material.AIR);
+                    }
+
+                }
+            }
+
+            Utils.changeBlocks(toChange , player);
+            toChange.replaceAll((v , m ) -> Material.DIRT);
+            Bukkit.getScheduler().runTaskLater(gameManager.getPlugin() , () -> Utils.changeBlocks(toChange , player) , Powerups.WALL_INVISIBILITY.getDuration());
+        }
+        else if (type.equals(Powerups.ENDERMITE_SPAWN)) {
             for (int i = 0; i <= 3; i++) {
                 player.getWorld().spawnEntity(player.getLocation(), EntityType.ENDERMITE);
             }

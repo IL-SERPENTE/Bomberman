@@ -36,6 +36,7 @@ public enum Powerups {
     FREEZER("Freezer", "freezer", 4, Types.CADEAU),
     CAT("Chat piégé", "cat", Types.CADEAU),
     ENDERMITE_SPAWN("Infestation", "endermite-spawn", Types.CADEAU),
+    WALL_INVISIBILITY("Transparence" , "wall_invisibility" , Types.CADEAU),
     INVISIBILITY("Invisibilité", "invisibility", 5, Types.CADEAU);
 
     public static final String JSON_POWERUP_CHANCE = "booster-chance";
