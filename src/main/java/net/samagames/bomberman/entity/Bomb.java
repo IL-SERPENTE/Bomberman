@@ -82,14 +82,14 @@ public class Bomb extends EntityTNTPrimed {
         }
     }
 
-    public void explodeBomb() {
+    public void explodeBomb(boolean removeBomb) {
 
-        die(true);
+        die(true , removeBomb);
     }
 
     @Override
     public void die() {
-        die(true);
+        die(true ,true);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class Bomb extends EntityTNTPrimed {
         return false;
     }
 
-    public void die(boolean explosionDie) {
+    public void die(boolean explosionDie , boolean removeBomb) {
 
         CraftWorld craftWorld = getWorld().getWorld();
         Location baseLocation = new Location(craftWorld, locX, locY, locZ);
@@ -115,7 +115,8 @@ public class Bomb extends EntityTNTPrimed {
         } else
             caseMap.setBomb(null);
 
-        this.owner.getAliveBombs().remove(this);
+        if(removeBomb)
+            this.owner.getAliveBombs().remove(this);
         this.owner.setPlacedBombs(this.owner.getPlacedBombs() - 1);
         this.owner.updateInventory();
 
