@@ -8,7 +8,7 @@ import net.samagames.bomberman.Music;
 import net.samagames.bomberman.NBTTags;
 import net.samagames.bomberman.entity.Bomb;
 import net.samagames.bomberman.map.CaseMap;
-import net.samagames.bomberman.powerup.PowerupTypes;
+import net.samagames.bomberman.powerup.Powerups;
 import net.samagames.tools.scoreboards.ObjectiveSign;
 import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.ChatColor;
@@ -38,9 +38,10 @@ import java.util.stream.Collectors;
 public class PlayerBomberman extends GamePlayer {
 
     private final GameManager gameManager;
-    private PowerupTypes powerupTypes;
+    private Powerups powerups;
     private ObjectiveSign objectiveSign;
     private List<Bomb> aliveBombs;
+    private List<Powerups> persistentPowerups;
     private int bombNumber;
     private int radius;
     private int placedBombs;
@@ -56,7 +57,8 @@ public class PlayerBomberman extends GamePlayer {
         super(player);
         gameManager = Bomberman.getGameManager();
         aliveBombs = new ArrayList<>();
-        powerupTypes = null;
+        persistentPowerups = new ArrayList<>();
+        powerups = null;
         objectiveSign = null;
         bombNumber = 1;
         powerupDuration = 0;
@@ -67,9 +69,13 @@ public class PlayerBomberman extends GamePlayer {
         playMusic = false;
     }
 
-    public boolean hasPowerup(PowerupTypes powerup) {
+    public List<Powerups> getPersistentPowerups() {
+        return persistentPowerups;
+    }
 
-        return powerup.equals(powerupTypes);
+    public boolean hasPowerup(Powerups powerup) {
+
+        return powerup.equals(powerups) || persistentPowerups.contains(powerup);
     }
 
     public List<Bomb> getAliveBombs() {
@@ -121,16 +127,16 @@ public class PlayerBomberman extends GamePlayer {
 
     public void update() {
 
-        if (powerupTypes != null && powerupTypes.getDuration() > 0 && --powerupDuration <= 0) {
+        if (powerups != null && powerups.getDuration() > 0 && --powerupDuration <= 0) {
 
-            if (hasPowerup(PowerupTypes.INVISIBILITY))
+            if (hasPowerup(Powerups.INVISIBILITY))
                 getPlayerIfOnline().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 30, 1), true);
 
-            if (powerupTypes.equals(PowerupTypes.WALL_BUILDER)) {
+            if (powerups.equals(Powerups.WALL_BUILDER)) {
                 placedBombs = 0;
             }
 
-            powerupTypes = null;
+            powerups = null;
             updateInventory();
         }
     }
@@ -175,14 +181,14 @@ public class PlayerBomberman extends GamePlayer {
         this.placedBombs = placedBombs;
     }
 
-    public PowerupTypes getPowerupTypes() {
-        return powerupTypes;
+    public Powerups getPowerups() {
+        return powerups;
     }
 
-    public void setPowerup(PowerupTypes powerupTypes) {
+    public void setPowerup(Powerups powerups) {
 
-        this.powerupTypes = powerupTypes;
-        this.powerupDuration = powerupTypes.getDuration();
+        this.powerups = powerups;
+        this.powerupDuration = powerups.getDuration();
         this.updateInventory();
     }
 
@@ -234,7 +240,7 @@ public class PlayerBomberman extends GamePlayer {
         itemRadiusNbumber.setItemMeta(itemMeta);
 
         // Generate main item
-        boolean bomb = PowerupTypes.WALL_BUILDER.equals(powerupTypes);
+        boolean bomb = Powerups.WALL_BUILDER.equals(powerups);
 
         ItemStack mainItem = new ItemStack(bomb ? Material.BRICK : Material.CARPET, 1, (short) (bomb ? 0 : 8));
         itemMeta = mainItem.getItemMeta();
@@ -306,7 +312,7 @@ public class PlayerBomberman extends GamePlayer {
             return false;
         }
 
-        if(powerupTypes != null && powerupTypes.equals(PowerupTypes.EXPLOSION_KILL)) {
+        if(powerups != null && powerups.equals(Powerups.EXPLOSION_KILL)) {
             gameManager.getServer().getScheduler().runTaskLater(gameManager.getPlugin(), () -> explode(3), 1L);
         }
 
@@ -413,6 +419,6 @@ public class PlayerBomberman extends GamePlayer {
     }
 
     public int getFuseTicks() {
-        return getPowerupTypes() != null && getPowerupTypes().equals(PowerupTypes.RANDOM_FUSE) ? (RandomUtils.nextInt(4) + 1) * 20 : 50;
+        return getPowerups() != null && getPowerups().equals(Powerups.RANDOM_FUSE) ? (RandomUtils.nextInt(4) + 1) * 20 : 50;
     }
 }

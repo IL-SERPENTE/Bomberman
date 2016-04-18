@@ -3,30 +3,26 @@ package net.samagames.bomberman.powerup;
 import net.samagames.bomberman.Bomberman;
 import net.samagames.bomberman.GameManager;
 import net.samagames.bomberman.player.PlayerBomberman;
-import net.samagames.tools.Titles;
 import net.samagames.tools.powerups.Powerup;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * Booster powerup
+ * Speed powerup
  *
  * @author Azuxul
  * @version 1.0
  */
-public class BoosterPowerup implements Powerup {
+public class SpeedPowerup implements Powerup {
 
     private final Powerups type;
     private final GameManager gameManager;
 
-    public BoosterPowerup() {
+    public SpeedPowerup() {
 
-        this.type = Powerups.getRandomPowerupType(Types.BOOSTER);
+        this.type = Powerups.getRandomPowerupType(Types.SPEED);
         this.gameManager = Bomberman.getGameManager();
     }
 
@@ -35,23 +31,20 @@ public class BoosterPowerup implements Powerup {
 
         PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
-        if (type.equals(Powerups.AUTO_PLACE)) {
-            Titles.sendTitle(player, 10, 60, 10, ChatColor.RED + "\u26A0 Malus \\\"AutoPlace\\\" activé ! \u26A0", ChatColor.GOLD + "Il place automatiquement des bombs sous vos pieds");
-        }
-
-        playerBomberman.setPowerup(type);
-
-        gameManager.getScoreboardBomberman().display(player);
+        if (type.equals(Powerups.SPEED))
+            playerBomberman.setSpeed(playerBomberman.getSpeed() + 0.1f);
+        else if (type.equals(Powerups.SLOWNESS))
+            playerBomberman.setSpeed(playerBomberman.getSpeed() - 0.1f);
     }
 
     @Override
     public String getName() {
-        return ChatColor.GOLD + "Booster";
+        return ChatColor.AQUA + "Vitesse modifiée";
     }
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.IRON_BLOCK);
+        return new ItemStack(Material.REDSTONE_BLOCK);
     }
 
     @Override
@@ -63,5 +56,4 @@ public class BoosterPowerup implements Powerup {
     public boolean isSpecial() {
         return false;
     }
-
 }

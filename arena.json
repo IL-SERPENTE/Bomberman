@@ -33,7 +33,8 @@
     "invulnerability": 1,
     "freezer": 2,
     "endermite-spawn": 1,
-    "invisibility": 3
+    "invisibility": 3,
+    "cat": 1
   },
   "players": {
     "max-health": 3,

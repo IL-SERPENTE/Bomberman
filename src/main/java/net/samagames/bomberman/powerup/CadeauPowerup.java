@@ -5,12 +5,10 @@ import net.samagames.bomberman.GameManager;
 import net.samagames.bomberman.player.PlayerBomberman;
 import net.samagames.tools.powerups.Powerup;
 import org.apache.commons.lang.math.RandomUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
+import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
@@ -25,11 +23,11 @@ import org.bukkit.potion.PotionEffectType;
  */
 public class CadeauPowerup implements Powerup {
 
-    private final PowerupTypes type;
+    private final Powerups type;
     private final GameManager gameManager;
 
     public CadeauPowerup() {
-        this.type = PowerupTypes.getRandomPowerupType(true);
+        this.type = Powerups.getRandomPowerupType(Types.CADEAU);
         this.gameManager = Bomberman.getGameManager();
     }
 
@@ -38,15 +36,26 @@ public class CadeauPowerup implements Powerup {
 
         PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
-        if (type.equals(PowerupTypes.BLINDNESS) || type.equals(PowerupTypes.NAUSEA)) {
+        if (type.equals(Powerups.CAT)){
+            Ocelot cat = player.getWorld().spawn(player.getLocation() , Ocelot.class);
+            cat.setCatType(Ocelot.Type.RED_CAT);
+            Bukkit.getScheduler().runTaskLater(gameManager.getPlugin() , () -> {
+                gameManager.getMapManager().getCaseAtWorldLocation(cat.getLocation().getBlockX() , cat.getLocation().getBlockZ()).explode(true , false , playerBomberman);
+                cat.remove();
+            } , Powerups.CAT.getDuration());
+        } else if (type.equals(Powerups.ENDERMITE_SPAWN)) {
+            for (int i = 0; i <= 3; i++) {
+                player.getWorld().spawnEntity(player.getLocation(), EntityType.ENDERMITE);
+            }
+        } else if (type.equals(Powerups.BLINDNESS) || type.equals(Powerups.NAUSEA)) {
 
             final PotionEffect effect;
 
-            if (type.equals(PowerupTypes.BLINDNESS)) {
+            if (type.equals(Powerups.BLINDNESS)) {
 
                 effect = new PotionEffect(PotionEffectType.BLINDNESS, 60, 1);
                 gameManager.getServer().broadcastMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.GOLD + player.getName() + ChatColor.DARK_GRAY + " vient de lancer de l'encre !");
-            } else if (type.equals(PowerupTypes.NAUSEA)) {
+            } else if (type.equals(Powerups.NAUSEA)) {
 
                 effect = new PotionEffect(PotionEffectType.CONFUSION, 60, 1);
                 gameManager.getServer().broadcastMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.GOLD + player.getName() + ChatColor.DARK_GREEN + " a déclancher de la nausée !");
@@ -62,9 +71,9 @@ public class CadeauPowerup implements Powerup {
                     p.addPotionEffect(effect, true);
             });
 
-        } else if(type.equals(PowerupTypes.SWAP)) {
+        } else if(type.equals(Powerups.SWAP)) {
             playerBomberman.swap();
-        } else if (type.equals(PowerupTypes.FIREWORKS)) {
+        } else if (type.equals(Powerups.FIREWORKS)) {
 
             for (int i = 2; i >= 0; i--) {
 

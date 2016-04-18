@@ -5,7 +5,7 @@ import net.samagames.bomberman.Bomberman;
 import net.samagames.bomberman.GameManager;
 import net.samagames.bomberman.map.CaseMap;
 import net.samagames.bomberman.player.PlayerBomberman;
-import net.samagames.bomberman.powerup.PowerupTypes;
+import net.samagames.bomberman.powerup.Powerups;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -58,11 +58,11 @@ public class Bomb extends EntityTNTPrimed {
 
             PlayerBomberman playerBomberman = gameManager.getPlayer(damager.getUniqueID());
 
-            if (playerBomberman != null && owner.getPowerupTypes() != null) {
-                if (owner.equals(playerBomberman) && owner.getPowerupTypes().equals(PowerupTypes.BOMB_ACTIVATOR)) {
+            if (playerBomberman != null && owner.getPowerups() != null) {
+                if (owner.equals(playerBomberman) && owner.getPowerups().equals(Powerups.BOMB_ACTIVATOR)) {
 
                     explodeBomb(true);
-                } else if (owner.getPowerupTypes().equals(PowerupTypes.DESTRUCTOR)) {
+                } else if (owner.getPowerups().equals(Powerups.DESTRUCTOR)) {
 
                     die(false, true);
                 }
@@ -106,10 +106,10 @@ public class Bomb extends EntityTNTPrimed {
         super.die();
 
         if (explosionDie) {
-            PowerupTypes powerup = owner.getPowerupTypes();
+            Powerups powerup = owner.getPowerups();
 
             // powerup can be null
-            caseMap.explode(PowerupTypes.HYPER_BOMB.equals(powerup), PowerupTypes.SUPER_BOMB.equals(powerup), owner);
+            caseMap.explode(Powerups.HYPER_BOMB.equals(powerup), Powerups.SUPER_BOMB.equals(powerup), owner);
 
             craftWorld.playSound(baseLocation, Sound.ENTITY_GENERIC_EXPLODE, 10.0f, 20.0f);
         } else

@@ -4,7 +4,7 @@ import net.samagames.api.games.Status;
 import net.samagames.bomberman.GameManager;
 import net.samagames.bomberman.entity.Bomb;
 import net.samagames.bomberman.player.PlayerBomberman;
-import net.samagames.bomberman.powerup.PowerupTypes;
+import net.samagames.bomberman.powerup.Powerups;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -71,9 +71,9 @@ public class PlayerEvent implements Listener {
             PlayerBomberman playerBomberman = gameManager.getPlayer(event.getPlayer().getUniqueId());
 
             if (playerBomberman != null) {
-                PowerupTypes powerupTypes = playerBomberman.getPowerupTypes();
+                Powerups powerups = playerBomberman.getPowerups();
 
-                if(!PowerupTypes.BOMB_ACTIVATOR.equals(powerupTypes))
+                if(!Powerups.BOMB_ACTIVATOR.equals(powerups))
                         return;
 
                 Iterator<Bomb> it = playerBomberman.getAliveBombs().iterator();
@@ -94,11 +94,11 @@ public class PlayerEvent implements Listener {
             PlayerBomberman playerBomberman = gameManager.getPlayer(event.getEntity().getUniqueId());
 
             if (playerBomberman != null) {
-                PowerupTypes powerupTypes = playerBomberman.getPowerupTypes();
+                Powerups powerups = playerBomberman.getPowerups();
 
-                if (PowerupTypes.SELF_INVULNERABILITY.equals(powerupTypes) && event.getDamager().equals(event.getEntity())) {
+                if (Powerups.SELF_INVULNERABILITY.equals(powerups) && event.getDamager().equals(event.getEntity())) {
                     event.setCancelled(true);
-                } else if (PowerupTypes.BOMB_PROTECTION.equals(powerupTypes)) {
+                } else if (Powerups.BOMB_PROTECTION.equals(powerups)) {
                     event.getEntity().sendMessage(gameManager.getCoherenceMachine().getGameTag() + ChatColor.RED + " Vous venez de perdre votre powerup Seconde vie !");
                     event.setCancelled(true);
                 }

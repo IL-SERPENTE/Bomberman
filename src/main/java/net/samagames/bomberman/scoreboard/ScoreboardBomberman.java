@@ -3,7 +3,7 @@ package net.samagames.bomberman.scoreboard;
 import net.samagames.api.games.Status;
 import net.samagames.bomberman.GameManager;
 import net.samagames.bomberman.player.PlayerBomberman;
-import net.samagames.bomberman.powerup.PowerupTypes;
+import net.samagames.bomberman.powerup.Powerups;
 import net.samagames.tools.chat.ActionBarAPI;
 import net.samagames.tools.scoreboards.ObjectiveSign;
 import org.bukkit.ChatColor;
@@ -68,7 +68,7 @@ public class ScoreboardBomberman {
             gameManager.getServer().getLogger().info(String.valueOf(e));
         }
 
-        PowerupTypes powerup = playerBomberman.getPowerupTypes();
+        Powerups powerup = playerBomberman.getPowerups();
 
         objectiveSign.setLine(3, ChatColor.RESET + "  -> " + (powerup == null ? "Aucun" : powerup.getName()));
         objectiveSign.setLine(8, ChatColor.DARK_RED + "\u26A1" + ChatColor.GOLD + "   Vitesse : " + ChatColor.RESET + (Math.round(playerBomberman.getSpeed() * 10) - 2));

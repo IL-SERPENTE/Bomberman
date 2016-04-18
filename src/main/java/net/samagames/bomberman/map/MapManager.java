@@ -3,7 +3,7 @@ package net.samagames.bomberman.map;
 import net.samagames.bomberman.GameManager;
 import net.samagames.bomberman.entity.Bomb;
 import net.samagames.bomberman.player.PlayerBomberman;
-import net.samagames.bomberman.powerup.PowerupTypes;
+import net.samagames.bomberman.powerup.Powerups;
 import net.samagames.tools.Area;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -100,9 +100,9 @@ public class MapManager {
         if (caseMap != null) {
             caseMap.getPlayers().add(playerBomberman);
 
-            if (playerBomberman.hasPowerup(PowerupTypes.AUTO_PLACE) && caseMap.getBomb() == null && playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs())
+            if (playerBomberman.hasPowerup(Powerups.AUTO_PLACE) && caseMap.getBomb() == null && playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs())
                 gameManager.getMapManager().spawnBomb(locTo.getBlock().getLocation(), playerBomberman);
-            else if (playerBomberman.hasPowerup(PowerupTypes.FREEZER))
+            else if (playerBomberman.hasPowerup(Powerups.FREEZER))
                 freezeBombs(2);
         } else
             player.kickPlayer(ChatColor.RED + "Sortie de la map !");

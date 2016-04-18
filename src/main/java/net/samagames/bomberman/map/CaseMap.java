@@ -102,7 +102,7 @@ public class CaseMap {
 
         if (block.equals(Material.AIR)) {
 
-            if (source.hasPowerup(PowerupTypes.FIRE)) {
+            if (source.hasPowerup(Powerups.FIRE)) {
                 worldLocation.getBlock().setType(Material.FIRE);
                 gameManager.getServer().getScheduler().runTaskLater(gameManager.getPlugin(), () -> worldLocation.getBlock().setType(Material.AIR), 60L);
             }
@@ -143,7 +143,7 @@ public class CaseMap {
                 Player p = player.getPlayerIfOnline();
                 Player pSource = source.getPlayerIfOnline();
 
-                if (p != null && pSource != null && !player.hasPowerup(PowerupTypes.INVULNERABILITY)) {
+                if (p != null && pSource != null && !player.hasPowerup(Powerups.INVULNERABILITY)) {
                     p.damage(777.77D, pSource);
                 }
             }
@@ -177,16 +177,22 @@ public class CaseMap {
         Location locationPowerup = location.clone().add(0.5, 0.8, 0.5);
         net.samagames.tools.powerups.Powerup powerupToSpawn = null;
 
-        if (random <= 220)
-            powerupToSpawn = new BoosterPowerup();
+        if (random <= 100)
+            powerupToSpawn = new BombModifierPowerup();
 
-        else if (random <= 500)
+        else if (random <= 250)
             powerupToSpawn = new RadiusPowerup();
 
-        else if (random <= 650)
+        else if (random <= 450)
             powerupToSpawn = new BombPowerup();
 
-        else if (random <= 700)
+        else if (random <= 550)
+            powerupToSpawn = new SpeedPowerup();
+
+        else if(random <= 600)
+            powerupToSpawn = new BoosterPowerup();
+
+        else if(random <= 700)
             powerupToSpawn = new CadeauPowerup();
 
         if (powerupToSpawn != null)
