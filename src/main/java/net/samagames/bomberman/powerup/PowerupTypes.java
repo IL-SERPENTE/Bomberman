@@ -42,6 +42,7 @@ public enum PowerupTypes {
     private final int chance;
     private final int duration;
     private final boolean special;
+    private final boolean persistent;
 
     PowerupTypes(String name, String jsonName) {
 
@@ -69,6 +70,7 @@ public enum PowerupTypes {
         this.chance = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs().get(JSON_POWERUP_CHANCE).getAsJsonObject().get(jsonName).getAsInt();
         this.duration = duration;
         this.special = special;
+        this.persistent = persistent;
     }
 
     @Nonnull
@@ -104,6 +106,10 @@ public enum PowerupTypes {
 
     public boolean isSpecial() {
         return special;
+    }
+
+    public boolean isPersistent() {
+        return persistent;
     }
 
     public int getDuration() {
