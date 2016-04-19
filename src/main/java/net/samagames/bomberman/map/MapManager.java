@@ -103,12 +103,12 @@ public class MapManager {
             if (playerBomberman.hasPowerup(Powerups.AUTO_PLACE) && caseMap.getBomb() == null && playerBomberman.getBombNumber() > playerBomberman.getPlacedBombs())
                 gameManager.getMapManager().spawnBomb(locTo.getBlock().getLocation(), playerBomberman);
             else if (playerBomberman.hasPowerup(Powerups.FREEZER))
-                freezeBombs(2);
+                freezeBombs(2, locTo);
         } else
             player.kickPlayer(ChatColor.RED + "Sortie de la map !");
     }
 
-    private void freezeBombs(int radius) {
+    private void freezeBombs(int radius, Location center) {
 
         int minX = radius * -1;
 
@@ -118,10 +118,14 @@ public class MapManager {
             int maxZ = Math.abs(minZ);
 
             for (int y = minZ; y <= maxZ; y++) {
-                Bomb bomb = getCaseAtWorldLocation(x, y).getBomb();
 
-                if (bomb != null) {
-                    bomb.setExplodeTicks(bomb.getExplodeTicks() + 4);
+                CaseMap caseMap = getCaseAtWorldLocation(center.getBlockX() + x, center.getBlockZ() + y);
+
+                if (caseMap != null && caseMap.getBomb() != null && caseMap.getBomb().isAlive()) {
+
+                    Bomb bomb = caseMap.getBomb();
+
+                    bomb.setExplodeTicks(bomb.getExplodeTicks() + 80);
                 }
             }
         }
