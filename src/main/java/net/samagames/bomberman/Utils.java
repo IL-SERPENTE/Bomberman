@@ -80,7 +80,6 @@ public class Utils {
             chunks.get(chunk).add(getRelativeChunkLocation(e.getKey()));
         }
         for (Map.Entry<Chunk, List<Short>> e : chunks.entrySet()) {
-            System.out.println(e);
             ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutMultiBlockChange(e.getValue().size(), toShort(e.getValue()), e.getKey()));
         }
     }

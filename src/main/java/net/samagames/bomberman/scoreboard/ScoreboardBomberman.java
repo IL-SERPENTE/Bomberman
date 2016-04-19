@@ -46,6 +46,20 @@ public class ScoreboardBomberman {
         return objectiveSign;
     }
 
+    private static ObjectiveSign getObjectiveSign(PlayerBomberman playerBomberman) {
+
+        ObjectiveSign objectiveSign = playerBomberman.getObjectiveSign();
+
+        if (objectiveSign == null) {
+
+            objectiveSign = generateObjectiveSign();
+            playerBomberman.setObjectiveSign(objectiveSign);
+            objectiveSign.addReceiver(playerBomberman.getPlayerIfOnline());
+        }
+
+        return objectiveSign;
+    }
+
     public void display(Player player) {
 
         if (!gameManager.getStatus().equals(Status.IN_GAME)) // If game is not started
@@ -78,19 +92,5 @@ public class ScoreboardBomberman {
             ActionBarAPI.sendMessage(player, ChatColor.GREEN + "Booster : " + ChatColor.GOLD + powerup.getName());
 
         objectiveSign.updateLines(false);
-    }
-
-    private ObjectiveSign getObjectiveSign(PlayerBomberman playerBomberman) {
-
-        ObjectiveSign objectiveSign = playerBomberman.getObjectiveSign();
-
-        if (objectiveSign == null) {
-
-            objectiveSign = generateObjectiveSign();
-            playerBomberman.setObjectiveSign(objectiveSign);
-            objectiveSign.addReceiver(playerBomberman.getPlayerIfOnline());
-        }
-
-        return objectiveSign;
     }
 }

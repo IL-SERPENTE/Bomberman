@@ -171,6 +171,7 @@ public class PlayerEvent implements Listener {
 
                 } else if (block.getType().equals(Material.BRICK)) {
 
+                    event.setCancelled(false);
                     gameManager.getMapManager().spawnWall(location, playerBomberman);
                 }
             }
