@@ -35,41 +35,46 @@ public class CadeauPowerup implements Powerup {
 
         PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
-        if (type.equals(Powerups.CAT)) {
-            Utils.spanwCat(player, gameManager);
+        switch (type) {
 
-        }/* else if (type.equals(Powerups.WALL_INVISIBILITY)) {
-
-            playerBomberman.replaceBlock(Material.DIRT, Material.STAINED_GLASS, Powerups.WALL_INVISIBILITY.getDuration());
-
-            player.sendMessage("a");
-        }*/ else if (type.equals(Powerups.ENDERMITE_SPAWN)) {
-            for (int i = 0; i <= 3; i++) {
-                player.getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.ENDERMITE);
-            }
-        } else if (type.equals(Powerups.BLINDNESS) || type.equals(Powerups.NAUSEA)) {
-
-            sendPotionEffect(player);
-        } else if (type.equals(Powerups.SWAP)) {
-            playerBomberman.swap();
-        } else if (type.equals(Powerups.FIREWORKS)) {
-
-            for (int i = 2; i >= 0; i--) {
-
-                Utils.spawnRandomFirework(player.getLocation().add(0, 4, 0));
-            }
-
-        } else {
-            if (type.equals(Powerups.AUTO_PLACE)) {
-                Titles.sendTitle(player, 10, 60, 10, ChatColor.RED + "\u26A0 Malus \\\"AutoPlace\\\" activé ! \u26A0", ChatColor.GOLD + "Il place automatiquement des bombes sous vos pieds");
-            } else if (type.equals(Powerups.INVISIBILITY)) {
-                playerBomberman.removeArmor();
-            }
-
-            playerBomberman.setPowerup(type);
+            case CAT:
+                Utils.spanwCat(player, gameManager);
+                break;
+            case ENDERMITE_SPAWN:
+                for (int i = 0; i <= 3; i++) {
+                    player.getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.ENDERMITE);
+                }
+                break;
+            case BLINDNESS:
+                sendPotionEffect(player);
+                break;
+            case NAUSEA:
+                sendPotionEffect(player);
+                break;
+            case SWAP:
+                playerBomberman.swap();
+                break;
+            case FIREWORKS:
+                for (int i = 2; i >= 0; i--) {
+                    Utils.spawnRandomFirework(player.getLocation().add(0, 4, 0));
+                }
+                break;
+            default:
+                setOthersCadeau(playerBomberman);
+                break;
         }
 
         player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.GREEN + "Tu viens de récuperer " + ChatColor.GOLD + type.getName() + ChatColor.GREEN + " !");
+    }
+
+    private void setOthersCadeau(PlayerBomberman playerBomberman) {
+        if (type.equals(Powerups.AUTO_PLACE)) {
+            Titles.sendTitle(playerBomberman.getPlayerIfOnline(), 10, 60, 10, ChatColor.RED + "\u26A0 Malus \\\"AutoPlace\\\" activé ! \u26A0", ChatColor.GOLD + "Il place automatiquement des bombes sous vos pieds");
+        } else if (type.equals(Powerups.INVISIBILITY)) {
+            playerBomberman.removeArmor();
+        }
+
+        playerBomberman.setPowerup(type);
     }
 
     private void sendPotionEffect(Player player) {
