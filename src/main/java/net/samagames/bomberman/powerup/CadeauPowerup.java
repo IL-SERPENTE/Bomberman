@@ -43,12 +43,14 @@ public class CadeauPowerup implements Powerup {
                 gameManager.getMapManager().getCaseAtWorldLocation(cat.getLocation().getBlockX(), cat.getLocation().getBlockZ()).explode(true, false, playerBomberman);
                 cat.remove();
             }, 200);
-        } else if (type.equals(Powerups.WALL_INVISIBILITY)) {
+        }/* else if (type.equals(Powerups.WALL_INVISIBILITY)) {
 
             playerBomberman.replaceBlock(Material.DIRT, Material.STAINED_GLASS, Powerups.WALL_INVISIBILITY.getDuration());
-        } else if (type.equals(Powerups.ENDERMITE_SPAWN)) {
+
+            player.sendMessage("a");
+        }*/ else if (type.equals(Powerups.ENDERMITE_SPAWN)) {
             for (int i = 0; i <= 3; i++) {
-                player.getWorld().spawnEntity(player.getLocation(), EntityType.ENDERMITE);
+                player.getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.ENDERMITE);
             }
         } else if (type.equals(Powerups.BLINDNESS) || type.equals(Powerups.NAUSEA)) {
 
@@ -62,10 +64,14 @@ public class CadeauPowerup implements Powerup {
                 Utils.spawnRandomFirework(player.getLocation().add(0, 4, 0));
             }
 
+        } else if (type.equals(Powerups.INVISIBILITY)) {
+
+            playerBomberman.removeArmor();
+            playerBomberman.setPowerup(type);
         } else
             playerBomberman.setPowerup(type);
 
-        gameManager.getServer().broadcastMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.GREEN + player.getName() + ChatColor.GOLD + " vient de recuperer un cadeau");
+        player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.GREEN + "Tu veint de récuperer " + ChatColor.GOLD + type.getName() + ChatColor.GREEN + " !");
     }
 
     private void sendPotionEffect(Player player) {

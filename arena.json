@@ -34,7 +34,9 @@
     "freezer": 2,
     "endermite-spawn": 1,
     "invisibility": 3,
-    "cat": 1
+    "cat": 1,
+    "multiple-bomb": 1,
+    "wall_invisibility": 1
   },
   "players": {
     "max-health": 3,

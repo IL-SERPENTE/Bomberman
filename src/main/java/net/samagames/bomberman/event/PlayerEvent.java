@@ -65,6 +65,16 @@ public class PlayerEvent implements Listener {
     }
 
     @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+
+        PlayerBomberman playerBomberman = gameManager.getPlayer(event.getPlayer().getUniqueId());
+
+        if (playerBomberman.isSpectator()) {
+            event.setRespawnLocation(playerBomberman.getRespawnLocation());
+        }
+    }
+
+    @EventHandler
     public void onPlayerSneak(PlayerToggleSneakEvent event) {
 
         if (event.isSneaking()) {

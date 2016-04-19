@@ -13,7 +13,6 @@ import net.samagames.tools.LocationUtils;
 import net.samagames.tools.RulesBook;
 import net.samagames.tools.Titles;
 import org.bukkit.*;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
@@ -182,30 +181,11 @@ public class GameManager extends Game<PlayerBomberman> {
 
             if (player != null) {
 
-                // Possible helmet data value : 1, 3, 4, 5, 6, 10, 11, 12, 14
-
-                ItemStack helmet = new ItemStack(Material.CARPET, 1, armorValues.get(armorIndex).getHelmetDataValue());
-
-                ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
-                Utils.setLeatherArmorColor(chestplate, armorValues.get(armorIndex).getArmorColor());
-
-                ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
-                Utils.setLeatherArmorColor(boots, Color.fromRGB(242, 127, 165));
-
-                if ("Azuxul".equals(player.getName())) {
-                    helmet.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
-                    chestplate.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
-                    boots.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
-                }
-
                 player.getInventory().clear();
                 player.setGameMode(GameMode.ADVENTURE);
                 player.teleport(getPlayerSpawnList().get(spawnIndex));
                 player.setBedSpawnLocation(getPlayerSpawnList().get(spawnIndex), true);
                 player.getInventory().setHeldItemSlot(0);
-                player.getInventory().setHelmet(helmet);
-                player.getInventory().setChestplate(chestplate);
-                player.getInventory().setBoots(boots);
                 spawnIndex++;
                 armorIndex++;
 
@@ -226,6 +206,8 @@ public class GameManager extends Game<PlayerBomberman> {
                 playerBomberman.setMaxHealth(maxHealth);
                 playerBomberman.setHealth(health);
                 playerBomberman.updateInventory();
+                playerBomberman.setArmorValue(armorValues.get(armorIndex));
+                playerBomberman.setArmor();
             }
         }
 

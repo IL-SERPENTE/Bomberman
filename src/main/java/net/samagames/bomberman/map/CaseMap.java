@@ -9,7 +9,6 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -138,14 +137,9 @@ public class CaseMap {
 
         if (!players.isEmpty()) {
 
-            for (PlayerBomberman player : players) {
-                Player p = player.getPlayerIfOnline();
-                Player pSource = source.getPlayerIfOnline();
-
-                if (p != null && pSource != null && !player.hasPowerup(Powerups.INVULNERABILITY)) {
-                    p.damage(777.77D, pSource);
-                }
-            }
+            players.stream().filter(p -> p.getPlayerIfOnline() != null && !p.hasPowerup(Powerups.INVULNERABILITY) && p.getPlayerIfOnline().getLocation().getBlock().equals(worldLocation.getBlock()) && source.getPlayerIfOnline() != null).forEach(p ->
+                    p.getPlayerIfOnline().damage(777.77D, source.getPlayerIfOnline())
+            );
 
             players.clear();
         }

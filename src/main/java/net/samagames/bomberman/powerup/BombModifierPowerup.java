@@ -30,7 +30,7 @@ public class BombModifierPowerup implements Powerup {
 
         PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
-        playerBomberman.getPersistentPowerups().add(type);
+        playerBomberman.setBombModifier(type);
     }
 
     @Override

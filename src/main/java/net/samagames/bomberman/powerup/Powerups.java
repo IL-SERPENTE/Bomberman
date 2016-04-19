@@ -36,7 +36,7 @@ public enum Powerups {
     FREEZER("Freezer", "freezer", 4, Types.CADEAU),
     CAT("Chat piégé", "cat", Types.CADEAU),
     ENDERMITE_SPAWN("Infestation", "endermite-spawn", Types.CADEAU),
-    WALL_INVISIBILITY("Transparence", "wall_invisibility", 20, Types.CADEAU),
+    //WALL_INVISIBILITY("Transparence", "wall_invisibility", 20, Types.CADEAU),
     INVISIBILITY("Invisibilité", "invisibility", 5, Types.CADEAU),
     MULTIPLE_BOMB("", "multiple-bomb", Types.BOMB_MODIFIER);
 

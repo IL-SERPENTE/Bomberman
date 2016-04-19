@@ -143,7 +143,7 @@ public class Powerup extends EntityArmorStand {
         // If IN_GAME, player game mode is not to spectator, powerup is alive and distance at powerup is <= 1.5
         if (status.equals(Status.IN_GAME) && isValidPlayer(player) && this.isAlive() && distanceSquaredAtPowerup <= 1.44) {
             for (int i = 0; i <= 20; i++)
-                player.playSound(playerLocation, Sound.BLOCK_NOTE_BASEDRUM, 20.0f, 1.8f);
+                player.playSound(playerLocation, Sound.BLOCK_NOTE_HARP, 20.0f, 1.8f);
             powerupType.onPickup(player);
             die();
         }

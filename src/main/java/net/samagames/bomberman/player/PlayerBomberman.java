@@ -34,8 +34,11 @@ public class PlayerBomberman extends GamePlayer {
     private final GameManager gameManager;
     private final List<Bomb> aliveBombs;
     private final List<Powerups> persistentPowerups;
+    private Powerups bombModifier;
     private Powerups powerups;
     private ObjectiveSign objectiveSign;
+    private Location respawnLocation;
+    private ArmorValue armorValue;
     private int bombNumber;
     private int radius;
     private int placedBombs;
@@ -85,13 +88,37 @@ public class PlayerBomberman extends GamePlayer {
         Bukkit.getScheduler().runTaskLater(gameManager.getPlugin(), () -> Utils.changeBlocks(toChange, player), duration);
     }
 
+    public ArmorValue getArmorValue() {
+        return armorValue;
+    }
+
+    public void setArmorValue(ArmorValue armorValue) {
+        this.armorValue = armorValue;
+    }
+
+    public Powerups getBombModifier() {
+        return bombModifier;
+    }
+
+    public void setBombModifier(Powerups bombModifier) {
+        this.bombModifier = bombModifier;
+    }
+
+    public Location getRespawnLocation() {
+        return respawnLocation;
+    }
+
+    public void setRespawnLocation(Location respawnLocation) {
+        this.respawnLocation = respawnLocation;
+    }
+
     public List<Powerups> getPersistentPowerups() {
         return persistentPowerups;
     }
 
     public boolean hasPowerup(Powerups powerup) {
 
-        return powerup.equals(powerups) || persistentPowerups.contains(powerup);
+        return powerup.equals(powerups) || persistentPowerups.contains(powerup) || powerup.equals(bombModifier);
     }
 
     public List<Bomb> getAliveBombs() {
@@ -141,15 +168,51 @@ public class PlayerBomberman extends GamePlayer {
         updateHealth();
     }
 
+    public void removeArmor() {
+
+        Player player = getPlayerIfOnline();
+
+        player.getInventory().setHelmet(null);
+        player.getInventory().setChestplate(null);
+        player.getInventory().setBoots(null);
+    }
+
+    public void setArmor() {
+
+        Player player = getPlayerIfOnline();
+
+        // Possible helmet data value : 1, 3, 4, 5, 6, 10, 11, 12, 14
+
+        ItemStack helmet = new ItemStack(Material.CARPET, 1, getArmorValue().getHelmetDataValue());
+
+        ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
+        Utils.setLeatherArmorColor(chestplate, getArmorValue().getArmorColor());
+
+        ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
+        Utils.setLeatherArmorColor(boots, Color.fromRGB(242, 127, 165));
+
+        if ("Azuxul".equals(player.getName())) {
+            helmet.addUnsafeEnchantment(org.bukkit.enchantments.Enchantment.DURABILITY, 1);
+            chestplate.addUnsafeEnchantment(org.bukkit.enchantments.Enchantment.DURABILITY, 1);
+            boots.addUnsafeEnchantment(org.bukkit.enchantments.Enchantment.DURABILITY, 1);
+        }
+
+        player.getInventory().setHelmet(helmet);
+        player.getInventory().setChestplate(chestplate);
+        player.getInventory().setBoots(boots);
+    }
+
     public void update() {
+
+        if (hasPowerup(Powerups.INVISIBILITY))
+            gameManager.getServer().getScheduler().runTask(gameManager.getPlugin(), () -> getPlayerIfOnline().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, powerupDuration * 20, 1), true));
 
         if (powerups != null && powerups.getDuration() > 0 && --powerupDuration <= 0) {
 
-            if (hasPowerup(Powerups.INVISIBILITY))
-                getPlayerIfOnline().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 30, 1), true);
-
             if (hasPowerup(Powerups.WALL_BUILDER)) {
-                placedBombs = 0;
+                setPlacedBombs(0);
+            } else if (hasPowerup(Powerups.INVISIBILITY)) {
+                setArmor();
             }
 
             powerups = null;
@@ -343,6 +406,7 @@ public class PlayerBomberman extends GamePlayer {
             player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.RED + "Vous etes mort: vous n'avez plus de vies !");
             setSpectator();
             playMusic(Music.DEATH, player.getLocation());
+            setRespawnLocation(player.getLocation());
 
             if (gameManager.getConnectedPlayers() <= 1)
                 gameManager.endGame();

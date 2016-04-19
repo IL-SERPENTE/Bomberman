@@ -36,7 +36,8 @@ public class BoosterPowerup implements Powerup {
             Titles.sendTitle(player, 10, 60, 10, ChatColor.RED + "\u26A0 Malus \\\"AutoPlace\\\" activé ! \u26A0", ChatColor.GOLD + "Il place automatiquement des bombs sous vos pieds");
         }
 
-        playerBomberman.setPowerup(type);
+        if (!playerBomberman.getPersistentPowerups().contains(type))
+            playerBomberman.getPersistentPowerups().add(type);
 
         gameManager.getScoreboardBomberman().display(player);
     }
