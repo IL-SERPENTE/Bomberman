@@ -2,8 +2,10 @@ package net.samagames.bomberman.powerup;
 
 import net.samagames.api.SamaGamesAPI;
 import org.apache.commons.lang.math.RandomUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -23,11 +25,11 @@ public enum Powerups {
     RANDOM_FUSE("Random bomb", "random-fuse", Types.BOMB_MODIFIER),
     HYPER_BOMB("Hyper bomb", "hyper-bomb", Types.BOMB_MODIFIER),
     SUPER_BOMB("Super bomb", "super-bomb", Types.BOMB_MODIFIER),
-    SELF_INVULNERABILITY("Self protection", "self-invulnerability", Material.LAPIS_ORE),
-    EXPLOSION_KILL("Charge nucléaire", "explosion-kill", Material.IRON_ORE),
-    BOMB_ACTIVATOR("Détonateur", "bomb-activator", Material.GOLD_ORE),
+    SELF_INVULNERABILITY("Self protection", "self-invulnerability", Material.LAPIS_ORE, ""),
+    EXPLOSION_KILL("Charge nucléaire", "explosion-kill", Material.IRON_ORE, ""),
+    BOMB_ACTIVATOR("Détonateur", "bomb-activator", Material.GOLD_ORE, ""),
     DESTRUCTOR("Destructeur", "destructor", 5, Types.CADEAU),
-    BOMB_PROTECTION("Seconde vie", "bomb-protection", Material.DIAMOND_ORE),
+    BOMB_PROTECTION("Seconde vie", "bomb-protection", Material.DIAMOND_ORE, ""),
     BLINDNESS("Jet d\'encre", "blindness", Types.CADEAU),
     SWAP("Swap", "swap", Types.CADEAU),
     NAUSEA("Nausée", "nausea", Types.CADEAU),
@@ -55,13 +57,29 @@ public enum Powerups {
         this(name, jsonName, -1, types);
     }
 
-    Powerups(String name, String jsonName, Material material) {
+    Powerups(String name, String jsonName, Material material, String description) {
 
         this.name = name;
         this.chance = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs().get(JSON_POWERUP_CHANCE).getAsJsonObject().get(jsonName).getAsInt();
         this.duration = -1;
         this.type = Types.BOOSTER;
-        this.icon = new ItemStack(material);
+
+        ItemStack itemStack = new ItemStack(material);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        itemMeta.setDisplayName(ChatColor.GREEN + name);
+
+        List<String> lore = new ArrayList<>();
+
+        for (String line : description.split("#")) {
+            lore.add(line.replaceAll("&", "§"));
+        }
+
+        itemMeta.setLore(lore);
+
+        itemStack.setItemMeta(itemMeta);
+
+        this.icon = itemStack;
     }
 
     Powerups(String name, String jsonName, int duration, Types type) {
