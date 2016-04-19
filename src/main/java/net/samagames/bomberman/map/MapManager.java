@@ -76,7 +76,7 @@ public class MapManager {
         return wight;
     }
 
-    public CaseMap getCaseAtWorldLocation(int blockX , int blockZ) {
+    public CaseMap getCaseAtWorldLocation(int blockX, int blockZ) {
 
         int x = worldLocXToMapLocX(blockX);
         int y = worldLocZToMapLocY(blockZ);
@@ -146,7 +146,7 @@ public class MapManager {
         location.setY(gameManager.getBombY());
         Block block = location.getBlock();
 
-        CaseMap caseMap = gameManager.getMapManager().getCaseAtWorldLocation(location.getBlockX() , location.getBlockZ());
+        CaseMap caseMap = gameManager.getMapManager().getCaseAtWorldLocation(location.getBlockX(), location.getBlockZ());
 
         if (caseMap != null && (caseMap.getBomb() == null || !caseMap.getBomb().isAlive())) {
             player.setPlacedBombs(player.getPlacedBombs() + 1);

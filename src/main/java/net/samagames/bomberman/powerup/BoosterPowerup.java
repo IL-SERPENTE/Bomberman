@@ -5,11 +5,8 @@ import net.samagames.bomberman.GameManager;
 import net.samagames.bomberman.player.PlayerBomberman;
 import net.samagames.tools.Titles;
 import net.samagames.tools.powerups.Powerup;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 

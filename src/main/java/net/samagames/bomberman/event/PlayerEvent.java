@@ -73,11 +73,11 @@ public class PlayerEvent implements Listener {
             if (playerBomberman != null) {
                 Powerups powerups = playerBomberman.getPowerups();
 
-                if(!Powerups.BOMB_ACTIVATOR.equals(powerups))
-                        return;
+                if (!Powerups.BOMB_ACTIVATOR.equals(powerups))
+                    return;
 
                 Iterator<Bomb> it = playerBomberman.getAliveBombs().iterator();
-                while(it.hasNext()){
+                while (it.hasNext()) {
                     it.next().explodeBomb(false);
                     it.remove();
                 }
@@ -204,7 +204,7 @@ public class PlayerEvent implements Listener {
             Player player = event.getEntity();
             PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
-            if(playerBomberman == null || !playerBomberman.die()) {
+            if (playerBomberman == null || !playerBomberman.die()) {
 
                 event.setDeathMessage("");
                 return;

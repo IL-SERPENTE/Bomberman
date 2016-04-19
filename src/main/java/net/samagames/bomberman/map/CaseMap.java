@@ -92,11 +92,10 @@ public class CaseMap {
 
         if (block.equals(Material.AIR))
             killEntitys(source);
-        else
-            if (block.equals(Material.DIRT) || (cobblestone && block.equals(Material.COBBLESTONE))) {
-                block = Material.AIR;
-                spawnPowerup(worldLocation);
-            }
+        else if (block.equals(Material.DIRT) || (cobblestone && block.equals(Material.COBBLESTONE))) {
+            block = Material.AIR;
+            spawnPowerup(worldLocation);
+        }
 
         updateInWorld();
 
@@ -189,10 +188,10 @@ public class CaseMap {
         else if (random <= 550)
             powerupToSpawn = new SpeedPowerup();
 
-        else if(random <= 600)
+        else if (random <= 600)
             powerupToSpawn = new BoosterPowerup();
 
-        else if(random <= 700)
+        else if (random <= 700)
             powerupToSpawn = new CadeauPowerup();
 
         if (powerupToSpawn != null)

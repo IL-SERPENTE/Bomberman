@@ -27,6 +27,25 @@ public class CommandSpawnPowerup implements CommandExecutor {
         this.gameManager = gameManager;
     }
 
+    private static Powerup getPowerupFormString(String powerupType) {
+
+        Powerup type;
+
+        if ("bomb".equalsIgnoreCase(powerupType)) {
+            type = new BombPowerup();
+        } else if ("booster".equalsIgnoreCase(powerupType)) {
+            type = new BoosterPowerup();
+        } else if ("cadeau".equalsIgnoreCase(powerupType)) {
+            type = new CadeauPowerup();
+        } else if ("radius".equalsIgnoreCase(powerupType)) {
+            type = new RadiusPowerup();
+        } else {
+            type = null;
+        }
+
+        return type;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
 
@@ -49,24 +68,5 @@ public class CommandSpawnPowerup implements CommandExecutor {
         }
 
         return false;
-    }
-
-    private static Powerup getPowerupFormString(String powerupType) {
-
-        Powerup type;
-
-        if ("bomb".equalsIgnoreCase(powerupType)) {
-            type = new BombPowerup();
-        } else if ("booster".equalsIgnoreCase(powerupType)) {
-            type = new BoosterPowerup();
-        } else if ("cadeau".equalsIgnoreCase(powerupType)) {
-            type = new CadeauPowerup();
-        } else if ("radius".equalsIgnoreCase(powerupType)) {
-            type = new RadiusPowerup();
-        } else {
-            type = null;
-        }
-
-        return type;
     }
 }

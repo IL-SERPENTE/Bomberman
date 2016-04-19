@@ -2,19 +2,14 @@ package net.samagames.bomberman.player;
 
 import net.minecraft.server.v1_9_R1.*;
 import net.samagames.api.games.GamePlayer;
-import net.samagames.bomberman.Bomberman;
-import net.samagames.bomberman.GameManager;
-import net.samagames.bomberman.Music;
-import net.samagames.bomberman.NBTTags;
+import net.samagames.bomberman.*;
 import net.samagames.bomberman.entity.Bomb;
 import net.samagames.bomberman.map.CaseMap;
 import net.samagames.bomberman.powerup.Powerups;
 import net.samagames.tools.scoreboards.ObjectiveSign;
 import org.apache.commons.lang.math.RandomUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_9_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
@@ -23,10 +18,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -38,10 +32,10 @@ import java.util.stream.Collectors;
 public class PlayerBomberman extends GamePlayer {
 
     private final GameManager gameManager;
+    private final List<Bomb> aliveBombs;
+    private final List<Powerups> persistentPowerups;
     private Powerups powerups;
     private ObjectiveSign objectiveSign;
-    private List<Bomb> aliveBombs;
-    private List<Powerups> persistentPowerups;
     private int bombNumber;
     private int radius;
     private int placedBombs;
@@ -69,6 +63,28 @@ public class PlayerBomberman extends GamePlayer {
         playMusic = false;
     }
 
+    public void replaceBlock(Material originalBlock, Material newBlock, int duration) {
+
+        Player player = getPlayerIfOnline();
+        Map<Vector, Material> toChange = new HashMap<>();
+
+        for (int x = 0; x < gameManager.getMapManager().getWight(); x++) {
+            for (int z = 0; z < gameManager.getMapManager().getHeight(); z++) {
+                CaseMap caseMap = gameManager.getMapManager().getMap()[x][z];
+                if (caseMap.getBlock() == originalBlock) {
+                    toChange.put(caseMap.getWorldLocation().toVector(), newBlock);
+                    toChange.put(caseMap.getWorldLocation().clone().add(0, 1, 0).toVector(), newBlock);
+                    toChange.put(caseMap.getWorldLocation().clone().add(0, 2, 0).toVector(), newBlock);
+                }
+
+            }
+        }
+
+        Utils.changeBlocks(toChange, player);
+        toChange.replaceAll((v, m) -> originalBlock);
+        Bukkit.getScheduler().runTaskLater(gameManager.getPlugin(), () -> Utils.changeBlocks(toChange, player), duration);
+    }
+
     public List<Powerups> getPersistentPowerups() {
         return persistentPowerups;
     }
@@ -82,7 +98,7 @@ public class PlayerBomberman extends GamePlayer {
         return aliveBombs;
     }
 
-    public void updateHealth() {
+    private void updateHealth() {
 
         Player player = getPlayerIfOnline();
 
@@ -220,7 +236,7 @@ public class PlayerBomberman extends GamePlayer {
 
     public CaseMap getCaseMap() {
         Location loc = getPlayerIfOnline().getLocation();
-        return gameManager.getMapManager().getCaseAtWorldLocation(loc.getBlockX() , loc.getBlockZ());
+        return gameManager.getMapManager().getCaseAtWorldLocation(loc.getBlockX(), loc.getBlockZ());
     }
 
     public void updateInventory() {
@@ -308,7 +324,7 @@ public class PlayerBomberman extends GamePlayer {
         final int newHealth = getHealth() - 1;
         Player player = getPlayerIfOnline();
 
-        if(player == null) {
+        if (player == null) {
             return false;
         }
 
@@ -349,7 +365,7 @@ public class PlayerBomberman extends GamePlayer {
             int maxZ = Math.abs(minZ);
 
             for (int z = minZ; z <= maxZ; z++) {
-                CaseMap explodeCase = gameManager.getMapManager().getCaseAtWorldLocation(baseLocation.getBlockX() + x , baseLocation.getBlockZ() + z);
+                CaseMap explodeCase = gameManager.getMapManager().getCaseAtWorldLocation(baseLocation.getBlockX() + x, baseLocation.getBlockZ() + z);
 
                 if (explodeCase != null) {
                     explodeCase.explodeCase(true, this, 0);
