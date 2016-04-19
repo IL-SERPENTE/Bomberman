@@ -137,7 +137,7 @@ public class MapManager {
 
         CaseMap caseMap = gameManager.getMapManager().getCaseAtWorldLocation(location.getBlockX(), location.getBlockZ());
 
-        if (caseMap != null && caseMap.isEmpty()) {
+        if (caseMap != null) {
 
             caseMap.spawnWall();
             player.setPlacedBombs(player.getPlacedBombs() + 1);

@@ -115,10 +115,7 @@ public class CaseMap {
 
         block = Material.DIRT;
 
-        if (powerup != null && powerup.isAlive()) {
-            powerup.die();
-            powerup = null;
-        }
+        killEntitys(null);
 
         updateInWorld();
     }

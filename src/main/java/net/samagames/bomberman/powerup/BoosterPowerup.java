@@ -3,7 +3,6 @@ package net.samagames.bomberman.powerup;
 import net.samagames.bomberman.Bomberman;
 import net.samagames.bomberman.GameManager;
 import net.samagames.bomberman.player.PlayerBomberman;
-import net.samagames.tools.Titles;
 import net.samagames.tools.powerups.Powerup;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -32,12 +31,10 @@ public class BoosterPowerup implements Powerup {
 
         PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
-        if (type.equals(Powerups.AUTO_PLACE)) {
-            Titles.sendTitle(player, 10, 60, 10, ChatColor.RED + "\u26A0 Malus \\\"AutoPlace\\\" activé ! \u26A0", ChatColor.GOLD + "Il place automatiquement des bombs sous vos pieds");
-        }
-
-        if (!playerBomberman.getPersistentPowerups().contains(type))
+        if (!playerBomberman.getPersistentPowerups().contains(type)) {
             playerBomberman.getPersistentPowerups().add(type);
+            player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.GREEN + "Tu possédes mainteant le booster " + ChatColor.GOLD + type.getName());
+        }
 
         gameManager.getScoreboardBomberman().display(player);
 

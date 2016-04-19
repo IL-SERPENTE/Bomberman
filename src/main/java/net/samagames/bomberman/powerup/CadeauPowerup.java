@@ -4,6 +4,7 @@ import net.samagames.bomberman.Bomberman;
 import net.samagames.bomberman.GameManager;
 import net.samagames.bomberman.Utils;
 import net.samagames.bomberman.player.PlayerBomberman;
+import net.samagames.tools.Titles;
 import net.samagames.tools.powerups.Powerup;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -58,14 +59,17 @@ public class CadeauPowerup implements Powerup {
                 Utils.spawnRandomFirework(player.getLocation().add(0, 4, 0));
             }
 
-        } else if (type.equals(Powerups.INVISIBILITY)) {
+        } else {
+            if (type.equals(Powerups.AUTO_PLACE)) {
+                Titles.sendTitle(player, 10, 60, 10, ChatColor.RED + "\u26A0 Malus \\\"AutoPlace\\\" activé ! \u26A0", ChatColor.GOLD + "Il place automatiquement des bombes sous vos pieds");
+            } else if (type.equals(Powerups.INVISIBILITY)) {
+                playerBomberman.removeArmor();
+            }
 
-            playerBomberman.removeArmor();
             playerBomberman.setPowerup(type);
-        } else
-            playerBomberman.setPowerup(type);
+        }
 
-        player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.GREEN + "Tu veint de récuperer " + ChatColor.GOLD + type.getName() + ChatColor.GREEN + " !");
+        player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.GREEN + "Tu viens de récuperer " + ChatColor.GOLD + type.getName() + ChatColor.GREEN + " !");
     }
 
     private void sendPotionEffect(Player player) {
