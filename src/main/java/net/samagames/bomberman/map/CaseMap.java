@@ -66,6 +66,15 @@ public class CaseMap {
         explodeCase(cobblestone, source, 0);
         killEntitys(source);
 
+        if (source.hasPowerup(Powerups.MULTIPLE_BOMB)) {
+            faces.keySet().forEach(entry -> {
+                Bomb bomb = gameManager.getMapManager().spawnBombEntity(worldLocation.clone().add(radius, 0, 0), source);
+
+                bomb.motX = 5;
+                bomb.velocityChanged = true;
+            });
+        }
+
         for (int i = 1; i <= radius; i++) {
             final int finalI = i;
             faces.entrySet().stream().filter(Map.Entry::getValue).forEach(entry -> {

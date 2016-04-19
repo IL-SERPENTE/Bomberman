@@ -32,8 +32,8 @@ import java.util.stream.Collectors;
 public class PlayerBomberman extends GamePlayer {
 
     private final GameManager gameManager;
-    private final List<Bomb> aliveBombs;
-    private final List<Powerups> persistentPowerups;
+    private final Set<Bomb> aliveBombs;
+    private final Set<Powerups> persistentPowerups;
     private Powerups bombModifier;
     private Powerups powerups;
     private ObjectiveSign objectiveSign;
@@ -53,8 +53,8 @@ public class PlayerBomberman extends GamePlayer {
     public PlayerBomberman(Player player) {
         super(player);
         gameManager = Bomberman.getGameManager();
-        aliveBombs = new ArrayList<>();
-        persistentPowerups = new ArrayList<>();
+        aliveBombs = new HashSet<>();
+        persistentPowerups = new HashSet<>();
         powerups = null;
         objectiveSign = null;
         bombNumber = 1;
@@ -112,7 +112,7 @@ public class PlayerBomberman extends GamePlayer {
         this.respawnLocation = respawnLocation;
     }
 
-    public List<Powerups> getPersistentPowerups() {
+    public Set<Powerups> getPersistentPowerups() {
         return persistentPowerups;
     }
 
@@ -121,7 +121,7 @@ public class PlayerBomberman extends GamePlayer {
         return powerup.equals(powerups) || persistentPowerups.contains(powerup) || powerup.equals(bombModifier);
     }
 
-    public List<Bomb> getAliveBombs() {
+    public Set<Bomb> getAliveBombs() {
         return aliveBombs;
     }
 
@@ -363,7 +363,7 @@ public class PlayerBomberman extends GamePlayer {
 
         for (int i = 0; i <= persistentPowerups.size() - 1; i++) {
 
-            inventory.setItem(2 + i, persistentPowerups.get(i).getIcon());
+            inventory.setItem(2 + i, persistentPowerups.iterator().next().getIcon());
         }
     }
 

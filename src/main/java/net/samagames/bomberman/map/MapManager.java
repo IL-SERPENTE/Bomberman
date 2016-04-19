@@ -144,6 +144,23 @@ public class MapManager {
         }
     }
 
+    public Bomb spawnBombEntity(Location location, PlayerBomberman player) {
+
+        location.setY(gameManager.getBombY());
+
+        CaseMap caseMap = gameManager.getMapManager().getCaseAtWorldLocation(location.getBlockX(), location.getBlockZ());
+
+        if (caseMap != null) {
+            Bomb bomb = new Bomb(((CraftWorld) location.getWorld()).getHandle(), location.getX() + 0.5, location.getY(), location.getZ() + 0.5, player.getFuseTicks(), player.getRadius(), player.getPlayerIfOnline());
+
+            ((CraftWorld) location.getWorld()).getHandle().addEntity(bomb, CreatureSpawnEvent.SpawnReason.CUSTOM);
+
+            return bomb;
+        }
+
+        return null;
+    }
+
     @SuppressWarnings("deprecation")
     public boolean spawnBomb(Location location, PlayerBomberman player) {
 
