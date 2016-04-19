@@ -5,11 +5,9 @@ import net.samagames.bomberman.GameManager;
 import net.samagames.bomberman.Utils;
 import net.samagames.bomberman.player.PlayerBomberman;
 import net.samagames.tools.powerups.Powerup;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -37,12 +35,8 @@ public class CadeauPowerup implements Powerup {
         PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
         if (type.equals(Powerups.CAT)) {
-            Ocelot cat = player.getWorld().spawn(player.getLocation(), Ocelot.class);
-            cat.setCatType(Ocelot.Type.RED_CAT);
-            Bukkit.getScheduler().runTaskLater(gameManager.getPlugin(), () -> {
-                gameManager.getMapManager().getCaseAtWorldLocation(cat.getLocation().getBlockX(), cat.getLocation().getBlockZ()).explode(true, false, playerBomberman);
-                cat.remove();
-            }, 200);
+            Utils.spanwCat(player, gameManager);
+
         }/* else if (type.equals(Powerups.WALL_INVISIBILITY)) {
 
             playerBomberman.replaceBlock(Material.DIRT, Material.STAINED_GLASS, Powerups.WALL_INVISIBILITY.getDuration());

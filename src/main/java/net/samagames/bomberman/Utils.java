@@ -3,21 +3,23 @@ package net.samagames.bomberman;
 import net.minecraft.server.v1_9_R1.BlockPosition;
 import net.minecraft.server.v1_9_R1.Chunk;
 import net.minecraft.server.v1_9_R1.PacketPlayOutMultiBlockChange;
+import net.samagames.tools.ParticleEffect;
 import org.apache.commons.lang.math.RandomUtils;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_9_R1.util.CraftMagicNumbers;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
+import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -66,6 +68,32 @@ public class Utils {
     public static Color getRandomColor() {
 
         return Color.fromBGR(RandomUtils.nextInt(255), RandomUtils.nextInt(255), RandomUtils.nextInt(255));
+    }
+
+    public static void spanwCat(Player player, GameManager gameManager) {
+
+        Ocelot cat = player.getWorld().spawn(player.getLocation(), Ocelot.class);
+        cat.setCatType(Ocelot.Type.RED_CAT);
+        cat.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 50000, 4, true, true), true);
+        cat.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 50000, 255, true, true), true);
+        cat.setTarget(player);
+
+        final BukkitTask task = gameManager.getServer().getScheduler().runTaskTimer(gameManager.getPlugin(), () -> {
+            if (cat.getCatType().equals(Ocelot.Type.RED_CAT)) {
+                cat.setCatType(Ocelot.Type.SIAMESE_CAT);
+            } else {
+                cat.setCatType(Ocelot.Type.RED_CAT);
+            }
+
+            cat.getLocation().getWorld().playSound(cat.getLocation(), Sound.ENTITY_TNT_PRIMED, 10.0f, 20.0f);
+            ParticleEffect.FLAME.display(1, 1, 1, 1, 10, cat.getLocation(), 30);
+        }, 0L, 7L);
+
+        gameManager.getServer().getScheduler().runTaskLater(gameManager.getPlugin(), () -> {
+            gameManager.getMapManager().getCaseAtWorldLocation(cat.getLocation().getBlockX(), cat.getLocation().getBlockZ()).explode(true, false, gameManager.getPlayer(player.getUniqueId()));
+            gameManager.getServer().getScheduler().cancelTask(task.getTaskId());
+            cat.remove();
+        }, 180);
     }
 
     public static void changeBlocks(Map<Vector, Material> toChange, Player player) {
