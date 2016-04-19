@@ -410,10 +410,17 @@ public class PlayerBomberman extends GamePlayer {
         if (newHealth > 0) {
 
             setHealth(newHealth);
-            player.spigot().respawn();
             player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.RED + ChatColor.BOLD + "Il vous reste " + newHealth + " vie(s) !");
 
+        } else if (hasPowerup(Powerups.BOMB_PROTECTION)) {
+
+            setHealth(getHealth());
+            player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.RED + "Vous avez perdu votre booster " + ChatColor.GOLD + Powerups.BOMB_PROTECTION.getName() + ChatColor.RED + " !");
+            getPersistentPowerups().remove(Powerups.BOMB_PROTECTION);
+            updateInventoryBoosterStatus();
+
         } else {
+
             setHealth(0);
             player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.RED + "Vous etes mort: vous n'avez plus de vies !");
             setSpectator();

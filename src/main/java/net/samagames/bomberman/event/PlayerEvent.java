@@ -81,9 +81,8 @@ public class PlayerEvent implements Listener {
             PlayerBomberman playerBomberman = gameManager.getPlayer(event.getPlayer().getUniqueId());
 
             if (playerBomberman != null) {
-                Powerups powerups = playerBomberman.getPowerups();
 
-                if (!Powerups.BOMB_ACTIVATOR.equals(powerups))
+                if (!playerBomberman.hasPowerup(Powerups.BOMB_ACTIVATOR))
                     return;
 
                 Iterator<Bomb> it = playerBomberman.getAliveBombs().iterator();

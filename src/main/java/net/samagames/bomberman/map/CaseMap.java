@@ -44,6 +44,15 @@ public class CaseMap {
         this.gameManager = gameManager;
     }
 
+    private static boolean canDamagePlayerAtLocation(PlayerBomberman playerBomberman, PlayerBomberman source, Location location) {
+
+        Location playerLoc = playerBomberman.getPlayerIfOnline().getLocation();
+
+        boolean locations = location.getBlockX() == playerLoc.getBlockX() && location.getBlockZ() == playerLoc.getBlockZ();
+
+        return !playerBomberman.hasPowerup(Powerups.INVULNERABILITY) && !(playerBomberman.hasPowerup(Powerups.SELF_INVULNERABILITY) && playerBomberman.equals(source)) && locations;
+    }
+
     public void explode(boolean cobblestone, boolean ignoreFirstBreak, PlayerBomberman source) {
 
         int radius = source.getRadius();
@@ -134,7 +143,7 @@ public class CaseMap {
 
         if (!players.isEmpty()) {
 
-            players.stream().filter(p -> p.getPlayerIfOnline() != null && !p.hasPowerup(Powerups.INVULNERABILITY) && p.getPlayerIfOnline().getLocation().getBlock().equals(worldLocation.getBlock()) && source.getPlayerIfOnline() != null).forEach(p ->
+            players.stream().filter(p -> p.getPlayerIfOnline() != null && source.getPlayerIfOnline() != null && canDamagePlayerAtLocation(p, source, worldLocation)).forEach(p ->
                     p.getPlayerIfOnline().damage(777.77D, source.getPlayerIfOnline())
             );
 
