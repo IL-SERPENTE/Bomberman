@@ -50,7 +50,7 @@ public enum Powerups {
     private final int chance;
     private final int duration;
     private final Types type;
-    private final ItemStack icon;
+    private final transient ItemStack icon;
 
     Powerups(String name, String jsonName, Types types) {
 
