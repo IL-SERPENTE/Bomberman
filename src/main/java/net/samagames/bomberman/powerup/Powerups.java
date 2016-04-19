@@ -2,6 +2,8 @@ package net.samagames.bomberman.powerup;
 
 import net.samagames.api.SamaGamesAPI;
 import org.apache.commons.lang.math.RandomUtils;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -21,11 +23,11 @@ public enum Powerups {
     RANDOM_FUSE("Random bomb", "random-fuse", Types.BOMB_MODIFIER),
     HYPER_BOMB("Hyper bomb", "hyper-bomb", Types.BOMB_MODIFIER),
     SUPER_BOMB("Super bomb", "super-bomb", Types.BOMB_MODIFIER),
-    SELF_INVULNERABILITY("Self protection", "self-invulnerability", Types.BOOSTER),
-    EXPLOSION_KILL("Charge nucléaire", "explosion-kill", Types.BOOSTER),
-    BOMB_ACTIVATOR("Détonateur", "bomb-activator", Types.BOOSTER),
+    SELF_INVULNERABILITY("Self protection", "self-invulnerability", Material.LAPIS_ORE),
+    EXPLOSION_KILL("Charge nucléaire", "explosion-kill", Material.IRON_ORE),
+    BOMB_ACTIVATOR("Détonateur", "bomb-activator", Material.GOLD_ORE),
     DESTRUCTOR("Destructeur", "destructor", 5, Types.CADEAU),
-    BOMB_PROTECTION("Seconde vie", "bomb-protection", Types.BOOSTER),
+    BOMB_PROTECTION("Seconde vie", "bomb-protection", Material.DIAMOND_ORE),
     BLINDNESS("Jet d\'encre", "blindness", Types.CADEAU),
     SWAP("Swap", "swap", Types.CADEAU),
     NAUSEA("Nausée", "nausea", Types.CADEAU),
@@ -46,10 +48,20 @@ public enum Powerups {
     private final int chance;
     private final int duration;
     private final Types type;
+    private final ItemStack icon;
 
     Powerups(String name, String jsonName, Types types) {
 
         this(name, jsonName, -1, types);
+    }
+
+    Powerups(String name, String jsonName, Material material) {
+
+        this.name = name;
+        this.chance = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs().get(JSON_POWERUP_CHANCE).getAsJsonObject().get(jsonName).getAsInt();
+        this.duration = -1;
+        this.type = Types.BOOSTER;
+        this.icon = new ItemStack(material);
     }
 
     Powerups(String name, String jsonName, int duration, Types type) {
@@ -58,6 +70,7 @@ public enum Powerups {
         this.chance = SamaGamesAPI.get().getGameManager().getGameProperties().getConfigs().get(JSON_POWERUP_CHANCE).getAsJsonObject().get(jsonName).getAsInt();
         this.duration = duration;
         this.type = type;
+        this.icon = null;
     }
 
     @Nonnull
@@ -89,6 +102,10 @@ public enum Powerups {
         }
 
         return powerups.get(index);
+    }
+
+    public ItemStack getIcon() {
+        return icon;
     }
 
     public Types getType() {

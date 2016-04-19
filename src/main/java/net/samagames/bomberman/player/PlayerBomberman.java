@@ -343,6 +343,8 @@ public class PlayerBomberman extends GamePlayer {
         mainItemNMS.setTag(nbtTagCompound);
         mainItem = CraftItemStack.asBukkitCopy(mainItemNMS);
 
+        updateInventoryBoosterStatus();
+
         Player player = getPlayerIfOnline();
 
         if (player != null) {
@@ -353,6 +355,16 @@ public class PlayerBomberman extends GamePlayer {
             inventory.setItem(0, mainItem);
         }
 
+    }
+
+    public void updateInventoryBoosterStatus() {
+
+        Inventory inventory = getPlayerIfOnline().getInventory();
+
+        for (int i = 0; i <= persistentPowerups.size() - 1; i++) {
+
+            inventory.setItem(2 + i, persistentPowerups.get(i).getIcon());
+        }
     }
 
     public void swap() {

@@ -40,6 +40,8 @@ public class BoosterPowerup implements Powerup {
             playerBomberman.getPersistentPowerups().add(type);
 
         gameManager.getScoreboardBomberman().display(player);
+
+        playerBomberman.updateInventoryBoosterStatus();
     }
 
     @Override
