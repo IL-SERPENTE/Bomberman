@@ -360,10 +360,16 @@ public class PlayerBomberman extends GamePlayer {
     public void updateInventoryBoosterStatus() {
 
         Inventory inventory = getPlayerIfOnline().getInventory();
+        Iterator<Powerups> powerupsIterator = persistentPowerups.iterator();
+
+        for (int i = 0; i <= 3; i++) {
+
+            inventory.setItem(2 + i, null);
+        }
 
         for (int i = 0; i <= persistentPowerups.size() - 1; i++) {
 
-            inventory.setItem(2 + i, persistentPowerups.iterator().next().getIcon());
+            inventory.setItem(2 + i, powerupsIterator.next().getIcon());
         }
     }
 

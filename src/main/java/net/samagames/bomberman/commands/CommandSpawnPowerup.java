@@ -1,10 +1,7 @@
 package net.samagames.bomberman.commands;
 
 import net.samagames.bomberman.GameManager;
-import net.samagames.bomberman.powerup.BombPowerup;
-import net.samagames.bomberman.powerup.BoosterPowerup;
-import net.samagames.bomberman.powerup.CadeauPowerup;
-import net.samagames.bomberman.powerup.RadiusPowerup;
+import net.samagames.bomberman.powerup.*;
 import net.samagames.tools.powerups.Powerup;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -39,6 +36,10 @@ public class CommandSpawnPowerup implements CommandExecutor {
             type = new CadeauPowerup();
         } else if ("radius".equalsIgnoreCase(powerupType)) {
             type = new RadiusPowerup();
+        } else if ("mBomb".equalsIgnoreCase(powerupType)) {
+            type = new BombModifierPowerup();
+        } else if ("speed".equalsIgnoreCase(powerupType)) {
+            type = new SpeedPowerup();
         } else {
             type = null;
         }

@@ -26,6 +26,7 @@ public class Bomb extends EntityTNTPrimed {
     private static GameManager gameManager;
     private final int radius;
     private final PlayerBomberman owner;
+    private boolean normalBomb;
     private int explodeTicks;
 
     public Bomb(World world, double x, double y, double z, int fuseTicks, int radius, Player owner) {
@@ -39,6 +40,15 @@ public class Bomb extends EntityTNTPrimed {
         this.motY = 0;
         this.motZ = 0;
         this.velocityChanged = true;
+        this.normalBomb = true;
+    }
+
+    public boolean isNormalBomb() {
+        return normalBomb;
+    }
+
+    public void setNormalBomb(boolean normalBomb) {
+        this.normalBomb = normalBomb;
     }
 
     public int getExplodeTicks() {
@@ -74,6 +84,8 @@ public class Bomb extends EntityTNTPrimed {
     @Override
     public void m() {
 
+        super.m();
+
         if (this.explodeTicks-- <= 0 && isAlive()) {
 
             this.die();
@@ -107,16 +119,18 @@ public class Bomb extends EntityTNTPrimed {
 
         if (explosionDie) {
 
-            caseMap.explode(owner.hasPowerup(Powerups.HYPER_BOMB), owner.hasPowerup(Powerups.SUPER_BOMB), owner);
+            caseMap.explode(owner.hasPowerup(Powerups.HYPER_BOMB), owner.hasPowerup(Powerups.SUPER_BOMB), owner, normalBomb);
 
             craftWorld.playSound(baseLocation, Sound.ENTITY_GENERIC_EXPLODE, 10.0f, 20.0f);
         } else
             caseMap.setBomb(null);
 
-        if (removeBomb)
-            this.owner.getAliveBombs().remove(this);
-        this.owner.setPlacedBombs(this.owner.getPlacedBombs() - 1);
-        this.owner.updateInventory();
+        if (normalBomb) {
+            if (removeBomb)
+                this.owner.getAliveBombs().remove(this);
+            this.owner.setPlacedBombs(this.owner.getPlacedBombs() - 1);
+            this.owner.updateInventory();
+        }
 
         baseLocation.add(0, 1, 0).getBlock().setType(Material.AIR, false);
     }

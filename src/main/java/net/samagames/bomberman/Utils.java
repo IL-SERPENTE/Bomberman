@@ -90,7 +90,7 @@ public class Utils {
         }, 0L, 7L);
 
         gameManager.getServer().getScheduler().runTaskLater(gameManager.getPlugin(), () -> {
-            gameManager.getMapManager().getCaseAtWorldLocation(cat.getLocation().getBlockX(), cat.getLocation().getBlockZ()).explode(true, false, gameManager.getPlayer(player.getUniqueId()));
+            gameManager.getMapManager().getCaseAtWorldLocation(cat.getLocation().getBlockX(), cat.getLocation().getBlockZ()).explode(true, false, gameManager.getPlayer(player.getUniqueId()), false);
             gameManager.getServer().getScheduler().cancelTask(task.getTaskId());
             cat.remove();
         }, 180);

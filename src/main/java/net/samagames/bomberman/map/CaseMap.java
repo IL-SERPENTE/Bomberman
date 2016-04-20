@@ -53,7 +53,7 @@ public class CaseMap {
         return !playerBomberman.hasPowerup(Powerups.INVULNERABILITY) && !(playerBomberman.hasPowerup(Powerups.SELF_INVULNERABILITY) && playerBomberman.equals(source)) && locations;
     }
 
-    public void explode(boolean cobblestone, boolean ignoreFirstBreak, PlayerBomberman source) {
+    public void explode(boolean cobblestone, boolean ignoreFirstBreak, PlayerBomberman source, boolean originalBomb) {
 
         int radius = source.getRadius();
         EnumMap<BlockFace, Boolean> faces = new EnumMap<>(BlockFace.class);
@@ -65,15 +65,6 @@ public class CaseMap {
 
         explodeCase(cobblestone, source, 0);
         killEntitys(source);
-
-        if (source.hasPowerup(Powerups.MULTIPLE_BOMB)) {
-            faces.keySet().forEach(entry -> {
-                Bomb bomb = gameManager.getMapManager().spawnBombEntity(worldLocation.clone().add(radius, 0, 0), source);
-
-                bomb.motX = 5;
-                bomb.velocityChanged = true;
-            });
-        }
 
         for (int i = 1; i <= radius; i++) {
             final int finalI = i;
@@ -94,6 +85,15 @@ public class CaseMap {
 
                     entry.setValue(continueExplode);
                 }
+            });
+        }
+
+        if (source.hasPowerup(Powerups.MULTIPLE_BOMB) && originalBomb) {
+            faces.keySet().forEach(blockFace -> {
+                Bomb bombPlace = gameManager.getMapManager().spawnBombEntity(worldLocation.clone().add(0, 0, 0), source);
+                bombPlace.setNormalBomb(false);
+
+                bombPlace.move(radius * blockFace.getModX(), 1.3, radius * blockFace.getModZ());
             });
         }
     }

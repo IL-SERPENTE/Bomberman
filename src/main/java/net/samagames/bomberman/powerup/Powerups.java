@@ -42,7 +42,7 @@ public enum Powerups {
     ENDERMITE_SPAWN("Infestation", "endermite-spawn", Types.CADEAU),
     //WALL_INVISIBILITY("Transparence", "wall_invisibility", 20, Types.CADEAU),
     INVISIBILITY("Invisibilité", "invisibility", 5, Types.CADEAU),
-    MULTIPLE_BOMB("", "multiple-bomb", Types.BOMB_MODIFIER);
+    MULTIPLE_BOMB("Bombe à fragmentation", "multiple-bomb", Types.BOMB_MODIFIER);
 
     public static final String JSON_POWERUP_CHANCE = "booster-chance";
 
