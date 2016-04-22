@@ -161,20 +161,6 @@ public class MapManager {
         return null;
     }
 
-    public void moveBomb(Bomb bomb, Location locTo) {
-
-        Location location = new Location(locTo.getWorld(), bomb.locX, bomb.locY, bomb.locZ);
-
-        CaseMap caseMap = getCaseAtWorldLocation(location.getBlockX(), location.getBlockZ());
-
-        if (caseMap != null && caseMap.getBomb().equals(bomb)) {
-            caseMap.setBomb(null);
-        }
-
-        caseMap = getCaseAtWorldLocation(locTo.getBlockX(), locTo.getBlockZ());
-        caseMap.setBomb(bomb);
-    }
-
     @SuppressWarnings("deprecation")
     public boolean spawnBomb(Location location, PlayerBomberman player) {
 
