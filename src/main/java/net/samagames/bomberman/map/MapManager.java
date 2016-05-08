@@ -178,6 +178,7 @@ public class MapManager {
 
             caseMap.setBomb(bomb);
             player.getAliveBombs().add(bomb);
+            player.addTotalBomb(1);
 
             gameManager.getServer().getScheduler().runTaskLater(gameManager.getPlugin(), () -> {
 

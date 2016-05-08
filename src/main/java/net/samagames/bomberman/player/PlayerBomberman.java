@@ -42,6 +42,7 @@ public class PlayerBomberman extends GamePlayer {
     private int bombNumber;
     private int radius;
     private int placedBombs;
+    private int totalPlacedBombs;
     private int kills;
     private int recordPlayTime;
     private int powerupDuration;
@@ -166,6 +167,14 @@ public class PlayerBomberman extends GamePlayer {
             this.health = health;
 
         updateHealth();
+    }
+
+    public void addTotalBomb(int bombToAdd) {
+        this.totalPlacedBombs += bombToAdd;
+    }
+
+    public int getTotalPlacedBombs() {
+        return totalPlacedBombs;
     }
 
     public void removeArmor() {
