@@ -1,6 +1,6 @@
 package net.samagames.bomberman.player;
 
-import net.minecraft.server.v1_9_R1.*;
+import net.minecraft.server.v1_9_R2.*;
 import net.samagames.api.games.GamePlayer;
 import net.samagames.bomberman.*;
 import net.samagames.bomberman.entity.Bomb;
@@ -10,8 +10,8 @@ import net.samagames.tools.scoreboards.ObjectiveSign;
 import org.apache.commons.lang.math.RandomUtils;
 import org.bukkit.*;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_9_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_9_R1.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_9_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_9_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -333,7 +333,7 @@ public class PlayerBomberman extends GamePlayer {
         ItemStack mainItem = new ItemStack(bomb ? Material.BRICK : Material.CARPET, 1, (short) (bomb ? 0 : 8));
         itemMeta = mainItem.getItemMeta();
         NBTTagCompound nbtTagCompound;
-        net.minecraft.server.v1_9_R1.ItemStack mainItemNMS;
+        net.minecraft.server.v1_9_R2.ItemStack mainItemNMS;
 
         itemMeta.setDisplayName(bomb ? ChatColor.GOLD + "Constructeur" : ChatColor.GOLD + "Bombe");
         mainItem.setItemMeta(itemMeta);
