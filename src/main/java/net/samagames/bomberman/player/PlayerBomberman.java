@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 public class PlayerBomberman extends GamePlayer {
 
     private final GameManager gameManager;
-    private final Set<Bomb> aliveBombs;
+    private final List<Bomb> aliveBombs;
     private final Set<Powerups> persistentPowerups;
     private Powerups bombModifier;
     private Powerups powerups;
@@ -54,7 +54,7 @@ public class PlayerBomberman extends GamePlayer {
     public PlayerBomberman(Player player) {
         super(player);
         gameManager = Bomberman.getGameManager();
-        aliveBombs = new HashSet<>();
+        aliveBombs = new ArrayList<>();
         persistentPowerups = new HashSet<>();
         powerups = null;
         objectiveSign = null;
@@ -122,7 +122,7 @@ public class PlayerBomberman extends GamePlayer {
         return powerup.equals(powerups) || persistentPowerups.contains(powerup) || powerup.equals(bombModifier);
     }
 
-    public Set<Bomb> getAliveBombs() {
+    public List<Bomb> getAliveBombs() {
         return aliveBombs;
     }
 
