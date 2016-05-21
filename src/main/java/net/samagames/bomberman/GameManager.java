@@ -267,17 +267,22 @@ public class GameManager extends Game<PlayerBomberman> {
             playerBombermanList.get(0).addCoins(30, "Partie gagnée");
             playerBombermanList.get(0).addStars(1, "Partie gagnée");
 
-            for (int i = 3; i >= 0; i--) {
-                Firework firework = (Firework) player.getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
-                FireworkMeta fireworkMeta = firework.getFireworkMeta();
+            server.getScheduler().runTask(plugin, () -> {
 
-                FireworkEffect effect = FireworkEffect.builder().with(FireworkEffect.Type.STAR).trail(true).flicker(true).withColor(Color.ORANGE, Color.RED).withFade(Color.BLUE, Color.GREEN).build();
+                for (int i = 3; i >= 0; i--) {
 
-                fireworkMeta.addEffect(effect);
-                fireworkMeta.setPower(i);
+                    Firework firework = (Firework) player.getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
+                    FireworkMeta fireworkMeta = firework.getFireworkMeta();
 
-                firework.setFireworkMeta(fireworkMeta);
-            }
+                    FireworkEffect effect = FireworkEffect.builder().with(FireworkEffect.Type.STAR).trail(true).flicker(true).withColor(Color.ORANGE, Color.RED).withFade(Color.BLUE, Color.GREEN).build();
+
+                    fireworkMeta.addEffect(effect);
+                    fireworkMeta.setPower(i);
+
+                    firework.setFireworkMeta(fireworkMeta);
+
+                }
+            });
         }
 
         this.handleGameEnd();

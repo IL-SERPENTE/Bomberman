@@ -242,11 +242,16 @@ public class PlayerEvent implements Listener {
     @EventHandler
     public void onPlayerDamage(EntityDamageEvent event) {
 
-        if (event.getCause().equals(EntityDamageEvent.DamageCause.FIRE)) {
-            ((Player) event.getEntity()).damage(777.77, null);
-        }
-        if ((int) (event.getDamage() - 777.77) != 0 || !gameManager.getStatus().equals(Status.IN_GAME)) {
+        if (event.getEntity() instanceof Player) {
+            if (event.getCause().equals(EntityDamageEvent.DamageCause.FIRE)) {
+                ((Player) event.getEntity()).damage(777.77, null);
+            }
+            if ((int) (event.getDamage() - 777.77) != 0 || !gameManager.getStatus().equals(Status.IN_GAME)) {
+                event.setCancelled(true);
+            }
+        } else {
             event.setCancelled(true);
+            event.getEntity().setFireTicks(-120);
         }
     }
 }
