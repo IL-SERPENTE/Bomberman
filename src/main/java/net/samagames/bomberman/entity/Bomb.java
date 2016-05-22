@@ -34,7 +34,7 @@ public class Bomb extends EntityTNTPrimed {
 
         gameManager = Bomberman.getGameManager();
         this.explodeTicks = fuseTicks;
-        this.maxFireTicks = Integer.MAX_VALUE;
+        this.setFuseTicks(fuseTicks * 2);
         this.radius = radius;
         this.owner = gameManager.getPlayer(owner.getUniqueId());
         this.motX = 0;
