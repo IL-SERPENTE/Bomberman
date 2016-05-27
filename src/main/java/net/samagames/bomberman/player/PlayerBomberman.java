@@ -475,7 +475,7 @@ public class PlayerBomberman extends GamePlayer {
     public void stopWaitingRecord(Location spawn) {
 
         CraftPlayer craftPlayer = (CraftPlayer) getPlayerIfOnline();
-        PacketPlayOutWorldEvent packetPlayOutWorldEvent = new PacketPlayOutWorldEvent(1005, new BlockPosition(spawn.getBlockX(), spawn.getBlockY(), spawn.getBlockZ()), 0, false);
+        PacketPlayOutWorldEvent packetPlayOutWorldEvent = new PacketPlayOutWorldEvent(1010, new BlockPosition(spawn.getBlockX(), spawn.getBlockY(), spawn.getBlockZ()), 0, false);
 
         craftPlayer.getHandle().playerConnection.sendPacket(packetPlayOutWorldEvent);
     }
@@ -484,7 +484,7 @@ public class PlayerBomberman extends GamePlayer {
 
         if (playMusic) {
             CraftPlayer craftPlayer = (CraftPlayer) getPlayerIfOnline();
-            PacketPlayOutWorldEvent packetPlayOutWorldEvent = new PacketPlayOutWorldEvent(1005, new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ()), music.getRecordId(), false);
+            PacketPlayOutWorldEvent packetPlayOutWorldEvent = new PacketPlayOutWorldEvent(1010, new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ()), music.getRecordId(), false);
 
             craftPlayer.getHandle().playerConnection.sendPacket(packetPlayOutWorldEvent);
         }
