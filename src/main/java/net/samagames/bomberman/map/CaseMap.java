@@ -150,9 +150,9 @@ public class CaseMap {
             bomb = null;
         }
 
-        if (!players.isEmpty()) {
+        if (!players.isEmpty() && source != null && source.getPlayerIfOnline() != null) {
 
-            players.stream().filter(p -> p.getPlayerIfOnline() != null && source.getPlayerIfOnline() != null && canDamagePlayerAtLocation(p, source, worldLocation)).forEach(p ->
+            players.stream().filter(p -> p.getPlayerIfOnline() != null && canDamagePlayerAtLocation(p, source, worldLocation)).forEach(p ->
                     p.getPlayerIfOnline().damage(777.77D, source.getPlayerIfOnline())
             );
 
