@@ -24,6 +24,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * PlayerEvents
  *
@@ -83,11 +86,10 @@ public class PlayerEvent implements Listener {
                 if (!playerBomberman.hasPowerup(Powerups.BOMB_ACTIVATOR))
                     return;
 
-                for (Bomb bomb : playerBomberman.getAliveBombs()) {
-                    bomb.explodeBomb(false);
-                    playerBomberman.getAliveBombs().remove(bomb);
-                }
+                List<Bomb> list = new ArrayList<>(playerBomberman.getAliveBombs());
 
+                list.forEach(Bomb::die);
+                list.clear();
             }
         }
     }
