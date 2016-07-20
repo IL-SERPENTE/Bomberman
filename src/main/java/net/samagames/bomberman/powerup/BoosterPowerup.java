@@ -32,7 +32,7 @@ public class BoosterPowerup implements Powerup {
         PlayerBomberman playerBomberman = gameManager.getPlayer(player.getUniqueId());
 
         if (playerBomberman.getPersistentPowerups().add(type))
-            player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.GREEN + "Tu possédes mainteant le booster " + ChatColor.GOLD + type.getName());
+            player.sendMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.GREEN + "Tu possèdes maintenant le booster " + ChatColor.GOLD + type.getName());
 
         gameManager.getScoreboardBomberman().display(player);
 

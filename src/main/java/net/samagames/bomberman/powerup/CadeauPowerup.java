@@ -87,7 +87,7 @@ public class CadeauPowerup implements Powerup {
         } else if (type.equals(Powerups.NAUSEA)) {
 
             effect = new PotionEffect(PotionEffectType.CONFUSION, 100, 10);
-            gameManager.getServer().broadcastMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.GOLD + player.getName() + ChatColor.DARK_GREEN + " a déclancher de la nausée !");
+            gameManager.getServer().broadcastMessage(gameManager.getCoherenceMachine().getGameTag() + " " + ChatColor.GOLD + player.getName() + ChatColor.DARK_GREEN + " a déclanché de la nausée !");
         } else {
             effect = null;
         }
